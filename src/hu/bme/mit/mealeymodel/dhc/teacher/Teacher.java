@@ -1,8 +1,24 @@
 package hu.bme.mit.mealeymodel.dhc.teacher;
 
-import hu.bme.mit.mealeymodel.dhc.general.LearnableAdapter;
+import java.util.Collection;
 
-public abstract class Teacher <A extends LearnableAdapter>{
+import hu.bme.mit.mealeymodel.dhc.general.adapter.LearnableAdapter;
+
+
+public class Teacher <I, O, H>{
 	
+	LearnableAdapter<I,O,H> adapter;
+	
+	public Teacher(LearnableAdapter<I, O, H> adapter) {
+		this.adapter = adapter;
+	}
+	
+	public O membershipQuery(Collection<? extends I> sequence) {
+		return adapter.membershipQuery(sequence);
+	}
+
+	public Collection<? extends I> equivalenceQuery(H hypothesis, Collection<? extends I> alphabet){
+		return adapter.equivalenceQuery(hypothesis, alphabet);
+	}
 	
 }

@@ -1,7 +1,6 @@
 package hu.bme.mit.mealeymodel.dhc.general;
 
 import java.util.Collection;
-import java.util.List;
 
 
 
@@ -22,9 +21,7 @@ public abstract class Hypothesis<I, O, M, S, T> {
 	public abstract S getInitialState();
 	
 	public abstract Collection<S> getStates();
-	
-	public abstract Collection<? extends I> getAccessSequence(S state);
-	
+		
 	public abstract Collection<T> getTransitions();
 
 }

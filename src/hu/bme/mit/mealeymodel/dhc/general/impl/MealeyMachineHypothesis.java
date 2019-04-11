@@ -34,8 +34,7 @@ public class MealeyMachineHypothesis extends Hypothesis<Alphabet, Alphabet, Meal
 		return automaton.getStates();
 	}
 
-	@Override
-	public Collection<? extends Alphabet> getAccessSequence(State state) {
+	public List<Alphabet> getAccessSequence(State state) {
 		// TODO Auto-generated method stub
 		return null;
 	}
