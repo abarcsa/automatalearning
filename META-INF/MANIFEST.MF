@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dhc
+Bundle-SymbolicName: hu.bme.mit.mealeymodel.dhc
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: hu.bme.mit.mealeymodel.dhc
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: com.google.inject,
+ hu.bme.mit.mealeymodel.text,
+ org.eclipse.xtext.resource
+Require-Bundle: hu.bme.mit.mealeymodel,
+ hu.bme.mit.mealeymodel.text;bundle-version="1.0.0",
+ org.eclipse.emf.mwe.utils

@@ -1,0 +1,30 @@
+package hu.bme.mit.mealeymodel.dhc.general;
+
+import java.util.Collection;
+import java.util.List;
+
+
+
+/**
+ * 
+ * @author Aron B.-Szabo
+ *
+ * @param <I>	The input character type
+ * @param <O>	The output character type
+ * @param <M>	The automaton (machine) type
+ * @param <S>	The state type of the automaton
+ * @param <T>	The transition type of the automaton
+ */
+public abstract class Hypothesis<I, O, M, S, T> {
+	
+	protected M automaton;
+		
+	public abstract S getInitialState();
+	
+	public abstract Collection<S> getStates();
+	
+	public abstract Collection<? extends I> getAccessSequence(S state);
+	
+	public abstract Collection<T> getTransitions();
+
+}
