@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import hu.bme.mit.mealeymodel.dhc.general.impl.StringSequenceLearnable;
+import hu.bme.mit.mealeymodel.dhc.general.Learnable.StringSequenceLearnable;
 
 /**
  * Adapter for the StringSequenceLearnable

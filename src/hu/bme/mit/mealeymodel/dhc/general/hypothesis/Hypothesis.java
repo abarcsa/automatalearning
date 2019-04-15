@@ -1,4 +1,4 @@
-package hu.bme.mit.mealeymodel.dhc.general;
+package hu.bme.mit.mealeymodel.dhc.general.hypothesis;
 
 import java.util.Collection;
 

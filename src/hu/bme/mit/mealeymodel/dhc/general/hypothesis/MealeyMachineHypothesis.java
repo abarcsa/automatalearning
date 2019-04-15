@@ -1,4 +1,4 @@
-package hu.bme.mit.mealeymodel.dhc.general.impl;
+package hu.bme.mit.mealeymodel.dhc.general.hypothesis;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,9 +8,8 @@ import hu.bme.mit.mealeymodel.Alphabet;
 import hu.bme.mit.mealeymodel.MealeyMachine;
 import hu.bme.mit.mealeymodel.MealeymodelFactory;
 import hu.bme.mit.mealeymodel.State;
-import hu.bme.mit.mealeymodel.dhc.general.Hypothesis;
 
-public class MealeyMachineHypothesis extends Hypothesis<Alphabet, Alphabet, MealeyMachine, State, Transition>{
+public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMachine, State, Transition>{
 	
 	public MealeyMachineHypothesis(Alphabet inputAlphabet, Alphabet outputAlphabet, State initialState, List<State> states, List<Transition> transitions) {
 		this.automaton = MealeymodelFactory.eINSTANCE.createMealeyMachine();
@@ -34,16 +33,9 @@ public class MealeyMachineHypothesis extends Hypothesis<Alphabet, Alphabet, Meal
 		return automaton.getStates();
 	}
 
-	public List<Alphabet> getAccessSequence(State state) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public Collection<Transition> getTransitions() {
 		return automaton.getTransitions();
 	}
-
-
 	
 }

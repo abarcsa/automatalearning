@@ -1,8 +1,6 @@
-package hu.bme.mit.mealeymodel.dhc.general.impl;
+package hu.bme.mit.mealeymodel.dhc.general.Learnable;
 
 import java.util.Collection;
-
-import hu.bme.mit.mealeymodel.dhc.general.Learnable;
 
 /**
  * A Learnable which uses Strings as both input and output symbols
