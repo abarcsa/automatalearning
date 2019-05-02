@@ -1,10 +1,10 @@
-package hu.bme.mit.mealeymodel.dhc.general.adapter;
+package hu.bme.mit.mealeymodel.dhc.adapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import hu.bme.mit.mealeymodel.dhc.general.Learnable.StringSequenceLearnable;
+import hu.bme.mit.mealeymodel.dhc.Learnable.StringSequenceLearnable;
 
 /**
  * Adapter for the StringSequenceLearnable

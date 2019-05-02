@@ -7,7 +7,8 @@ import java.util.List;
 public class Main {
 
 	public static void main(String[] args) {
-		MealeyMachine m = MealeyModelReader.getMealeyModelFromXtext();
+		hu.bme.mit.mealeymodel.dhc.algorithm.DirectHypothesisConstruction.test();
+		/*MealeyMachine m = MealeyModelReader.getMealeyModelFromXtext();
 		List<String> l = new ArrayList<>();
 		m.getInitialState();
 		m.getInitialState();

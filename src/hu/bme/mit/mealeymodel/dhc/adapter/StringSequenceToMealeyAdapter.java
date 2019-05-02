@@ -1,6 +1,6 @@
-package hu.bme.mit.mealeymodel.dhc.general.adapter;
+package hu.bme.mit.mealeymodel.dhc.adapter;
 
-import hu.bme.mit.mealeymodel.dhc.general.hypothesis.MealeyMachineHypothesis;
+import hu.bme.mit.mealeymodel.dhc.hypothesis.MealeyMachineHypothesis;
 
 public class StringSequenceToMealeyAdapter extends StringSequenceAdapter<String, String, MealeyMachineHypothesis>{
 

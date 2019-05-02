@@ -1,4 +1,4 @@
-package hu.bme.mit.mealeymodel.dhc.general.hypothesis;
+package hu.bme.mit.mealeymodel.dhc.hypothesis;
 
 import java.util.Collection;
 
@@ -23,5 +23,8 @@ public abstract class Hypothesis<I, O, M, S, T> {
 	public abstract Collection<S> getStates();
 		
 	public abstract Collection<T> getTransitions();
-
+	
+	public abstract Collection<I> getInputAlphabet();
+	
+	public abstract Collection<O> getOutputAlphabet();
 }

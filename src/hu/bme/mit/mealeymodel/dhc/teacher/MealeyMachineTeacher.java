@@ -1,10 +1,10 @@
-package hu.bme.mit.mealeymodel.dhc.general.teacher;
+package hu.bme.mit.mealeymodel.dhc.teacher;
 
 import java.util.Collection;
 
-import hu.bme.mit.mealeymodel.dhc.general.Learnable.StringSequenceLearnable;
-import hu.bme.mit.mealeymodel.dhc.general.adapter.StringSequenceToMealeyAdapter;
-import hu.bme.mit.mealeymodel.dhc.general.hypothesis.MealeyMachineHypothesis;
+import hu.bme.mit.mealeymodel.dhc.Learnable.StringSequenceLearnable;
+import hu.bme.mit.mealeymodel.dhc.adapter.StringSequenceToMealeyAdapter;
+import hu.bme.mit.mealeymodel.dhc.hypothesis.MealeyMachineHypothesis;
 
 public abstract class MealeyMachineTeacher extends Teacher<String, String, MealeyMachineHypothesis>{
 

@@ -1,4 +1,4 @@
-package hu.bme.mit.mealeymodel.dhc.general.Learnable;
+package hu.bme.mit.mealeymodel.dhc.Learnable;
 
 import java.util.Collection;
 
