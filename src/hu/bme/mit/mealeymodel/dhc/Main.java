@@ -1,77 +1,60 @@
 package hu.bme.mit.mealeymodel.dhc;
 
 import hu.bme.mit.mealeymodel.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
+import hu.bme.mit.mealeymodel.dhc.Learnable.MealeyLearnable;
+import hu.bme.mit.mealeymodel.dhc.Learnable.StringSequenceLearnable;
+import hu.bme.mit.mealeymodel.dhc.adapter.StringSequenceToMealeyAdapter;
+import hu.bme.mit.mealeymodel.dhc.algorithm.DirectHypothesisConstruction;
+import hu.bme.mit.mealeymodel.dhc.hypothesis.MealeyMachineHypothesis;
+import hu.bme.mit.mealeymodel.dhc.teacher.MealeyMachineTeacherStringSequenceImpl;
+import hu.bme.mit.mealeymodel.dhc.teacher.Teacher;
+
+
 public class Main {
 
 	public static void main(String[] args) {
-		hu.bme.mit.mealeymodel.dhc.algorithm.DirectHypothesisConstruction.test();
 		/*MealeyMachine m = MealeyModelReader.getMealeyModelFromXtext();
-		List<String> l = new ArrayList<>();
-		m.getInitialState();
-		m.getInitialState();
-		MealeyModelReader.output(learnMealeyMachine(m).getHypothesisedMachine());
-		/*for(State s : ) {
-			System.out.println(s.getName());
-		}*/
-	}
-	
-	public static Hypothesis learnMealeyMachine(MealeyMachine machine) {
-		int numberOfStates = 0;
-		Hypothesis hypo = new Hypothesis(machine);
-		ArrayDeque<State> statesToComplete = new ArrayDeque<>();
-		State initialState = MealeymodelFactory.eINSTANCE.createState();
-		initialState = hypo.getHypothesisedMachine().getInitialState();
-		statesToComplete.add(initialState);
+		Teacher<String, String, MealeyMachineHypothesis> teacher = new MealeyMachineTeacherStringSequenceImpl(new StringSequenceToMealeyAdapter(new MealeyLearnable(m)));
 		
-		while(!statesToComplete.isEmpty()) {
-			State curr = statesToComplete.remove();
-			List<String> seq = hypo.getAccessSequence(curr);
-			List<State> successorsOfCurr = new ArrayList<>();
-			for(String symbol : hypo.getHypothesisedMachine().getInputAlphabet().getCharacters()) {
-				List<String> sequence = new ArrayList<>(seq);
-				sequence.add(symbol);
-				String output = membershipQuery(sequence, machine);
-				State s =  MealeymodelFactory.eINSTANCE.createState();
-				s.setName("s" + ++numberOfStates);
-				
-				hypo.addInOut(curr,symbol,output);	
-				hypo.setAccessSequence(s, sequence);
-				successorsOfCurr.add(s);
-				hypo.getHypothesisedMachine().getStates().add(s);
-			}
-			
-			State sibling = hypo.findSibling(curr);
-			if(sibling != null) {
-				hypo.rerouteAllTransitions(curr, sibling);
-			}else {
-				for(State s : successorsOfCurr) {
-					statesToComplete.add(s);
-					
-					
-				}
-			}
-		}
-		hypo.createTransitions();
-		return hypo;
+		Alphabet inputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		MealeyMachineHypothesis hypo = new MealeyMachineHypothesis(inputAlphabet);
+		DirectHypothesisConstruction dhc = new DirectHypothesisConstruction(teacher, hypo);
+		
+		MealeyMachineHypothesis h = dhc.execute();
+		
+		MealeyModelReader.output(h.getAutomaton());*/
+		alternatingbit();
+		
+	
 	}
 	
-	public static String membershipQuery(List<String> symbols, MealeyMachine machine){
-		Transition trans = null;
-		State currState = machine.getInitialState();
-		for(int i = 0; i < symbols.size(); i++) {
-			String s = symbols.get(i);
-			for(Transition t : machine.getTransitions()) {
-				if(t.getSourceState().getName().equals(currState.getName()) && t.getInput().equals(s)){
-					trans = t;
-					currState = trans.getTargetState();
-					break;
-				}
-			}
-		}
-		return trans == null ? null : trans.getOutput();
+	public static void alternatingbit() {
+		String sequence = 
+				"null|send0|ack1|send0|ack0|send1"
+				+ "|ack0null|send1|ack0ack0|send1|ack0ack1|send0"
+				+ "|ack1null|send0|ack1ack0|send1|ack1ack1|send0"
+				+ "|nullnull|send0|nullack0|send1|nullack1|send0"
+				+ "|ack0nullnull|send1|ack0nullack0|send1|ack0nullack1|send0"
+				+ "|ack0ack0null|send1|ack0ack0ack0|send1|ack0ack0ack1|send0"
+				+ "|ack0ack1null|send0|ack0ack1ack0|send1|ack0ack1ack1|send0"
+				+ "|ack1nullnull|send0|ack1nullack0|send1|ack1nullack1|send0"
+				+ "|ack1ack0null|send1|ack1ack0ack0|send1|ack1ack0ack1|send0"
+				+ "|ack1ack1null|send0|ack1ack1ack0|send1|ack1ack1ack1|send0"
+				+ "|nullnullnull|send0|nullnullack0|send1|nullnullack1|send0"
+				+ "|nullack0null|send1|nullack0ack0|send1|nullack0ack1|send0"
+				+ "|nullack1null|send0|nullack1ack0|send1|nullack1ack1|send0";
+		Alphabet inputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().add("null");
+		inputAlphabet.getCharacters().add("ack0");
+		inputAlphabet.getCharacters().add("ack1");
+		Teacher<String, String, MealeyMachineHypothesis> teacher = new MealeyMachineTeacherStringSequenceImpl(new StringSequenceToMealeyAdapter(new StringSequenceLearnable(sequence)));
+		MealeyMachineHypothesis hypo = new MealeyMachineHypothesis(inputAlphabet);
+		DirectHypothesisConstruction dhc = new DirectHypothesisConstruction(teacher, hypo);
+		
+		MealeyMachineHypothesis h = dhc.execute();
+		
+		MealeyModelReader.output(h.getAutomaton());
 	}
-
+	
 }

@@ -45,7 +45,7 @@ public abstract class LearnableAdapter<HI, HO, H, LI, LO, L extends Learnable<LI
 	 * @param inputs The set of the input alphabet to consider
 	 * @return A sequence of inputs which causes a different behavior (output), an empty Collection, if none exist
 	 */
-	public abstract Collection<? extends HI> equivalenceQuery(H hypothesis, Collection<? extends HI> alphabet);
+	public abstract List<? extends HI> equivalenceQuery(H hypothesis, Collection<? extends HI> alphabet);
 	
 	/**
 	 * 

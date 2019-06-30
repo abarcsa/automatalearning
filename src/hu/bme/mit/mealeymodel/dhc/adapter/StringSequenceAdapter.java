@@ -26,7 +26,7 @@ public abstract class StringSequenceAdapter<I, O, H> extends LearnableAdapter<I,
 	}
 
 	@Override
-	public Collection<? extends I> equivalenceQuery(H hypothesis, Collection<? extends I> alphabet) {
+	public List<? extends I> equivalenceQuery(H hypothesis, Collection<? extends I> alphabet) {
 		// TODO Auto-generated method stub
 		return null;
 	}

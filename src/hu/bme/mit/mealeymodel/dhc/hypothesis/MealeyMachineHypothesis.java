@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -19,9 +21,9 @@ import hu.bme.mit.mealeymodel.State;
 
 public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMachine, State, Transition>{
 	
-	Map<String, List<String>> accessSequences = new HashMap<>();
-	int nameNum = 0;
-	public MealeyMachineHypothesis(Alphabet inputAlphabet, Alphabet outputAlphabet) {
+	private int nameNum = 0;
+	
+	public MealeyMachineHypothesis(Alphabet inputAlphabet) {
 		this.automaton = MealeymodelFactory.eINSTANCE.createMealeyMachine();
 		
 		State initialState = MealeymodelFactory.eINSTANCE.createState();
@@ -29,11 +31,10 @@ public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMa
 		initialState.setName("state" + nameNum);
 		initialState2.setName("state" + nameNum++);
 		automaton.setInitialState(initialState);
-		automaton.getStates().add(initialState);
-		
-		this.accessSequences.put(initialState.getName(), new ArrayList<String>());
-		
+		automaton.getStates().add(initialState2);
+				
 		automaton.setInputAlphabet(inputAlphabet);
+		Alphabet outputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
 		automaton.setOutputAlphabet(outputAlphabet);
 	}
 
@@ -70,10 +71,11 @@ public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMa
 		return automaton.getTransitions();
 	}
 	
-	public void setTransitionOutput(State from, String outputSymbol) {
+	public void setTransitionOutput(State from, String inputSymbol, String outputSymbol) {
 		Transition t = MealeymodelFactory.eINSTANCE.createTransition();
 		t.setSourceState(from);
 		t.setOutput(outputSymbol);
+		t.setInput(inputSymbol);
 		automaton.getTransitions().add(t);
 	}
 	/**
@@ -171,7 +173,8 @@ public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMa
 	 * @return	A sibling state with identical output signature to the given state. If none found, then null.
 	 */
 	public State findStateWithSameSignature(State state) {
-		List<State> possibleSiblings = new ArrayList<>();
+		Set<State> possibleSiblings = new HashSet<>();
+		Set<State> possibleBackroutings = new HashSet<>(); //parents' parents - there may be a backrouting between the states parents and its parents' parents
 		List<Transition> outputTransitionsOfState = new ArrayList<>();
 		
 		//Find possible siblings and all transitions of the given state - both in one loop for optimization
@@ -179,9 +182,19 @@ public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMa
 			if(transition.getTargetState() != null 
 					&& transition.getTargetState().getName().equals(state.getName())) {	//Parents of state
 				State parent = transition.getSourceState();
-				//Find all successors of parent which aren't the given state
+				possibleSiblings.add(parent);	//state can be merged into one of its parents
+				//state can be merged into one of its parents' other states
 				possibleSiblings.addAll(automaton.getTransitions().stream().filter(t -> t.getSourceState().getName().equals(parent.getName())
-																							   && !t.getTargetState().getName().equals(state.getName())).map(t -> t.getTargetState()).collect(Collectors.toList()));
+																							   && t.getTargetState() != null 
+																							   && !t.getTargetState().getName().equals(state.getName()))
+																		   .map(t -> t.getTargetState())
+																		   .collect(Collectors.toSet()));
+				//state can be merged into one of its parents' parents
+				possibleBackroutings.addAll(automaton.getTransitions().stream().filter(t -> t.getTargetState() != null
+																						&& t.getTargetState().getName().equals(parent.getName())
+																						&& !possibleSiblings.contains(t.getSourceState()))
+																		   .map(t -> t.getSourceState()).collect(Collectors.toSet()));
+				possibleSiblings.addAll(possibleBackroutings);
 			}
 			if(transition.getSourceState().getName().equals(state.getName())) {
 				outputTransitionsOfState.add(transition);
@@ -189,23 +202,32 @@ public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMa
 		}
 		//Compare the output signatures of the possible siblings
 	    siblingLoop: for(State possibleSibling : possibleSiblings) {
+	    	int matchedNum = 0;	//if == transitionNum, sibling was found
 			for(Transition t : automaton.getTransitions()) {
 				if(t.getSourceState().getName().equals(possibleSibling.getName())) {	//If the transition starts from the sibling state
+					boolean match = false;
 					for(Transition outputTransition : outputTransitionsOfState) {
-						if(!outputTransition.getInput().equals(t.getInput())
-								|| !outputTransition.getOutput().equals(t.getOutput())) {
-							//If any output signature of the possible sibling is not equal to the states, it is not a sibling
-							continue siblingLoop;
+						if(outputTransition.getInput().equals(t.getInput())
+								&& outputTransition.getOutput().equals(t.getOutput())) {
+							match = true;
+							matchedNum++;
 						}
 					}
-					//If all the transitions of the outputTransition had the same signature, a sibling was found
-					return possibleSibling;
+					//If none of the output signatures were the same, they have a diverging transition, not siblings
+					if(!match) continue siblingLoop;
 				}
+			}
+			//if no diverging transitions were found (all the transitions matched exactly), possibleSibling is a sibling
+			if(matchedNum != 0 && matchedNum == outputTransitionsOfState.size()) {
+				if(possibleBackroutings.contains(possibleSibling)) {//if backrouting
+					isBackrouting = true;
+				}
+				return possibleSibling;
 			}
 		}
 		return null;
 	}
-	
+	private boolean isBackrouting = false;
 	public void rerouteAllTransitions(State from, State to) {
 		Iterator<Transition> i = automaton.getTransitions().iterator();
 		while(i.hasNext()) {
@@ -219,6 +241,11 @@ public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMa
 				t.setTargetState(to);
 			}
 		}
+		if(isBackrouting) {
+			isBackrouting = false;
+		}else {
+			automaton.getStates().remove(from);
+		}
 	}
 	
 	public List<State> createSuccessorsForEveryTransition(State from){
@@ -226,11 +253,16 @@ public class MealeyMachineHypothesis extends Hypothesis<String, String, MealeyMa
 		for(Transition t : automaton.getTransitions()){
 			if(t.getSourceState().getName().equals(from.getName())) {
 				State newState = MealeymodelFactory.eINSTANCE.createState();;
-				newState.setName("state" + nameNum);
+				newState.setName("state" + nameNum++);
 				t.setTargetState(newState);
+				this.automaton.getStates().add(newState);
 				newStates.add(newState);
 			}
 		}
 		return newStates;
+	}
+	
+	public MealeyMachine getAutomaton() {
+		return this.automaton;
 	}
 }

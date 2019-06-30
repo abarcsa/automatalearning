@@ -2,6 +2,9 @@ package hu.bme.mit.mealeymodel.dhc.algorithm;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 
 import hu.bme.mit.mealeymodel.Alphabet;
@@ -21,7 +24,27 @@ public class DirectHypothesisConstruction {
 	}
 	
 	public MealeyMachineHypothesis execute() {
+		boolean done = false;
+		MealeyMachineHypothesis hypothesis = null;
+		do {
+			hypothesis = createNewHypothesis();
+			done = true;
+			/*List<? extends String> counterExample = teacher.equivalenceQuery(hypothesis, hypothesis.getInputAlphabet());
+			if(counterExample == null || counterExample.size() == 0) {
+				done = true;
+			}else {
+				
+			}*/
+		}while(!done);
+		return hypothesis;
+	}
+	/**
+	 * Main algorithm
+	 * @return The constructed hypothesis
+	 */
+	private MealeyMachineHypothesis createNewHypothesis() {
 		ArrayDeque<State> statesToComplete = new ArrayDeque<State>();
+		Set<State> completedStates = new HashSet<>();
 		statesToComplete.add(hypothesis.getInitialState());
 		
 		while(!statesToComplete.isEmpty()) {
@@ -34,7 +57,9 @@ public class DirectHypothesisConstruction {
 				
 				String outputSymbol = teacher.membershipQuery(currSequenceWithSymbol);
 				
-				hypothesis.setTransitionOutput(currentState, outputSymbol);
+				if(outputSymbol != null) {
+					hypothesis.setTransitionOutput(currentState, symbol, outputSymbol);
+				}
 			}
 			
 			State sibling = hypothesis.findStateWithSameSignature(currentState);
@@ -42,6 +67,7 @@ public class DirectHypothesisConstruction {
 				hypothesis.rerouteAllTransitions(currentState, sibling);
 				hypothesis.getStates().remove(currentState);
 			}else {	//If there are no siblings, the targetState of all transitions going from currentState is set to a new state
+				completedStates.add(currentState); //This state is marked completed
 				List<State> newStates = hypothesis.createSuccessorsForEveryTransition(currentState);
 				for(State newState : newStates) {
 					statesToComplete.add(newState);

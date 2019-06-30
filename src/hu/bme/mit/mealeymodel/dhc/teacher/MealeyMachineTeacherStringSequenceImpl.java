@@ -1,6 +1,7 @@
 package hu.bme.mit.mealeymodel.dhc.teacher;
 
 import java.util.Collection;
+import java.util.List;
 
 import hu.bme.mit.mealeymodel.dhc.adapter.StringSequenceToMealeyAdapter;
 import hu.bme.mit.mealeymodel.dhc.hypothesis.MealeyMachineHypothesis;
@@ -19,7 +20,7 @@ public class MealeyMachineTeacherStringSequenceImpl extends MealeyMachineTeacher
 	}
 
 	@Override
-	public Collection<? extends String> equivalenceQuery(MealeyMachineHypothesis hypothesis, Collection<? extends String> alphabet) {
+	public List<? extends String> equivalenceQuery(MealeyMachineHypothesis hypothesis, Collection<? extends String> alphabet) {
 		return adapter.equivalenceQuery(hypothesis, alphabet);
 	}
 

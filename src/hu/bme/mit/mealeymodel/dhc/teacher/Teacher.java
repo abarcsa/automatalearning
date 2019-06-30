@@ -1,6 +1,7 @@
 package hu.bme.mit.mealeymodel.dhc.teacher;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 
@@ -15,6 +16,6 @@ public abstract class Teacher <HI, HO, H>{
 	
 	public abstract HO membershipQuery(Collection<? extends HI> sequence);
 
-	public abstract Collection<? extends HI> equivalenceQuery(H hypothesis, Collection<? extends HI> alphabet);
+	public abstract List<? extends String> equivalenceQuery(H hypothesis, Collection<? extends HI> alphabet);
 	
 }

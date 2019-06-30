@@ -28,8 +28,8 @@ public class MealeyModelReader {
 	public static void output(MealeyMachine m) {
 		try(PrintWriter writer = new PrintWriter("learnedmachine.mealey", "UTF-8");){
 			writer.println("MealeyMachine{");
-			writer.println("initialState");
-			writer.print("State " + m.getInitialState().getName());
+			writer.print("initialState ");
+			writer.println("State " + m.getInitialState().getName());
 			writer.print("states {");
 			for(State s : m.getStates()) {
 				writer.print("State " + s.getName() + ",");
