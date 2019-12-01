@@ -1,6 +1,6 @@
 package hu.bme.mit.mealeymodel.dhc.Learnable;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 
@@ -10,5 +10,5 @@ import java.util.Collection;
  * @param <O> O is the type used as output characters
  */
 public interface Learnable<I, O> {
-	O getOutput(Collection<? extends I> inputs);
+	O getOutput(List<? extends I> inputs);
 }

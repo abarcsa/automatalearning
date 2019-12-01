@@ -46,7 +46,7 @@ public class StringSequenceLearnable implements Learnable<String, String>{
 	}
 
 	@Override
-	public String getOutput(Collection<? extends String> inputs) {
+	public String getOutput(List<? extends String> inputs) {
 		String in = "";
 		for(String s : inputs) {
 			in += s;

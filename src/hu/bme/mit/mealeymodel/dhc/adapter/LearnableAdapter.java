@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import hu.bme.mit.mealeymodel.dhc.Learnable.Learnable;
+import hu.bme.mit.mealeymodel.dhc.hypothesis.Hypothesis;
 
 /**
  * 
@@ -17,7 +18,7 @@ import hu.bme.mit.mealeymodel.dhc.Learnable.Learnable;
  * @param <LO>	The output character type of the Learnable
  * @param <L>	The Learnable
  */
-public abstract class LearnableAdapter<HI, HO, H, LI, LO, L extends Learnable<LI, LO>> {
+public abstract class LearnableAdapter<HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LI, LO, L extends Learnable<LI, LO>> {
 
 	L learnable;
 	

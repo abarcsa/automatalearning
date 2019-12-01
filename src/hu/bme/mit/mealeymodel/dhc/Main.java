@@ -1,7 +1,7 @@
 package hu.bme.mit.mealeymodel.dhc;
 
 import hu.bme.mit.mealeymodel.*;
-import hu.bme.mit.mealeymodel.dhc.Learnable.MealeyLearnable;
+import hu.bme.mit.mealeymodel.dhc.Learnable.MealyLearnable;
 import hu.bme.mit.mealeymodel.dhc.Learnable.StringSequenceLearnable;
 import hu.bme.mit.mealeymodel.dhc.adapter.StringSequenceToMealeyAdapter;
 import hu.bme.mit.mealeymodel.dhc.algorithm.DirectHypothesisConstruction;
@@ -13,18 +13,18 @@ import hu.bme.mit.mealeymodel.dhc.teacher.Teacher;
 public class Main {
 
 	public static void main(String[] args) {
-		/*MealeyMachine m = MealeyModelReader.getMealeyModelFromXtext();
-		Teacher<String, String, MealeyMachineHypothesis> teacher = new MealeyMachineTeacherStringSequenceImpl(new StringSequenceToMealeyAdapter(new MealeyLearnable(m)));
+		MealeyMachine m = MealeyModelReader.getMealeyModelFromXtext();
+		Teacher<String, String, MealeyMachineHypothesis> teacher = new MealeyMachineTeacherStringSequenceImpl(new StringSequenceToMealeyAdapter(new MealyLearnable(m)));
 		
 		Alphabet inputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 		MealeyMachineHypothesis hypo = new MealeyMachineHypothesis(inputAlphabet);
-		DirectHypothesisConstruction dhc = new DirectHypothesisConstruction(teacher, hypo);
+		DirectHypothesisConstruction dhc = new DirectHypothesisConstruction(teacher, m.getInputAlphabet().getCharacters());
 		
 		MealeyMachineHypothesis h = dhc.execute();
 		
-		MealeyModelReader.output(h.getAutomaton());*/
-		alternatingbit();
+		MealeyModelReader.output(h.getAutomaton());
+		//alternatingbit();
 		
 	
 	}
@@ -50,7 +50,7 @@ public class Main {
 		inputAlphabet.getCharacters().add("ack1");
 		Teacher<String, String, MealeyMachineHypothesis> teacher = new MealeyMachineTeacherStringSequenceImpl(new StringSequenceToMealeyAdapter(new StringSequenceLearnable(sequence)));
 		MealeyMachineHypothesis hypo = new MealeyMachineHypothesis(inputAlphabet);
-		DirectHypothesisConstruction dhc = new DirectHypothesisConstruction(teacher, hypo);
+		DirectHypothesisConstruction dhc = new DirectHypothesisConstruction(teacher, inputAlphabet.getCharacters());
 		
 		MealeyMachineHypothesis h = dhc.execute();
 		

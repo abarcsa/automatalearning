@@ -1,6 +1,7 @@
 package hu.bme.mit.mealeymodel.dhc.hypothesis;
 
 import java.util.Collection;
+import java.util.List;
 
 
 
@@ -27,4 +28,10 @@ public abstract class Hypothesis<I, O, M, S, T> {
 	public abstract Collection<I> getInputAlphabet();
 	
 	public abstract Collection<O> getOutputAlphabet();
+	
+	public abstract O query(List<I> inputs);
+	
+	public M getHypothesis() {
+		return automaton;
+	}
 }

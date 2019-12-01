@@ -1,21 +1,21 @@
 package hu.bme.mit.mealeymodel.dhc.Learnable;
 
-import java.util.Collection;
+import java.util.List;
 
 import hu.bme.mit.mealeymodel.MealeyMachine;
 import hu.bme.mit.mealeymodel.State;
 import hu.bme.mit.mealeymodel.Transition;
 
-public class MealeyLearnable extends StringSequenceLearnable{
+public class MealyLearnable extends StringSequenceLearnable{
 	
 	MealeyMachine automaton;
 	
-	public MealeyLearnable(MealeyMachine automaton) {
+	public MealyLearnable(MealeyMachine automaton) {
 		this.automaton = automaton;
 	}
 	
 	@Override
-	public String getOutput(Collection<? extends String> inputs) {
+	public String getOutput(List<? extends String> inputs) {
 		State currState = automaton.getInitialState();
 		String output = null;
 		outer: for(String input : inputs) {
