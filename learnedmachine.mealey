@@ -1,29 +1,13 @@
 MealeyMachine{
-initialState State state0
-states {State state0,State state1,State state2,State state3,State state4,State state5,}
+initialState State s0
+states {State s0,State s1,State s2,State s3,}
 transitions {
-Transition { input water output done sourceState state0 targetState state1},
-Transition { input pod output done sourceState state0 targetState state2},
-Transition { input button output none sourceState state0 targetState state3},
-Transition { input clean output done sourceState state0 targetState state0},
-Transition { input water output done sourceState state1 targetState state1},
-Transition { input pod output done sourceState state1 targetState state4},
-Transition { input button output none sourceState state1 targetState state3},
-Transition { input clean output done sourceState state1 targetState state0},
-Transition { input water output done sourceState state2 targetState state4},
-Transition { input pod output done sourceState state2 targetState state2},
-Transition { input button output none sourceState state2 targetState state3},
-Transition { input clean output done sourceState state2 targetState state0},
-Transition { input water output none sourceState state3 targetState state3},
-Transition { input pod output none sourceState state3 targetState state3},
-Transition { input button output none sourceState state3 targetState state3},
-Transition { input clean output none sourceState state3 targetState state3},
-Transition { input water output done sourceState state4 targetState state4},
-Transition { input pod output done sourceState state4 targetState state4},
-Transition { input button output coffee sourceState state4 targetState state5},
-Transition { input clean output done sourceState state4 targetState state0},
-Transition { input water output none sourceState state5 targetState state3},
-Transition { input pod output none sourceState state5 targetState state3},
-Transition { input button output none sourceState state5 targetState state3},
-Transition { input clean output done sourceState state5 targetState state0},
+Transition { input a output top sourceState s0 targetState s1},
+Transition { input b output top sourceState s0 targetState s0},
+Transition { input a output top sourceState s1 targetState s2},
+Transition { input b output top sourceState s1 targetState s1},
+Transition { input a output bot sourceState s2 targetState s3},
+Transition { input b output top sourceState s2 targetState s2},
+Transition { input a output top sourceState s3 targetState s0},
+Transition { input b output bot sourceState s3 targetState s3},
 }

@@ -1,0 +1,6 @@
+MealeyMachine{
+	initialState 
+	State q0 states { State q0, State q1, State q2, State q3
+	}inputAlphabet Alphabet { characters { a , b } }
+	outputAlphabet Alphabet { characters { top , bot } }
+	transitions{ Transition { input a output top sourceState q0 targetState q1 } , Transition { input b output top sourceState q0 targetState q0 } , Transition { input a output top sourceState q1 targetState q2 } , Transition { input b output top sourceState q1 targetState q1 } , Transition { input a output bot sourceState q2 targetState q3 } , Transition { input b output top sourceState q2 targetState q2 } , Transition { input a output top sourceState q3 targetState q0 } , Transition { input b output bot sourceState q3 targetState q3 } } }
