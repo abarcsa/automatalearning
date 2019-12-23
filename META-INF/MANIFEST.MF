@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: hu.bme.mit.mealeymodel.dhc
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: com.google.inject,
- hu.bme.mit.mealeymodel.text,
+ hu.bme.mit.mealymodel.xtext,
  org.eclipse.xtext.resource
 Require-Bundle: org.eclipse.emf.mwe.utils,
  hu.bme.mit.mealymodel;bundle-version="0.1.0",
