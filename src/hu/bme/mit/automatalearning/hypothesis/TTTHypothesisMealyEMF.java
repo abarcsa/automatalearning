@@ -12,38 +12,37 @@ import de.learnlib.algorithms.ttt.base.TTTTransition;
 import de.learnlib.algorithms.ttt.mealy.TTTTransitionMealy;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.algorithm.TTT.TTTStateMealyEMF;
-import hu.bme.mit.automatalearning.algorithm.TTT.AbstractTTTTransition;
-import hu.bme.mit.mealeymodel.MealeyMachine;
-import hu.bme.mit.mealeymodel.MealeymodelFactory;
-import hu.bme.mit.mealeymodel.State;
-import hu.bme.mit.mealeymodel.Transition;
+import hu.bme.mit.automatalearning.algorithm.TTT.TTTTransitionMealyEMF;
+import hu.bme.mit.mealymodel.MealyMachine;
+import hu.bme.mit.mealymodel.MealymodelFactory;
+import hu.bme.mit.mealymodel.State;
+import hu.bme.mit.mealymodel.Transition;
 import net.automatalib.automata.UniversalDeterministicAutomaton;
-import net.automatalib.automata.transducers.MealyMachine;
 import net.automatalib.words.Alphabet;
 import net.automatalib.words.Word;
 
 
-public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealeyMachine, State, Transition>{
+public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealyMachine, State, Transition>{
 	
-	MealeyMachine hypo;
+	MealyMachine hypo;
 	
-	public TTTHypothesisMealyEMF(Alphabet<String> alphabet, MealeyMachine hypo) {
+	public TTTHypothesisMealyEMF(Alphabet<String> alphabet, MealyMachine hypo) {
 		super(alphabet);
 		this.hypo = hypo;
 	}
 
 	@Override
-    public TTTState<String, Word<String>> getSuccessor(AbstractTTTTransition<String, String> transition) {
+    public TTTState<String, Word<String>> getSuccessor(TTTTransitionMealyEMF<String, String> transition) {
         return transition.getTarget();
     }
 
     @Override
-    protected AbstractTTTTransition<String, String> mapTransition(TTTTransition<String, Word<String>> internalTransition) {
-        return (AbstractTTTTransition<String, String>) internalTransition;
+    protected TTTTransitionMealyEMF<String, String> mapTransition(TTTTransition<String, Word<String>> internalTransition) {
+        return (TTTTransitionMealyEMF<String, String>) internalTransition;
     }
 
     @Override
-    public UniversalDeterministicAutomaton.FullIntAbstraction<AbstractTTTTransition<String, String>, Void, String> fullIntAbstraction(
+    public UniversalDeterministicAutomaton.FullIntAbstraction<TTTTransitionMealyEMF<String, String>, Void, String> fullIntAbstraction(
             Alphabet<String> alphabet) {
         if (alphabet == this.alphabet) {
             return this;
@@ -52,18 +51,18 @@ public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealeyM
     }
 
     @Override
-    public String getTransitionOutput(AbstractTTTTransition<String, String> transition) {
+    public String getTransitionOutput(TTTTransitionMealyEMF<String, String> transition) {
         return transition.getOutput();
     }
 
 
     @Override
-    public String getTransitionProperty(AbstractTTTTransition<String, String> transition) {
+    public String getTransitionProperty(TTTTransitionMealyEMF<String, String> transition) {
         return transition.getOutput();
     }
 
 	@Override
-	public Collection<AbstractTTTTransition<String, String>> getTransitions(TTTState<String, Word<String>> arg0, String arg1) {
+	public Collection<TTTTransitionMealyEMF<String, String>> getTransitions(TTTState<String, Word<String>> arg0, String arg1) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -88,33 +87,44 @@ public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealeyM
 
 	@Override
 	public String query(List<String> inputs) {
-		return new MealyLearnable(convertHypo()).getOutput(inputs);
+		if(this.getInitialState() != null) {
+			Word<String> out = this.computeOutput(inputs);
+			return out.lastSymbol();
+			//return new MealyLearnable(convertHypo()).getOutput(inputs);
+		}else {
+			return new MealyLearnable(this.hypo).getOutput(inputs);
+		}
+		
 	}
 
 
 	@Override
-	public MealeyMachine convertHypo() {
-		State i = MealeymodelFactory.eINSTANCE.createState();
+	public MealyMachine convertHypo() {
+		hu.bme.mit.mealymodel.Alphabet a = MealymodelFactory.eINSTANCE.createAlphabet();
+		a.getCharacters().addAll(hypo.getInputAlphabet().getCharacters());
+		this.hypo = MealymodelFactory.eINSTANCE.createMealyMachine();
+		this.hypo.setInputAlphabet(a);
+		State i = MealymodelFactory.eINSTANCE.createState();
 		i.setName(this.getInitialState().toString());
 		hypo.setInitialState(i);
-		State i2 = MealeymodelFactory.eINSTANCE.createState();
+		State i2 = MealymodelFactory.eINSTANCE.createState();
 		i2.setName(this.getInitialState().toString());
 		hypo.getStates().add(i2);
 		for(TTTState<String, Word<String>> s : this.getStates()) {
 			if(s == null) continue;
 			if(!i.getName().equals(s.toString())) {
-				State ss = MealeymodelFactory.eINSTANCE.createState();
+				State ss = MealymodelFactory.eINSTANCE.createState();
 				ss.setName(s.toString());
 				hypo.getStates().add(ss);
 			}
 			for(TTTTransition<String, Word<String>> t : s.getTransitions()) {
 				if(t == null) continue;
-				Transition tt = MealeymodelFactory.eINSTANCE.createTransition();
+				Transition tt = MealymodelFactory.eINSTANCE.createTransition();
 				tt.setInput(t.getInput());
-				tt.setOutput(((AbstractTTTTransition<String, String>)t).getOutput());
-				State sss = MealeymodelFactory.eINSTANCE.createState();
+				tt.setOutput(((TTTTransitionMealyEMF<String, String>)t).getOutput());
+				State sss = MealymodelFactory.eINSTANCE.createState();
 				sss.setName(t.getSource().toString());
-				State sst = MealeymodelFactory.eINSTANCE.createState();
+				State sst = MealymodelFactory.eINSTANCE.createState();
 				sst.setName(t.getTarget().toString());
 				tt.setSourceState(sss);
 				tt.setTargetState(sst);
@@ -151,7 +161,7 @@ public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealeyM
 	}
 
 	@Override
-	public MealeyMachine getHypothesisAutomaton() {
+	public MealyMachine getHypothesisAutomaton() {
 		return convertHypo();
 	}
 	

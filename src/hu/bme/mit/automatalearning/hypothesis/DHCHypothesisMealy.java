@@ -13,14 +13,14 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-import hu.bme.mit.mealeymodel.Transition;
+import hu.bme.mit.mealymodel.Transition;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
-import hu.bme.mit.mealeymodel.Alphabet;
-import hu.bme.mit.mealeymodel.MealeyMachine;
-import hu.bme.mit.mealeymodel.MealeymodelFactory;
-import hu.bme.mit.mealeymodel.State;
+import hu.bme.mit.mealymodel.Alphabet;
+import hu.bme.mit.mealymodel.MealyMachine;
+import hu.bme.mit.mealymodel.MealymodelFactory;
+import hu.bme.mit.mealymodel.State;
 
-public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMachine, State, Transition>{
+public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachine, State, Transition>{
 	
 	private int nameNum = 0;
 	
@@ -29,22 +29,22 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 	}
 	
 	public DHCHypothesisMealy(Collection<? extends String> inputAlphabet) {
-		this.automaton = MealeymodelFactory.eINSTANCE.createMealeyMachine();
-		Alphabet a = MealeymodelFactory.eINSTANCE.createAlphabet();
+		this.automaton = MealymodelFactory.eINSTANCE.createMealyMachine();
+		Alphabet a = MealymodelFactory.eINSTANCE.createAlphabet();
 		a.getCharacters().addAll(inputAlphabet);
 		automaton.setInputAlphabet(a);
-		Alphabet outputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
+		Alphabet outputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		automaton.setOutputAlphabet(outputAlphabet);
 	}
 	
 
 	public DHCHypothesisMealy(Alphabet inputAlphabet, Alphabet outputAlphabet, State initialState, List<State> states, List<Transition> transitions) {
-		this.automaton = MealeymodelFactory.eINSTANCE.createMealeyMachine();
+		this.automaton = MealymodelFactory.eINSTANCE.createMealyMachine();
 		
 		automaton.setInputAlphabet(inputAlphabet);
 		automaton.setOutputAlphabet(outputAlphabet);
 		
-		State initialState2 = MealeymodelFactory.eINSTANCE.createState();
+		State initialState2 = MealymodelFactory.eINSTANCE.createState();
 		initialState2.setName(initialState.getName());
 		automaton.setInitialState(initialState2);
 		
@@ -58,9 +58,9 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 	
 	@Override
 	public State addInitialState() {
-		State initialState = MealeymodelFactory.eINSTANCE.createState();
+		State initialState = MealymodelFactory.eINSTANCE.createState();
 		//Needed because of the unique feature of EMF
-		State initialState2 = MealeymodelFactory.eINSTANCE.createState();
+		State initialState2 = MealymodelFactory.eINSTANCE.createState();
 		initialState.setName("state" + nameNum);
 		initialState2.setName("state" + nameNum++);
 		automaton.setInitialState(initialState);
@@ -70,7 +70,7 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 	
 	@Override
 	public State createNewState() {
-		State newState = MealeymodelFactory.eINSTANCE.createState();
+		State newState = MealymodelFactory.eINSTANCE.createState();
 		newState.setName("state" + nameNum++);
 		this.automaton.getStates().add(newState);
 		return newState;
@@ -92,7 +92,7 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 	}
 	
 	public void setTransitionOutput(State from, String inputSymbol, String outputSymbol) {
-		Transition t = MealeymodelFactory.eINSTANCE.createTransition();
+		Transition t = MealymodelFactory.eINSTANCE.createTransition();
 		t.setSourceState(from);
 		t.setOutput(outputSymbol);
 		t.setInput(inputSymbol);
@@ -100,7 +100,7 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 	}
 	
 	public void addTransition(State from, State to, String inputSymbol, String outputSymbol) {
-		Transition t = MealeymodelFactory.eINSTANCE.createTransition();
+		Transition t = MealymodelFactory.eINSTANCE.createTransition();
 		t.setSourceState(from);
 		t.setTargetState(to);
 		t.setOutput(outputSymbol);
@@ -281,7 +281,7 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 		List<State> newStates = new ArrayList<>();
 		for(Transition t : automaton.getTransitions()){
 			if(t.getSourceState().getName().equals(from.getName())) {
-				State newState = MealeymodelFactory.eINSTANCE.createState();;
+				State newState = MealymodelFactory.eINSTANCE.createState();;
 				newState.setName("state" + nameNum++);
 				t.setTargetState(newState);
 				this.automaton.getStates().add(newState);
@@ -291,7 +291,7 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 		return newStates;
 	}
 	
-	public MealeyMachine getAutomaton() {
+	public MealyMachine getAutomaton() {
 		return this.automaton;
 	}
 
@@ -310,15 +310,15 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealeyMach
 		
 	}
 	private void init(Alphabet a) {
-		this.automaton = MealeymodelFactory.eINSTANCE.createMealeyMachine();
+		this.automaton = MealymodelFactory.eINSTANCE.createMealyMachine();
 		automaton.setInputAlphabet(a);
-		Alphabet outputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
+		Alphabet outputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		automaton.setOutputAlphabet(outputAlphabet);
 	}
 
 
 	@Override
-	public MealeyMachine getHypothesisAutomaton() {
+	public MealyMachine getHypothesisAutomaton() {
 		return this.automaton;
 	}
 }

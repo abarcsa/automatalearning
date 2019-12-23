@@ -2,15 +2,15 @@ package hu.bme.mit.automatalearning.Learnable;
 
 import java.util.List;
 
-import hu.bme.mit.mealeymodel.MealeyMachine;
-import hu.bme.mit.mealeymodel.State;
-import hu.bme.mit.mealeymodel.Transition;
+import hu.bme.mit.mealymodel.MealyMachine;
+import hu.bme.mit.mealymodel.State;
+import hu.bme.mit.mealymodel.Transition;
 
 public class MealyLearnable extends StringSequenceLearnable{
 	
-	public MealeyMachine automaton;
+	public MealyMachine automaton;
 	
-	public MealyLearnable(MealeyMachine automaton) {
+	public MealyLearnable(MealyMachine automaton) {
 		this.automaton = automaton;
 	}
 	

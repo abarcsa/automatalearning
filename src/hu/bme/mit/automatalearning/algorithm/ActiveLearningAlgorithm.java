@@ -5,6 +5,5 @@ import hu.bme.mit.automatalearning.teacher.Teacher;
 
 public abstract class ActiveLearningAlgorithm <HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>> {
 	protected Teacher<HI, HO, H, ?> teacher;
-	
 	public abstract H execute();
 }

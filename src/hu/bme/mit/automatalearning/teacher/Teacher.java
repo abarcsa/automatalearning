@@ -14,12 +14,20 @@ import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
  * @param <HO>	The output type of the Hypothesis
  * @param <H>	The Hypothesis
  */
-public abstract class Teacher <HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LA extends LearnableAdapter<HI, HO, H, ?, ?, ?>>{
+public class Teacher <HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LA extends LearnableAdapter<HI, HO, H, ?, ?, ?>>{
 
 	public LearnableAdapter<HI, HO, H, ?, ?, ?> adapter;
 	
-	public abstract HO membershipQuery(List<? extends HI> sequence);
+	public Teacher(LA adapter) {
+		this.adapter = adapter;
+	}
+	
+	public HO membershipQuery(List<? extends HI> sequence) {
+		return adapter.membershipQuery(sequence);
+	}
 
-	public abstract List<? extends HI> equivalenceQuery(H hypothesis, Collection<? extends HI> alphabet);
+	public List<? extends HI> equivalenceQuery(H hypothesis, Collection<? extends HI> alphabet){
+		return adapter.equivalenceQuery(hypothesis, alphabet);
+	}
 	
 }

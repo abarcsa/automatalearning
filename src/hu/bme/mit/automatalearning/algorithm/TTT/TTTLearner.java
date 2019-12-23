@@ -23,7 +23,6 @@ import de.learnlib.oracle.equivalence.SimulatorEQOracle;
 import de.learnlib.util.mealy.MealyUtil;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
-import hu.bme.mit.mealeymodel.MealeyMachine;
 import net.automatalib.automata.transducers.MealyMachine;
 import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.util.automata.builders.AutomatonBuilders;
@@ -51,7 +50,7 @@ public class TTTLearner<I, O> extends AbstractTTTLearner<MealyMachine<?, I, ?, O
 
 	    @Override
 	    protected TTTTransition<I, Word<O>> createTransition(TTTState<I, Word<O>> state, I sym) {
-	        AbstractTTTTransition<I, O> trans = new AbstractTTTTransition<I, O>(state, sym);
+	        TTTTransitionMealyEMF<I, O> trans = new TTTTransitionMealyEMF<I, O>(state, sym);
 	        trans.output = query(state, Word.fromLetter(sym)).firstSymbol();
 	        return trans;
 	    }
@@ -111,7 +110,7 @@ public class TTTLearner<I, O> extends AbstractTTTLearner<MealyMachine<?, I, ?, O
 	    @Override
 	    protected Word<O> predictSuccOutcome(TTTTransition<I, Word<O>> trans,
 	                                         AbstractBaseDTNode<I, Word<O>> succSeparator) {
-	        AbstractTTTTransition<I, O> mtrans = (AbstractTTTTransition) trans;
+	        TTTTransitionMealyEMF<I, O> mtrans = (TTTTransitionMealyEMF) trans;
 	        if (succSeparator == null) {
 	            return Word.fromLetter(mtrans.output);
 	        }
@@ -125,7 +124,7 @@ public class TTTLearner<I, O> extends AbstractTTTLearner<MealyMachine<?, I, ?, O
 	        WordBuilder<O> wb = new WordBuilder<>(suffix.length());
 
 	        for (I sym : suffix) {
-	            AbstractTTTTransition<I, O> trans = (AbstractTTTTransition<I, O>) hypothesis.getInternalTransition(curr, sym);
+	            TTTTransitionMealyEMF<I, O> trans = (TTTTransitionMealyEMF<I, O>) hypothesis.getInternalTransition(curr, sym);
 	            wb.append(trans.output);
 	            curr = getAnyTarget(trans);
 	        }

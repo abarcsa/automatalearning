@@ -1,11 +1,11 @@
 package hu.bme.mit.automatalearning;
 
 import com.google.inject.Injector;
-import hu.bme.mit.mealeymodel.MealeyMachine;
-import hu.bme.mit.mealeymodel.MealeymodelPackage;
-import hu.bme.mit.mealeymodel.State;
-import hu.bme.mit.mealeymodel.Transition;
-import hu.bme.mit.mealeymodel.text.MealeymodelDslStandaloneSetup;
+import hu.bme.mit.mealymodel.xtext.MealymachineDslStandaloneSetup;
+import hu.bme.mit.mealymodel.MealyMachine;
+import hu.bme.mit.mealymodel.MealymodelPackage;
+import hu.bme.mit.mealymodel.State;
+import hu.bme.mit.mealymodel.Transition;
 
 import java.io.PrintWriter;
 
@@ -13,21 +13,19 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.resource.XtextResourceSet;
 
 public class MealyModelReader {
-	public static MealeyMachine getMealeyModelFromXtext() {
-		new MealeymodelDslStandaloneSetup().createInjectorAndDoEMFRegistration();
-		MealeymodelPackage.eINSTANCE.eClass();
+	public static MealyMachine getMealyModelFromXtext(String input) {
+		new MealymachineDslStandaloneSetup().createInjectorAndDoEMFRegistration();
+		MealymodelPackage.eINSTANCE.eClass();
 		ResourceSet rs = new ResourceSetImpl();
-		Resource resource = rs.getResource(URI.createURI("./src/4ia.mealey"), true);
-		MealeyMachine model = (MealeyMachine) resource.getContents().get(0);
+		Resource resource = rs.getResource(URI.createURI(input), true);
+		MealyMachine model = (MealyMachine) resource.getContents().get(0);
 		return model;
 	}
-	public static void output(MealeyMachine m) {
-		try(PrintWriter writer = new PrintWriter("learnedmachine.mealey", "UTF-8");){
-			writer.println("MealeyMachine{");
+	public static void output(MealyMachine m) {
+		try(PrintWriter writer = new PrintWriter("learnedmachine.mealy", "UTF-8");){
+			writer.println("MealyMachine{");
 			writer.print("initialState ");
 			writer.println("State " + m.getInitialState().getName());
 			writer.print("states {");

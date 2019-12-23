@@ -1,139 +1,65 @@
 package hu.bme.mit.automatalearning;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import de.learnlib.acex.analyzers.AcexAnalyzers;
-import de.learnlib.algorithms.ttt.mealy.TTTLearnerMealy;
-import de.learnlib.api.algorithm.LearningAlgorithm.MealyLearner;
-import de.learnlib.api.logging.LoggingPropertyOracle;
-import de.learnlib.api.oracle.LassoEmptinessOracle;
-import de.learnlib.api.oracle.PropertyOracle;
-import de.learnlib.api.oracle.EquivalenceOracle.MealyEquivalenceOracle;
-import de.learnlib.api.oracle.InclusionOracle.MealyInclusionOracle;
-import de.learnlib.api.oracle.MembershipOracle.MealyMembershipOracle;
-import de.learnlib.api.oracle.OmegaMembershipOracle.MealyOmegaMembershipOracle;
-import de.learnlib.oracle.emptiness.MealyLassoEmptinessOracleImpl;
-import de.learnlib.oracle.equivalence.SimulatorEQOracle;
-import de.learnlib.oracle.membership.SimulatorOmegaOracle.MealySimulatorOmegaOracle;
-import de.learnlib.oracle.property.MealyLassoPropertyOracle;
-import de.learnlib.util.Experiment;
+import com.google.common.base.Stopwatch;
+
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
 import hu.bme.mit.automatalearning.adapter.StringSequenceToMealyAdapter;
-import hu.bme.mit.automatalearning.adapter.StringSequenceToTTTMealyAdapter;
 import hu.bme.mit.automatalearning.algorithm.TTT.TTT;
 import hu.bme.mit.automatalearning.algorithm.dhc.DirectHypothesisConstructionMealy;
+import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
+import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
-import hu.bme.mit.automatalearning.teacher.MealeyMachineTeacherStringSequenceImpl;
-import hu.bme.mit.automatalearning.teacher.TTTMealeyMachineTeacherStringSequenceImpl;
 import hu.bme.mit.automatalearning.teacher.Teacher;
-import hu.bme.mit.mealeymodel.MealeyMachine;
-import hu.bme.mit.mealeymodel.MealeymodelFactory;
-import net.automatalib.automata.transducers.MealyMachine;
-import net.automatalib.automata.transducers.impl.compact.CompactMealy;
-import net.automatalib.modelcheckers.ltsmin.ltl.LTSminLTLIOBuilder;
-import net.automatalib.modelchecking.ModelCheckerLasso.MealyModelCheckerLasso;
-import net.automatalib.util.automata.builders.AutomatonBuilders;
-import net.automatalib.util.automata.equivalence.DeterministicEquivalenceTest;
-import net.automatalib.words.Alphabet;
-import net.automatalib.words.Word;
-import net.automatalib.words.impl.Alphabets;
+import hu.bme.mit.mealymodel.Alphabet;
+import hu.bme.mit.mealymodel.MealyMachine;
+import hu.bme.mit.mealymodel.MealymodelFactory;
+import hu.bme.mit.mealymodel.State;
+import hu.bme.mit.mealymodel.Transition;
 
 
 public class Main {
 
 	public static void main(String[] args) {
-		/*MealeyMachine m = MealyModelReader.getMealeyModelFromXtext();
-		Teacher<String, String, MealyMachineHypothesis> teacher = new MealeyMachineTeacherStringSequenceImpl(new StringSequenceToMealeyAdapter(new MealyLearnable(m)));
+		//EXAMPLES. AFTER EVERY DESCRIPTION THERE IS A METHOD TO UNCOMMENT TO RUN SAID EXAMPLE.
 		
-		Alphabet inputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
-		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
-		MealyMachineHypothesis hypo = new MealyMachineHypothesis(inputAlphabet);
-		DirectHypothesisConstructionMealy dhc = new DirectHypothesisConstructionMealy(teacher, m.getInputAlphabet().getCharacters());
-		
-		MealyMachineHypothesis h = dhc.execute();
-		
-		MealyModelReader.output(h.getAutomaton());*/
+			//Alternating bit protocol in the form of a String input formalism, learned by DHC, outputs to /learnedmachine.mealy
 		//alternatingbit();
 		
-		MealeyMachine m = MealyModelReader.getMealeyModelFromXtext();
-		Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToTTTMealyAdapter> teacher = new TTTMealeyMachineTeacherStringSequenceImpl(new StringSequenceToTTTMealyAdapter(new MealyLearnable(m)));
-		hu.bme.mit.mealeymodel.Alphabet inputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
-		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
-		TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
-		MealeyMachine ma = algo.execute();
-		MealyModelReader.output(ma);
+			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
+		//coffeeMealyDHC();
 		
-		/*CompactMealy<String, String> le = AutomatonBuilders.forMealy(new CompactMealy<String, String>(Alphabets.fromCollection(m.getInputAlphabet().getCharacters())))
-	            .withInitial("a")
-	            .from("a")
-	                .on("water").withOutput("done").to("c")
-	                .on("pod").withOutput("done").to("b")
-	                .on("button").withOutput("none").to("f")
-	                .on("clean").withOutput("done").loop()
-	            .from("b")
-	                .on("water").withOutput("done").to("d")
-	                .on("pod").withOutput("done").loop()
-	                .on("button").withOutput("none").to("f")
-	                .on("clean").withOutput("done").to("a")
-	            .from("c")
-	                .on("water").withOutput("done").loop()
-	                .on("pod").withOutput("done").to("d")
-	                .on("button").withOutput("none").to("f")
-	                .on("clean").withOutput("done").to("a")
-	            .from("d")
-	                .on("water", "pod").withOutput("done").loop()
-	                .on("button").withOutput("coffee").to("e")
-	                .on("clean").withOutput("done").to("a")
-	            .from("e")
-	                .on("water", "pod", "button").withOutput("none").to("f")
-	                .on("clean").withOutput("done").to("a")
-	            .from("f")
-	                .on("water", "pod", "button", "clean").withOutput("none").loop()
-	            .create();*/
+			//Coffee machine Mealy machine using Xtext input formalism, learned by TTT, outputs to /learnedmachine.mealy
+		//coffeeMealyTTT();
 		
-
-        /*// define the alphabet
-        Alphabet<String> sigma = le.getInputAlphabet();
-
-        // define the Mealy machine to be verified/learned
-        MealyMachine<?, String, ?, String> mealy = le;
-
-        // create an omega membership oracle
-        MealyOmegaMembershipOracle<?, String, String> omqOracle = new MealySimulatorOmegaOracle<>(mealy);
-
-        // create a regular membership oracle
-        MealyMembershipOracle<String, String> mqOracle = omqOracle.getMembershipOracle();
-
-        // create a learner
-        MealyLearner<String, String> learner = new TTTLearnerMealy<>(sigma, mqOracle, AcexAnalyzers.LINEAR_FWD);
-
-        
-
-      
-
-        // create an equivalence oracle, that first searches for a counter example using the ltl properties, and next
-        // with the W-method.
-        @SuppressWarnings("unchecked")
-        SimulatorEQOracle<String, Word<String>> eqOracle = new SimulatorEQOracle<>(mealy);
-
-        // create an experiment
-        Experiment.MealyExperiment<String, String> experiment = new Experiment.MealyExperiment<>(learner, eqOracle, sigma);
-
-        // run the experiment
-        experiment.run();
-
-        // get the final result
-        MealyMachine<?, String, ?, ?> result = experiment.getFinalHypothesis();
-        
-        Word<String> a = DeterministicEquivalenceTest.findSeparatingWord(mealy, result, sigma);*/
-        
+			//4i-3a accepting Mealy machine using Xtext, learned by DHC, otputs to /learnedmachine.mealy
+		//fouriaMealyDHC();
+		
+			//4i-3a accepting Mealy machine using Xtext, learned by TTT, otputs to /learnedmachine.mealy
+		//fouriaMealyTTT();
+		
+		
+		//EXPERIMENTAL EVALUATION METHODS USED IN THE THESIS. ALL OUTPUT TO /src/expeval_results.csv. SHOULD BE STOPPED MANUALLY WHEN A SATISFIABLE AMOUNT OF RESULTS ARE DONE.
+		
+		//experimentalEvaluationDHCState();
+		
+		//experimentalEvaluationTTTState();
+		
+		//experimentalEvaluationDHCAlphabet();
+		
+		//experimentalEvaluationTTTAlphabet();
 	}
-	public static final Function<String, Character> EDGE_PARSER = s -> s.charAt(0);
 	
 	public static void alternatingbit() {
-		/*String sequence = 
+		String sequence = 
 				"null|send0|ack1|send0|ack0|send1"
 				+ "|ack0null|send1|ack0ack0|send1|ack0ack1|send0"
 				+ "|ack1null|send0|ack1ack0|send1|ack1ack1|send0"
@@ -147,17 +73,317 @@ public class Main {
 				+ "|nullnullnull|send0|nullnullack0|send1|nullnullack1|send0"
 				+ "|nullack0null|send1|nullack0ack0|send1|nullack0ack1|send0"
 				+ "|nullack1null|send0|nullack1ack0|send1|nullack1ack1|send0";
-		Alphabet inputAlphabet = MealeymodelFactory.eINSTANCE.createAlphabet();
+		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().add("null");
 		inputAlphabet.getCharacters().add("ack0");
 		inputAlphabet.getCharacters().add("ack1");
-		Teacher<String, String, MealyMachineHypothesis> teacher = new MealeyMachineTeacherStringSequenceImpl(new StringSequenceToMealyAdapter(new StringSequenceLearnable(sequence)));
-		MealyMachineHypothesis hypo = new MealyMachineHypothesis(inputAlphabet);
-		DirectHypothesisConstructionMealy dhc = new DirectHypothesisConstructionMealy(teacher, inputAlphabet.getCharacters());
+		DHCHypothesis<String, String, MealyMachine, State, Transition> hypo = new DHCHypothesisMealy(inputAlphabet);
+		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = new Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, StringSequenceToMealyAdapter<DHCHypothesis<String, String, MealyMachine, State, Transition>>>(new StringSequenceToMealyAdapter(new StringSequenceLearnable(sequence)));
+		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new DirectHypothesisConstructionMealy<>(teacher, inputAlphabet.getCharacters(), hypo);
 		
-		MealyMachineHypothesis h = dhc.execute();
+		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
-		MealyModelReader.output(h.getAutomaton());*/
+		MealyModelReader.output(h.getHypothesis());
+	}
+	
+	public static void coffeeMealyDHC() {
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/coffeemachine.mealy");
+		
+		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		
+		DHCHypothesis<String, String, MealyMachine, State, Transition> hypo = new DHCHypothesisMealy(inputAlphabet);
+		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = new Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, StringSequenceToMealyAdapter<DHCHypothesis<String, String, MealyMachine, State, Transition>>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition>(teacher, m.getInputAlphabet().getCharacters(), hypo);
+		
+		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
+		
+		MealyModelReader.output(h.getHypothesis());
+	}
+	
+	public static void coffeeMealyTTT() {
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/coffeemachine.mealy");
+		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+
+		Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+		TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+		
+		TTTHypothesis<String, String, MealyMachine, State, Transition> h = algo.execute();
+		
+		MealyModelReader.output(h.getHypothesis());
+	}
+	
+	public static void fouriaMealyDHC() {
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		
+		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		
+		DHCHypothesis<String, String, MealyMachine, State, Transition> hypo = new DHCHypothesisMealy(inputAlphabet);
+		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = new Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, StringSequenceToMealyAdapter<DHCHypothesis<String, String, MealyMachine, State, Transition>>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition>(teacher, m.getInputAlphabet().getCharacters(), hypo);
+		
+		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
+		
+		MealyModelReader.output(h.getHypothesis());
+	}
+	
+	public static void fouriaMealyTTT() {
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+
+		Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+		TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+		
+		TTTHypothesis<String, String, MealyMachine, State, Transition> h = algo.execute();
+		
+		MealyModelReader.output(h.getHypothesis());
+	}
+	
+	public static void experimentalEvaluationDHCState() {
+		//Read 4ia example
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		String currAccepting = "q3";
+		
+		
+			for(int i = 0; i < 10000; i++) {
+					Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+					inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+					DHCHypothesis<String, String, MealyMachine, State, Transition> hypo = new DHCHypothesisMealy(inputAlphabet);
+					Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = new Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, StringSequenceToMealyAdapter<DHCHypothesis<String, String, MealyMachine, State, Transition>>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+					DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition>(teacher, m.getInputAlphabet().getCharacters(), hypo);
+					if(i%50 == 0) {
+						Stopwatch sW = Stopwatch.createStarted();
+						DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
+						sW.stop();
+						try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./src/expeval_results.csv"), true))){
+						bW.write("" + h.getHypothesis().getStates().size() + ";" + sW.elapsed(TimeUnit.MILLISECONDS));
+						bW.newLine();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					m = incrementEvaluation(m, currAccepting, i);
+					//currAccepting = String.valueOf(((char)'c'+i));
+					currAccepting = "q" + (4+i); 
+				
+			}
+	}
+	
+	public static void experimentalEvaluationDHCAlphabet() {
+		//Read 4ia example
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		String currAccepting = "q3";
+		
+		
+			for(int i = 0; i < 10000; i++) {
+					Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+					inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+					DHCHypothesis<String, String, MealyMachine, State, Transition> hypo = new DHCHypothesisMealy(inputAlphabet);
+					Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = new Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, StringSequenceToMealyAdapter<DHCHypothesis<String, String, MealyMachine, State, Transition>>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+					DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition>(teacher, m.getInputAlphabet().getCharacters(), hypo);
+					if(i%50 == 0) {
+						Stopwatch sW = Stopwatch.createStarted();
+						DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
+						sW.stop();
+						try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./src/expeval_results.csv"), true))){
+						bW.write("" + h.getHypothesis().getInputAlphabet().getCharacters().size() + ";" + sW.elapsed(TimeUnit.MILLISECONDS));
+						bW.newLine();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					m = incrementEvaluationAlphabet(m, currAccepting, i);
+					//currAccepting = String.valueOf(((char)'c'+i));
+					currAccepting = "q" + (4+i); 
+				
+			}
+	}
+	
+	public static void experimentalEvaluationTTTState() {
+		//Read 4ia example
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		String currAccepting = "q3";
+		
+		
+			for(int i = 0; i < 100000; i++) {
+				
+				Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+				Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+				inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+				TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+				if(i%250 == 0) {
+					Stopwatch sW = Stopwatch.createStarted();
+					TTTHypothesis<String, String, MealyMachine, State, Transition> mH = algo.execute();
+					sW.stop();
+					try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./src/expeval_results.csv"), true))){
+					bW.write("" + mH.getHypothesis().getStates().size() + ";" + sW.elapsed(TimeUnit.MILLISECONDS));
+					bW.newLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				m = incrementEvaluation(m, currAccepting, i);
+				currAccepting = "q" + (4+i);
+				
+			}
+
+	}
+	
+	public static void experimentalEvaluationTTTAlphabet() {
+		//Read 4ia example
+		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		String currAccepting = "q3";
+		
+		
+			for(int i = 0; i < 100000; i++) {
+				
+				Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
+				Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+				inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+				TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+				if(i%250 == 0) {
+					Stopwatch sW = Stopwatch.createStarted();
+					TTTHypothesis<String, String, MealyMachine, State, Transition> mH = algo.execute();
+					sW.stop();
+					try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./src/expeval_results.csv"), true))){
+					bW.write("" + mH.getHypothesis().getInputAlphabet().getCharacters().size()  + ";" + sW.elapsed(TimeUnit.MILLISECONDS));
+					bW.newLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				m = incrementEvaluationAlphabet(m, currAccepting, i);
+				currAccepting = "q" + (4+i);
+				
+			}
+
+	}
+	
+	public static MealyMachine incrementEvaluation(MealyMachine m, String currAccepting, int counter) {
+		MealyMachine ret = MealymodelFactory.eINSTANCE.createMealyMachine();
+		Alphabet in = MealymodelFactory.eINSTANCE.createAlphabet();
+		in.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		ret.setInputAlphabet(in);
+		
+		State init = MealymodelFactory.eINSTANCE.createState();
+		init.setName(m.getInitialState().getName());
+		ret.setInitialState(init);
+		
+		for(State s : m.getStates()) {
+			State newS = MealymodelFactory.eINSTANCE.createState();
+			newS.setName(s.getName());
+			ret.getStates().add(newS);
+		}
+		State newAccepting = MealymodelFactory.eINSTANCE.createState();
+		newAccepting.setName("q" + (4+counter));
+		ret.getStates().add(newAccepting);
+		
+		for(Transition t : m.getTransitions()) {
+			if(t.getTargetState().getName().equals(currAccepting) && t.getOutput().equals("bot")) {
+				Transition newT = MealymodelFactory.eINSTANCE.createTransition();
+				State newS = MealymodelFactory.eINSTANCE.createState();
+				newS.setName(t.getSourceState().getName());				
+				State newS2 = MealymodelFactory.eINSTANCE.createState();
+				newS2.setName(t.getTargetState().getName());
+				newT.setSourceState(newS);
+				newT.setTargetState(newS2);
+				newT.setInput(t.getInput());
+				newT.setOutput("top");
+				ret.getTransitions().add(newT);
+			}else if(t.getSourceState().getName().equals(currAccepting) && t.getTargetState().getName().equals("q0")){
+				
+			}else {
+				Transition newT = MealymodelFactory.eINSTANCE.createTransition();
+				State newS = MealymodelFactory.eINSTANCE.createState();
+				newS.setName(t.getSourceState().getName());				
+				State newS2 = MealymodelFactory.eINSTANCE.createState();
+				newS2.setName(t.getTargetState().getName());
+				newT.setSourceState(newS);
+				newT.setTargetState(newS2);
+				newT.setInput(t.getInput());
+				newT.setOutput(t.getOutput());
+				ret.getTransitions().add(newT);
+			}
+		}
+		Transition newT = MealymodelFactory.eINSTANCE.createTransition();
+		State newS = MealymodelFactory.eINSTANCE.createState();
+		newS.setName(currAccepting);				
+		State newS2 = MealymodelFactory.eINSTANCE.createState();
+		newS2.setName("q" + (4+counter));
+		newT.setSourceState(newS);
+		newT.setTargetState(newS2);
+		newT.setInput("a");
+		newT.setOutput("bot");
+		ret.getTransitions().add(newT);
+		
+		Transition newT2 = MealymodelFactory.eINSTANCE.createTransition();
+		State newS3 = MealymodelFactory.eINSTANCE.createState();
+		newS3.setName("q" + (4+counter));				
+		State newS4 = MealymodelFactory.eINSTANCE.createState();
+		newS4.setName("q" + (4+counter));
+		newT2.setSourceState(newS3);
+		newT2.setTargetState(newS4);
+		newT2.setInput("b");
+		newT2.setOutput("bot");
+		ret.getTransitions().add(newT2);
+		
+		Transition newT3 = MealymodelFactory.eINSTANCE.createTransition();
+		State newS5 = MealymodelFactory.eINSTANCE.createState();
+		newS5.setName("q" + (4+counter));				
+		State newS6 = MealymodelFactory.eINSTANCE.createState();
+		newS6.setName("q0");
+		newT3.setSourceState(newS5);
+		newT3.setTargetState(newS6);
+		newT3.setInput("a");
+		newT3.setOutput("top");
+		ret.getTransitions().add(newT3);
+		
+		return ret;
+	}
+	
+	public static MealyMachine incrementEvaluationAlphabet(MealyMachine m, String currAccepting, int counter) {
+		MealyMachine ret = MealymodelFactory.eINSTANCE.createMealyMachine();
+		Alphabet in = MealymodelFactory.eINSTANCE.createAlphabet();
+		in.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		in.getCharacters().add(String.valueOf(((char)('c'+counter))));
+		ret.setInputAlphabet(in);
+		
+		State init = MealymodelFactory.eINSTANCE.createState();
+		init.setName(m.getInitialState().getName());
+		ret.setInitialState(init);
+		for(State s : m.getStates()) {
+			State newS = MealymodelFactory.eINSTANCE.createState();
+			newS.setName(s.getName());
+			ret.getStates().add(newS);
+			Transition newT3 = MealymodelFactory.eINSTANCE.createTransition();
+			State newS5 = MealymodelFactory.eINSTANCE.createState();
+			newS5.setName(s.getName());				
+			State newS6 = MealymodelFactory.eINSTANCE.createState();
+			newS6.setName(s.getName());
+			newT3.setSourceState(newS5);
+			newT3.setTargetState(newS6);
+			newT3.setInput(String.valueOf(((char)('c'+counter))));
+			newT3.setOutput("top");
+			ret.getTransitions().add(newT3);
+		}
+		for(Transition t : m.getTransitions()) {
+			Transition newT = MealymodelFactory.eINSTANCE.createTransition();
+			State newS = MealymodelFactory.eINSTANCE.createState();
+			newS.setName(t.getSourceState().getName());				
+			State newS2 = MealymodelFactory.eINSTANCE.createState();
+			newS2.setName(t.getTargetState().getName());
+			newT.setSourceState(newS);
+			newT.setTargetState(newS2);
+			newT.setInput(t.getInput());
+			newT.setOutput(t.getOutput());
+			ret.getTransitions().add(newT);
+		}
+		return ret;
 	}
 	
 }

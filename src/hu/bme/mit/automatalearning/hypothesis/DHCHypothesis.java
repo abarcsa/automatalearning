@@ -3,8 +3,6 @@ package hu.bme.mit.automatalearning.hypothesis;
 import java.util.Collection;
 import java.util.List;
 
-import hu.bme.mit.mealeymodel.State;
-
 public abstract class DHCHypothesis<I, O, M, S, T> implements Hypothesis<I, O, M, S, T>{
 	
 	M automaton;

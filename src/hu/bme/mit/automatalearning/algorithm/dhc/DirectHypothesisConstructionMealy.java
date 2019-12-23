@@ -23,11 +23,6 @@ import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.teacher.Teacher;
-import hu.bme.mit.mealeymodel.Alphabet;
-import hu.bme.mit.mealeymodel.MealeymodelFactory;
-import hu.bme.mit.mealeymodel.State;
-import hu.bme.mit.mealeymodel.Transition;
-
 public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLearningAlgorithm<I, O, DHCHypothesis<I, O, M, S, T>>{
 	Collection<? extends I> alphabet;
 	HashSet<List<? extends I>> splitters;
@@ -40,7 +35,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 		this.hypothesis = hypothesis;
 	}
 	
-	public DHCHypothesis execute() {
+	public DHCHypothesis<I, O, M, S, T> execute() {
 		List<? extends I> counterExample = null;
 		DHCHypothesis<I, O, M, S, T> h = null;
 		do {
@@ -138,16 +133,17 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
         return word;
 	}
 	public void refineHypothesis(List<? extends I> counterExample) {
-		for(Set<? extends I> suffixes : Sets.powerSet(new LinkedHashSet<I>(counterExample))) {
-			if(suffixes.size() != 0 && suffixes.size() != 1 && !splitters.stream().anyMatch(l -> l.equals(suffixes))) {
-				this.splitters.add(new ArrayList<>(suffixes));
+		for(int i = 0; i < counterExample.size(); i++) {
+			List<? extends I> currSuffix = counterExample.subList(0+i, counterExample.size());
+			if(currSuffix.size() != 0 && currSuffix.size() != 1 && !splitters.stream().anyMatch(l -> l.equals(currSuffix))) {
+				this.splitters.add(new ArrayList<>(currSuffix));
 			}
 		}
 		
 	}
 
 	
-	public static void test() {
+	/*public static void test() {
 		Alphabet in = MealeymodelFactory.eINSTANCE.createAlphabet();
 		in.getCharacters().add("I1");
 		in.getCharacters().add("I2");
@@ -203,7 +199,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 		DHCHypothesisMealy hy = new DHCHypothesisMealy(in, out, s1, s, trans);
 		hy.rerouteAllTransitions(s5, s3);
 		System.out.println();
-	}
+	}*/
 	
 	//Great idea of Queue handling from the LearnLib framework
 	 static final class QueueElement<I, O, S> implements Serializable {
