@@ -17,9 +17,10 @@ Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Trans
      new Teacher<>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
      
 //Construct a learning algorithm using the teacher, the input alphabet provided, and a new, empty hypothesis
-DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new     DirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));
+DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
+     new DirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));
 
-//Run the learning
+//Execute the learning
 DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 
 //Write output through Xtext and EMF
