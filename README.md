@@ -30,4 +30,4 @@ MealyModelReader.output(h.getHypothesis());
 
 For more examples, please see [Main.java](src/hu/bme/mit/automatalearning/Main.java).
 
-After cloning the repository, the hu.bme.mit.mealymodel and the hu.bme.mit.mealymodel.xtext repos should already have generated code ready to go, no setup is needed. The automatalearning project does have external JAR dependencies setup, the path of which has to be set locally. E.g. in eclipse: properties -> Java Build Path -> for both guava and learnlib, click "Edit" and select the path in the cloned repository.
+After cloning the repository, a maven update for both hu.bme.mit.mealymodel and hu.bme.mit.automatalearning should be sufficient.
