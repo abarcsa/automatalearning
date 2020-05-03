@@ -3,11 +3,12 @@
  */
 package hu.bme.mit.mealymodel.xtext;
 
+import org.eclipse.emf.mwe2.language.Mwe2StandaloneSetupGenerated;
 
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
  */
-public class MealymachineDslStandaloneSetup extends MealymachineDslStandaloneSetupGenerated {
+public class MealymachineDslStandaloneSetup extends Mwe2StandaloneSetupGenerated {
 
 	public static void doSetup() {
 		new MealymachineDslStandaloneSetup().createInjectorAndDoEMFRegistration();

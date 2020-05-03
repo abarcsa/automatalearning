@@ -3,9 +3,10 @@
  */
 package hu.bme.mit.mealymodel.xtext;
 
+import org.eclipse.emf.mwe2.language.AbstractMwe2RuntimeModule;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
-public class MealymachineDslRuntimeModule extends AbstractMealymachineDslRuntimeModule {
+public class MealymachineDslRuntimeModule extends AbstractMwe2RuntimeModule {
 }

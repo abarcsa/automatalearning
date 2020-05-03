@@ -8,7 +8,6 @@ import hu.bme.mit.mealymodel.Alphabet;
 import hu.bme.mit.mealymodel.MealyMachine;
 import hu.bme.mit.mealymodel.State;
 import hu.bme.mit.mealymodel.Transition;
-import hu.bme.mit.mealymodel.xtext.services.MealymachineDslGrammarAccess;
 import java.util.Arrays;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -21,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.Extension;
 public class MealymachineDslFormatter extends AbstractFormatter2 {
   @Inject
   @Extension
-  private MealymachineDslGrammarAccess _mealymachineDslGrammarAccess;
+  private /* MealymachineDslGrammarAccess */Object _mealymachineDslGrammarAccess;
   
   protected void _format(final MealyMachine mealeyMachine, @Extension final IFormattableDocument document) {
     document.<State>format(mealeyMachine.getInitialState());
