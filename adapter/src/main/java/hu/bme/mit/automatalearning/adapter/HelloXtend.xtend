@@ -6,9 +6,9 @@ class HelloXtend {
 		
 	def static void main(String[] args) {
 		println("Interfaces: ")
-		println(hu.bme.mit.automatalearning.Main.alternatingbit().getInterfaces);
+		println(hu.bme.mit.automatalearning.Main.alternatingbitDHC().getInterfaces);
 		println("Gamma Statechart: ")
-		println(hu.bme.mit.automatalearning.Main.alternatingbit().getStatechart);
+		println(hu.bme.mit.automatalearning.Main.alternatingbitDHC().getStatechart);
 	}
 		
 }
