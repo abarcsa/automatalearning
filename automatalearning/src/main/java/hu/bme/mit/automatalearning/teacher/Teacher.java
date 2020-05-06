@@ -3,7 +3,7 @@ package hu.bme.mit.automatalearning.teacher;
 import java.util.Collection;
 import java.util.List;
 
-import hu.bme.mit.automatalearning.adapter.input.LearnableAdapter;
+import hu.bme.mit.automatalearning.adapter.LearnableAdapter;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 
 /**

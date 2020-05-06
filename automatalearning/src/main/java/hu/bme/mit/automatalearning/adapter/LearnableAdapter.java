@@ -1,4 +1,4 @@
-package hu.bme.mit.automatalearning.adapter.input;
+package hu.bme.mit.automatalearning.adapter;
 
 import java.util.ArrayList;
 import java.util.Collection;

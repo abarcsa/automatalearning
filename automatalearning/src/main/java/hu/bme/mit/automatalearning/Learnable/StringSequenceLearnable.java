@@ -47,9 +47,15 @@ public class StringSequenceLearnable implements Learnable<String, String>{
 
 	@Override
 	public String getOutput(List<? extends String> inputs) {
+		if(inputs.isEmpty()) throw new IllegalArgumentException("No input provided!");
 		String in = "";
+		String lastOut = "";
 		for(String s : inputs) {
 			in += s;
+			if(inputOutputPairs.get(in) == null) {
+				return lastOut; //if queried sequence is longer than what is stored
+			}
+			lastOut = inputOutputPairs.get(in);
 		}
 		return inputOutputPairs.get(in);
 	}

@@ -11,7 +11,7 @@ import com.google.common.base.Stopwatch;
 
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
-import hu.bme.mit.automatalearning.adapter.input.StringSequenceToMealyAdapter;
+import hu.bme.mit.automatalearning.adapter.StringSequenceToMealyAdapter;
 import hu.bme.mit.automatalearning.algorithm.TTT.TTT;
 import hu.bme.mit.automatalearning.algorithm.dhc.DirectHypothesisConstructionMealy;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
@@ -32,7 +32,10 @@ public class Main {
 		//EXAMPLES. AFTER EVERY DESCRIPTION THERE IS A METHOD TO UNCOMMENT TO RUN SAID EXAMPLE.
 		
 			//Alternating bit protocol in the form of a String input formalism, learned by DHC, outputs to /learnedmachine.mealy
-		alternatingbit();
+		//alternatingbitDHC();
+		
+			//Alternating bit protocol in the form of a String input formalism, learned by TTT, outputs to /learnedmachine.mealy
+		alternatingbitTTT();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
 		//coffeeMealyDHC();
@@ -58,7 +61,7 @@ public class Main {
 		//experimentalEvaluationTTTAlphabet();
 	}
 	
-	public static MealyMachine alternatingbit() {
+	public static MealyMachine alternatingbitDHC() {
 		String sequence = 
 				"null|send0|ack1|send0|ack0|send1"
 				+ "|ack0null|send1|ack0ack0|send1|ack0ack1|send0"
@@ -84,7 +87,36 @@ public class Main {
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
 		MealyModelReader.output(h.getHypothesis());
+		return h.getHypothesis();
+	}
+	
+	public static MealyMachine alternatingbitTTT() {
+		String sequence = 
+				"null|send0|ack1|send0|ack0|send1"
+				+ "|ack0null|send1|ack0ack0|send1|ack0ack1|send0"
+				+ "|ack1null|send0|ack1ack0|send1|ack1ack1|send0"
+				+ "|nullnull|send0|nullack0|send1|nullack1|send0"
+				+ "|ack0nullnull|send1|ack0nullack0|send1|ack0nullack1|send0"
+				+ "|ack0ack0null|send1|ack0ack0ack0|send1|ack0ack0ack1|send0"
+				+ "|ack0ack1null|send0|ack0ack1ack0|send1|ack0ack1ack1|send0"
+				+ "|ack1nullnull|send0|ack1nullack0|send1|ack1nullack1|send0"
+				+ "|ack1ack0null|send1|ack1ack0ack0|send1|ack1ack0ack1|send0"
+				+ "|ack1ack1null|send0|ack1ack1ack0|send1|ack1ack1ack1|send0"
+				+ "|nullnullnull|send0|nullnullack0|send1|nullnullack1|send0"
+				+ "|nullack0null|send1|nullack0ack0|send1|nullack0ack1|send0"
+				+ "|nullack1null|send0|nullack1ack0|send1|nullack1ack1|send0";
+		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().add("null");
+		inputAlphabet.getCharacters().add("ack0");
+		inputAlphabet.getCharacters().add("ack1");
+		Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(new StringSequenceLearnable(sequence)));
+		TTT<String, String, MealyMachine, State, Transition> ttt = 
+				new TTT<>(teacher, inputAlphabet.getCharacters(), new TTTHypothesisMealyEMF(inputAlphabet.getCharacters()));
 		
+		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
+		
+		MealyModelReader.output(h.getHypothesis());
 		return h.getHypothesis();
 	}
 	
@@ -94,8 +126,11 @@ public class Main {
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 		
-		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = new Teacher<>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
-		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new DirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));
+		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(new MealyLearnable(m)));
+		
+		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
+				new DirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
@@ -107,8 +142,11 @@ public class Main {
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 
-		Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
-		TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+		Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(new MealyLearnable(m)));
+		
+		TTT<String, String, MealyMachine, State, Transition> algo = 
+				new TTT<>(teacher, inputAlphabet.getCharacters(), new TTTHypothesisMealyEMF(inputAlphabet.getCharacters()));
 		
 		TTTHypothesis<String, String, MealyMachine, State, Transition> h = algo.execute();
 		
@@ -122,8 +160,11 @@ public class Main {
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> hypo = new DHCHypothesisMealy(inputAlphabet);
-		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = new Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, StringSequenceToMealyAdapter<DHCHypothesis<String, String, MealyMachine, State, Transition>>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
-		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = new DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition>(teacher, m.getInputAlphabet().getCharacters(), hypo);
+		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(new MealyLearnable(m)));
+		
+		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc =
+				new DirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), hypo);
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
@@ -135,8 +176,11 @@ public class Main {
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 
-		Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
-		TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+		Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(new MealyLearnable(m)));
+		
+		TTT<String, String, MealyMachine, State, Transition> algo = 
+				new TTT<>(teacher, inputAlphabet.getCharacters(), new TTTHypothesisMealyEMF(inputAlphabet.getCharacters()));
 		
 		TTTHypothesis<String, String, MealyMachine, State, Transition> h = algo.execute();
 		
@@ -212,11 +256,15 @@ public class Main {
 		
 		
 			for(int i = 0; i < 100000; i++) {
+				Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+						new Teacher<>(new StringSequenceToMealyAdapter<>(new MealyLearnable(m)));
 				
-				Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
 				Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 				inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
-				TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+				
+				TTT<String, String, MealyMachine, State, Transition> algo = 
+						new TTT<>(teacher, inputAlphabet.getCharacters(), new TTTHypothesisMealyEMF(inputAlphabet.getCharacters()));
+				
 				if(i%250 == 0) {
 					Stopwatch sW = Stopwatch.createStarted();
 					TTTHypothesis<String, String, MealyMachine, State, Transition> mH = algo.execute();
@@ -242,11 +290,15 @@ public class Main {
 		
 		
 			for(int i = 0; i < 100000; i++) {
+				Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+						new Teacher<>(new StringSequenceToMealyAdapter<>(new MealyLearnable(m)));
 				
-				Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>> teacher = new Teacher<String, String, TTTHypothesisMealyEMF, StringSequenceToMealyAdapter<TTTHypothesisMealyEMF>>(new StringSequenceToMealyAdapter(new MealyLearnable(m)));
 				Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 				inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
-				TTT algo = new TTT(teacher, inputAlphabet.getCharacters());
+				
+				TTT<String, String, MealyMachine, State, Transition> algo = 
+						new TTT<>(teacher, inputAlphabet.getCharacters(), new TTTHypothesisMealyEMF(inputAlphabet.getCharacters()));
+				
 				if(i%250 == 0) {
 					Stopwatch sW = Stopwatch.createStarted();
 					TTTHypothesis<String, String, MealyMachine, State, Transition> mH = algo.execute();

@@ -50,7 +50,7 @@ public class TTTLearner<I, O> extends AbstractTTTLearner<MealyMachine<?, I, ?, O
 
 	    @Override
 	    protected TTTTransition<I, Word<O>> createTransition(TTTState<I, Word<O>> state, I sym) {
-	        TTTTransitionMealyEMF<I, O> trans = new TTTTransitionMealyEMF<I, O>(state, sym);
+	        TTTTransitionImpl<I, O> trans = new TTTTransitionImpl<I, O>(state, sym);
 	        trans.output = query(state, Word.fromLetter(sym)).firstSymbol();
 	        return trans;
 	    }
@@ -110,7 +110,7 @@ public class TTTLearner<I, O> extends AbstractTTTLearner<MealyMachine<?, I, ?, O
 	    @Override
 	    protected Word<O> predictSuccOutcome(TTTTransition<I, Word<O>> trans,
 	                                         AbstractBaseDTNode<I, Word<O>> succSeparator) {
-	        TTTTransitionMealyEMF<I, O> mtrans = (TTTTransitionMealyEMF) trans;
+	        TTTTransitionImpl<I, O> mtrans = (TTTTransitionImpl) trans;
 	        if (succSeparator == null) {
 	            return Word.fromLetter(mtrans.output);
 	        }
@@ -124,7 +124,7 @@ public class TTTLearner<I, O> extends AbstractTTTLearner<MealyMachine<?, I, ?, O
 	        WordBuilder<O> wb = new WordBuilder<>(suffix.length());
 
 	        for (I sym : suffix) {
-	            TTTTransitionMealyEMF<I, O> trans = (TTTTransitionMealyEMF<I, O>) hypothesis.getInternalTransition(curr, sym);
+	            TTTTransitionImpl<I, O> trans = (TTTTransitionImpl<I, O>) hypothesis.getInternalTransition(curr, sym);
 	            wb.append(trans.output);
 	            curr = getAnyTarget(trans);
 	        }
