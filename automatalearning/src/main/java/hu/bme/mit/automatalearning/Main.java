@@ -58,7 +58,7 @@ public class Main {
 		//experimentalEvaluationTTTAlphabet();
 	}
 	
-	public static void alternatingbit() {
+	public static MealyMachine alternatingbit() {
 		String sequence = 
 				"null|send0|ack1|send0|ack0|send1"
 				+ "|ack0null|send1|ack0ack0|send1|ack0ack1|send0"
@@ -84,6 +84,8 @@ public class Main {
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
 		MealyModelReader.output(h.getHypothesis());
+		
+		return h.getHypothesis();
 	}
 	
 	public static void coffeeMealyDHC() {
