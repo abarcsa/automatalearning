@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="lpt" nsURI="http://www.github.com/aronbsz/automatalearning"
+    nsPrefix="lpt">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="Model representing a Loopable Prefix Tree (LPT). &#xD;&#xA;&#xD;&#xA;Root nodes only store their children.&#xD;&#xA;&#xD;&#xA;UnloopedNodes store their children and the specified input/output pairs.&#xD;&#xA;&#xD;&#xA;LoopedNodes store their specified input/output pairs, plus the loop through which traversal should return to a previous node."/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="LPTRootNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" ordered="false"
+        upperBound="-1" eType="#//EStringToLPTRootNodeMap" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LPTUnloopedNode" eSuperTypes="#//LPTRootNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="output" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LPTLoopedNode" eSuperTypes="#//LPTUnloopedNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="loop" unique="false" lowerBound="1"
+        eType="#//LPTRootNode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EStringToLPTRootNodeMap" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" unique="false" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//LPTRootNode"/>
+  </eClassifiers>
+</ecore:EPackage>

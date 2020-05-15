@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/lpt/src-gen" creationIcons="false" editDirectory="/lpt.edit/src-gen"
+    editorDirectory="/lpt.editor/src-gen" modelPluginID="lpt" modelName="Lpt" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>lpt.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="Lpt" basePackage="hu.bme.mit" disposableProviderFactory="true"
+      ecorePackage="lpt.ecore#/">
+    <genClasses ecoreClass="lpt.ecore#//LPTRootNode">
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference lpt.ecore#//LPTRootNode/children"/>
+    </genClasses>
+    <genClasses ecoreClass="lpt.ecore#//LPTUnloopedNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute lpt.ecore#//LPTUnloopedNode/output"/>
+    </genClasses>
+    <genClasses ecoreClass="lpt.ecore#//LPTLoopedNode">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference lpt.ecore#//LPTLoopedNode/loop"/>
+    </genClasses>
+    <genClasses ecoreClass="lpt.ecore#//EStringToLPTRootNodeMap">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute lpt.ecore#//EStringToLPTRootNodeMap/key"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference lpt.ecore#//EStringToLPTRootNodeMap/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

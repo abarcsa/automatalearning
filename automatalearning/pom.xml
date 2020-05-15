@@ -27,10 +27,27 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+     <!-- Input models -->
     <dependency>
     	<groupId>hu.bme.mit</groupId>
     	<version>0.0.1-SNAPSHOT</version>
     	<artifactId>mealymodel</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>hu.bme.mit</groupId>
+    	<version>0.0.1-SNAPSHOT</version>
+    	<artifactId>lpt</artifactId>
+    </dependency>
+   	<dependency>
+    	<groupId>hu.bme.mit</groupId>
+    	<version>0.0.1-SNAPSHOT</version>
+    	<artifactId>lpt-xtend</artifactId>
+    </dependency>
+    <!-- EMF -->
+    <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <version>LATEST</version>
+        <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <!-- LearnLib core dependencies -->
     <dependency>
