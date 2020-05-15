@@ -48,7 +48,6 @@ class MealyMachineToGSCAdapter {
 			
 			region mainRegion {
 				initial _initialState
-				state «mealyMachine.initialState.name»
 				«FOR state : mealyMachine.states»
 				state «state.name»
 				«ENDFOR»
