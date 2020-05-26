@@ -1,0 +1,11 @@
+MealyMachine{
+initialState State s0
+states {State s0,State s1,}
+transitions {
+Transition { input in1.ack0 output out1.send1 sourceState s0 targetState s1},
+Transition { input in1.ack1 output out1.send0 sourceState s0 targetState s0},
+Transition { input in1.null output out1.send0 sourceState s0 targetState s0},
+Transition { input in1.ack0 output out1.send1 sourceState s1 targetState s1},
+Transition { input in1.ack1 output out1.send0 sourceState s1 targetState s0},
+Transition { input in1.null output out1.send1 sourceState s1 targetState s1},
+}

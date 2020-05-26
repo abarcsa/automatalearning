@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import com.google.common.base.Stopwatch;
 
+import hu.bme.mit.automatalearning.Learnable.LPTLearnable;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
 import hu.bme.mit.automatalearning.adapter.StringSequenceToMealyAdapter;
@@ -19,6 +20,7 @@ import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
 import hu.bme.mit.automatalearning.teacher.Teacher;
+import hu.bme.mit.lpt_xtend.LPT;
 import hu.bme.mit.mealymodel.Alphabet;
 import hu.bme.mit.mealymodel.MealyMachine;
 import hu.bme.mit.mealymodel.MealymodelFactory;
@@ -49,6 +51,7 @@ public class Main {
 			//4i-3a accepting Mealy machine using Xtext, learned by TTT, otputs to /learnedmachine.mealy
 		//fouriaMealyTTT();
 		
+		alternatingBitLPTTT();
 		
 		//EXPERIMENTAL EVALUATION METHODS USED IN THE THESIS. ALL OUTPUT TO /src/expeval_results.csv. SHOULD BE STOPPED MANUALLY WHEN A SATISFIABLE AMOUNT OF RESULTS ARE DONE.
 		
@@ -59,6 +62,26 @@ public class Main {
 		//experimentalEvaluationDHCAlphabet();
 		
 		//experimentalEvaluationTTTAlphabet();
+		
+	}
+	
+	public static MealyMachine alternatingBitLPTTT() {
+		LPTLearnable learnable = null;
+		try {
+			 learnable = new LPTLearnable(
+					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/gen-alternatingbit.lpt")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(learnable));
+		TTT<String, String, MealyMachine, State, Transition> ttt = 
+				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
+		
+		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
+		MealyModelReader.output(h.getHypothesis());
+		return h.getHypothesis();
 	}
 	
 	public static MealyMachine alternatingbitDHC() {

@@ -1,6 +1,7 @@
 package hu.bme.mit.automatalearning.Learnable;
 
 import java.util.List;
+import java.util.Set;
 
 import hu.bme.mit.lpt_xtend.LPT;
 
@@ -21,6 +22,9 @@ public class LPTLearnable extends StringSequenceLearnable{
 		return lpt.getOutput(inputs);
 	}
 	
+	public Set<String> getInputAlphabet(){
+		return lpt.getInputAlphabet();
+	}
 	
 	
 }

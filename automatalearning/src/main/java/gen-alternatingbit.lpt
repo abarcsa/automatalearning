@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:lpt="http://www.github.com/aronbsz/automatalearning">
+  <lpt:LPTRootNode>
+    <children key="in1.ack0" value="/2"/>
+    <children key="in1.null" value="/8"/>
+    <children key="in1.ack1" value="/9"/>
+  </lpt:LPTRootNode>
+  <lpt:LPTUnloopedNode output="out1.send0"/>
+  <lpt:LPTUnloopedNode output="out1.send1">
+    <children key="in1.ack1" value="/7"/>
+    <children key="in1.ack0" value="/10"/>
+    <children key="in1.null" value="/11"/>
+  </lpt:LPTUnloopedNode>
+  <lpt:LPTUnloopedNode output="out1.send1"/>
+  <lpt:LPTUnloopedNode output="out1.send0"/>
+  <lpt:LPTUnloopedNode output="out1.send0"/>
+  <lpt:LPTUnloopedNode output="out1.send1"/>
+  <lpt:LPTLoopedNode output="out1.send0" loop="/0"/>
+  <lpt:LPTLoopedNode output="out1.send0" loop="/0"/>
+  <lpt:LPTLoopedNode output="out1.send0" loop="/0"/>
+  <lpt:LPTLoopedNode output="out1.send1" loop="/2"/>
+  <lpt:LPTLoopedNode output="out1.send1" loop="/2"/>
+</xmi:XMI>

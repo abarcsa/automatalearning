@@ -49,6 +49,11 @@
         <version>LATEST</version>
         <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
+    <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <version>LATEST</version>
+        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+    </dependency>
     <!-- LearnLib core dependencies -->
     <dependency>
         <groupId>de.learnlib</groupId>
