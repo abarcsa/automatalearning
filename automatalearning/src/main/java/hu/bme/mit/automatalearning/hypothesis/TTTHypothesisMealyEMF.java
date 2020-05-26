@@ -101,6 +101,7 @@ public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealyMa
 
 	@Override
 	public MealyMachine convertHypo() {
+		Set<String> outputAlphabetElements = new HashSet<>();
 		hu.bme.mit.mealymodel.Alphabet a = MealymodelFactory.eINSTANCE.createAlphabet();
 		a.getCharacters().addAll(hypo.getInputAlphabet().getCharacters());
 		this.hypo = MealymodelFactory.eINSTANCE.createMealyMachine();
@@ -130,6 +131,7 @@ public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealyMa
 				tt.setSourceState(sss);
 				tt.setTargetState(sst);
 				hypo.getTransitions().add(tt);
+				outputAlphabetElements.add(tt.getOutput());
 			}
 		}
 		return hypo;
