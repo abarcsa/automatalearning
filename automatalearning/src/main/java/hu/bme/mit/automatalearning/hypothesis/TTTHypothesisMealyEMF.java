@@ -134,6 +134,9 @@ public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealyMa
 				outputAlphabetElements.add(tt.getOutput());
 			}
 		}
+		hu.bme.mit.mealymodel.Alphabet output = MealymodelFactory.eINSTANCE.createAlphabet();
+		output.getCharacters().addAll(outputAlphabetElements);
+		hypo.setOutputAlphabet(output);
 		return hypo;
 	}
 
