@@ -40,7 +40,20 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		}
 	}
 	
+	def String getSystemName(){
+		return systemName
+	}
+	
 	def String getCompositeSystem() {
+		// Filter system ports for easier handling
+		var Collection<PortBinding> systemPorts = new ArrayList<PortBinding>
+		for(pb : portBindings) {
+			if(pb.providingComponent === null || pb.requiringComponent === null) {
+				systemPorts.add(pb)
+			}
+		}
+		
+		// Return the composite system model
 		return '''
 		package «systemName»Package
 		
@@ -49,13 +62,13 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		import "«componentNames.get(comp)».gcd"
 		«ENDFOR»
 		
-		sync «systemName» [ «««FIXME ','s
-			«FOR binding : portBindings SEPARATOR ','»
+		sync «systemName» [
+			«FOR binding : systemPorts SEPARATOR ','»
 			«IF binding.providingComponent === null»
 			port «binding.requiredPort» : requires «binding.requiredPort»
 			«ENDIF» 
 			«IF binding.requiringComponent === null»
-				port «binding.providedPort» : provides «binding.providedPort»
+			port «binding.providedPort» : provides «binding.providedPort»
 			«ENDIF» 
 			«ENDFOR»
 		] {
@@ -136,10 +149,10 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		return "_" + componentNames.get(mm).toLowerCase
 	}
 	
-	def Collection<String> getComponents() {
-		var transformedComponents = new ArrayList<String>
+	def Map<String, String> getComponents() {
+		var transformedComponents = new HashMap<String, String>
 		for(mm : systemComponents) {
-			transformedComponents.add(getComponent(mm))
+			transformedComponents.put(componentNames.get(mm), getComponent(mm))
 		}
 		return transformedComponents
 	}
