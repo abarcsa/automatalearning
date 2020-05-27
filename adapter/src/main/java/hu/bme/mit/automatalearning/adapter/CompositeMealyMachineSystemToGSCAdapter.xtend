@@ -45,6 +45,15 @@ class CompositeMealyMachineSystemToGSCAdapter {
 	}
 	
 	def String getCompositeSystem() {
+		// Filter system ports for easier handling
+		var Collection<PortBinding> systemPorts = new ArrayList<PortBinding>
+		for(pb : portBindings) {
+			if(pb.providingComponent === null || pb.requiringComponent === null) {
+				systemPorts.add(pb)
+			}
+		}
+		
+		// Return the composite system model
 		return '''
 		package «systemName»Package
 		
@@ -53,13 +62,13 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		import "«componentNames.get(comp)».gcd"
 		«ENDFOR»
 		
-		sync «systemName» 
-			«FOR binding : portBindings SEPARATOR ','»
+		sync «systemName» [
+			«FOR binding : systemPorts SEPARATOR ','»
 			«IF binding.providingComponent === null»
 			port «binding.requiredPort» : requires «binding.requiredPort»
 			«ENDIF» 
 			«IF binding.requiringComponent === null»
-				port «binding.providedPort» : provides «binding.providedPort»
+			port «binding.providedPort» : provides «binding.providedPort»
 			«ENDIF» 
 			«ENDFOR»
 		] {
