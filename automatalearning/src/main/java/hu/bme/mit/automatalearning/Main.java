@@ -37,7 +37,7 @@ public class Main {
 		//alternatingbitDHC();
 		
 			//Alternating bit protocol in the form of a String input formalism, learned by TTT, outputs to /learnedmachine.mealy
-		alternatingbitTTT();
+		//alternatingbitTTT();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
 		//coffeeMealyDHC();
@@ -51,7 +51,11 @@ public class Main {
 			//4i-3a accepting Mealy machine using Xtext, learned by TTT, otputs to /learnedmachine.mealy
 		//fouriaMealyTTT();
 		
-		alternatingBitLPTTT();
+			/* Uses LPT to model the alternating bit protocol */
+		//alternatingBitLPTTT();
+		
+			/* USES LPT to model different components of parity bit error detection */
+		paritybitLPTTTT();
 		
 		//EXPERIMENTAL EVALUATION METHODS USED IN THE THESIS. ALL OUTPUT TO /src/expeval_results.csv. SHOULD BE STOPPED MANUALLY WHEN A SATISFIABLE AMOUNT OF RESULTS ARE DONE.
 		
@@ -63,6 +67,71 @@ public class Main {
 		
 		//experimentalEvaluationTTTAlphabet();
 		
+	}
+	
+	public static void paritybitLPTTTT() {
+		paritybitInputLPTTTT();
+		
+		paritybitCreateErrLPTTTT();
+		
+		paritybitDetectorLPTTTT();
+	}
+	
+	public static MealyMachine paritybitInputLPTTTT() {
+		LPTLearnable learnable = null;
+		try {
+			 learnable = new LPTLearnable(
+					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit.lpt")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(learnable));
+		TTT<String, String, MealyMachine, State, Transition> ttt = 
+				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
+		
+		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
+		MealyModelReader.output(h.getHypothesis(), "paritybit-input.mealy");
+		return h.getHypothesis();
+	}
+	
+	public static MealyMachine paritybitCreateErrLPTTTT() {
+		LPTLearnable learnable = null;
+		try {
+			 learnable = new LPTLearnable(
+					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit-createerr.lpt")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(learnable));
+		TTT<String, String, MealyMachine, State, Transition> ttt = 
+				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
+		
+		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
+		MealyModelReader.output(h.getHypothesis(), "paritybit-createerr.mealy");
+		return h.getHypothesis();
+	}
+	
+	public static MealyMachine paritybitDetectorLPTTTT() {
+		LPTLearnable learnable = null;
+		try {
+			 learnable = new LPTLearnable(
+					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit-detector.lpt")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Teacher<String, String, TTTHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
+				new Teacher<>(new StringSequenceToMealyAdapter<>(learnable));
+		TTT<String, String, MealyMachine, State, Transition> ttt = 
+				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
+		
+		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
+		MealyModelReader.output(h.getHypothesis(), "paritybit-detector.mealy");
+		return h.getHypothesis();
 	}
 	
 	public static MealyMachine alternatingBitLPTTT() {

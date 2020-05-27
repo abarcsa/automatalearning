@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:lpt="http://www.github.com/aronbsz/automatalearning">
+  <lpt:LPTRootNode>
+    <children key="move.move" value="/1"/>
+  </lpt:LPTRootNode>
+  <lpt:LPTUnloopedNode output="input.1">
+    <children key="move.move" value="/2"/>
+  </lpt:LPTUnloopedNode>
+  <lpt:LPTUnloopedNode output="input.0">
+    <children key="move.move" value="/3"/>
+  </lpt:LPTUnloopedNode>
+  <lpt:LPTUnloopedNode output="input.0">
+    <children key="move.move" value="/4"/>
+  </lpt:LPTUnloopedNode>
+  <lpt:LPTUnloopedNode output="input.1">
+    <children key="move.move" value="/5"/>
+  </lpt:LPTUnloopedNode>
+  <lpt:LPTUnloopedNode output="input.0">
+    <children key="move.move" value="/7"/>
+  </lpt:LPTUnloopedNode>
+  <lpt:LPTUnloopedNode output="input.end"/>
+  <lpt:LPTLoopedNode output="input.end" loop="/0"/>
+</xmi:XMI>

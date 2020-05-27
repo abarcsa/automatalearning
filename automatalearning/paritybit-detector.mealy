@@ -1,0 +1,11 @@
+MealyMachine{
+initialState State s0
+states {State s0,State s1,}
+transitions {
+Transition { input errinput.1 output detectout.epsilon sourceState s0 targetState s1},
+Transition { input errinput.0 output detectout.epsilon sourceState s0 targetState s0},
+Transition { input errinput.pCheck output detectout.ok sourceState s0 targetState s0},
+Transition { input errinput.1 output detectout.epsilon sourceState s1 targetState s0},
+Transition { input errinput.0 output detectout.epsilon sourceState s1 targetState s1},
+Transition { input errinput.pCheck output detectout.err sourceState s1 targetState s1},
+}

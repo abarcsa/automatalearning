@@ -44,4 +44,24 @@ public class MealyModelReader {
 		}
 	}
 	
+	public static void output(MealyMachine m, String fileName) {
+		try(PrintWriter writer = new PrintWriter(fileName, "UTF-8");){
+			writer.println("MealyMachine{");
+			writer.print("initialState ");
+			writer.println("State " + m.getInitialState().getName());
+			writer.print("states {");
+			for(State s : m.getStates()) {
+				writer.print("State " + s.getName() + ",");
+			}
+			writer.println("}");
+			writer.println("transitions {");
+			for(Transition t : m.getTransitions()) {
+				writer.println("Transition { input " + t.getInput() + " output " + t.getOutput() + " sourceState " + t.getSourceState().getName() + " targetState " + t.getTargetState().getName() + "},");
+			}
+			writer.print("}");
+		}catch(Exception e) {
+			
+		}
+	}
+	
 }
