@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:lpt="http://www.github.com/aronbsz/automatalearning">
   <lpt:LPTRootNode>
-    <children key="input.0" value="/1"/>
-    <children key="input.1" value="/3"/>
+    <children key="input.bit0" value="/1"/>
+    <children key="input.bit1" value="/3"/>
     <children key="input.end" value="/10"/>
   </lpt:LPTRootNode>
-  <lpt:LPTUnloopedNode output="errinput.1">
-    <children key="input.0" value="/11"/>
-    <children key="input.end" value="/13"/>
-    <children key="input.1" value="/15"/>
-  </lpt:LPTUnloopedNode>
-  <lpt:LPTUnloopedNode output="errinput.pCheck"/>
-  <lpt:LPTUnloopedNode output="errinput.0">
+  <lpt:LPTUnloopedNode output="errinput.bit1">
     <children key="input.end" value="/12"/>
-    <children key="input.0" value="/14"/>
-    <children key="input.1" value="/16"/>
+    <children key="input.bit1" value="/13"/>
+    <children key="input.bit0" value="/16"/>
   </lpt:LPTUnloopedNode>
   <lpt:LPTUnloopedNode output="errinput.pCheck"/>
-  <lpt:LPTUnloopedNode output="errinput.1"/>
-  <lpt:LPTUnloopedNode output="errinput.0"/>
+  <lpt:LPTUnloopedNode output="errinput.bit0">
+    <children key="input.end" value="/11"/>
+    <children key="input.bit0" value="/14"/>
+    <children key="input.bit1" value="/15"/>
+  </lpt:LPTUnloopedNode>
   <lpt:LPTUnloopedNode output="errinput.pCheck"/>
-  <lpt:LPTUnloopedNode output="errinput.0"/>
-  <lpt:LPTUnloopedNode output="errinput.1"/>
+  <lpt:LPTUnloopedNode output="errinput.bit1"/>
+  <lpt:LPTUnloopedNode output="errinput.pCheck"/>
+  <lpt:LPTUnloopedNode output="errinput.bit0"/>
+  <lpt:LPTUnloopedNode output="errinput.bit0"/>
+  <lpt:LPTUnloopedNode output="errinput.bit1"/>
   <lpt:LPTLoopedNode output="errinput.pCheck" loop="/0"/>
-  <lpt:LPTLoopedNode output="errinput.0" loop="/1"/>
   <lpt:LPTLoopedNode output="errinput.pCheck" loop="/3"/>
   <lpt:LPTLoopedNode output="errinput.pCheck" loop="/1"/>
-  <lpt:LPTLoopedNode output="errinput.0" loop="/3"/>
-  <lpt:LPTLoopedNode output="errinput.1" loop="/1"/>
-  <lpt:LPTLoopedNode output="errinput.1" loop="/3"/>
+  <lpt:LPTLoopedNode output="errinput.bit1" loop="/1"/>
+  <lpt:LPTLoopedNode output="errinput.bit0" loop="/3"/>
+  <lpt:LPTLoopedNode output="errinput.bit1" loop="/3"/>
+  <lpt:LPTLoopedNode output="errinput.bit0" loop="/1"/>
 </xmi:XMI>

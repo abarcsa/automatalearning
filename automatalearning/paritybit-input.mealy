@@ -2,10 +2,10 @@ MealyMachine{
 initialState State s0
 states {State s0,State s1,State s2,State s3,State s4,State s5,}
 transitions {
-Transition { input move.move output input.1 sourceState s0 targetState s1},
-Transition { input move.move output input.0 sourceState s1 targetState s2},
-Transition { input move.move output input.0 sourceState s2 targetState s3},
-Transition { input move.move output input.1 sourceState s3 targetState s4},
-Transition { input move.move output input.0 sourceState s4 targetState s5},
-Transition { input move.move output input.end sourceState s5 targetState s0},
+Transition { input move.next output input.bit1 sourceState s0 targetState s1},
+Transition { input move.next output input.bit0 sourceState s1 targetState s2},
+Transition { input move.next output input.bit0 sourceState s2 targetState s3},
+Transition { input move.next output input.bit1 sourceState s3 targetState s4},
+Transition { input move.next output input.bit0 sourceState s4 targetState s5},
+Transition { input move.next output input.end sourceState s5 targetState s0},
 }

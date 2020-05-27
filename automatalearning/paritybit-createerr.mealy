@@ -2,10 +2,10 @@ MealyMachine{
 initialState State s0
 states {State s0,State s1,}
 transitions {
-Transition { input input.0 output errinput.1 sourceState s0 targetState s1},
-Transition { input input.1 output errinput.0 sourceState s0 targetState s1},
+Transition { input input.bit1 output errinput.bit0 sourceState s0 targetState s1},
+Transition { input input.bit0 output errinput.bit1 sourceState s0 targetState s1},
 Transition { input input.end output errinput.pCheck sourceState s0 targetState s0},
-Transition { input input.0 output errinput.0 sourceState s1 targetState s1},
-Transition { input input.1 output errinput.1 sourceState s1 targetState s1},
+Transition { input input.bit1 output errinput.bit1 sourceState s1 targetState s1},
+Transition { input input.bit0 output errinput.bit0 sourceState s1 targetState s1},
 Transition { input input.end output errinput.pCheck sourceState s1 targetState s1},
 }
