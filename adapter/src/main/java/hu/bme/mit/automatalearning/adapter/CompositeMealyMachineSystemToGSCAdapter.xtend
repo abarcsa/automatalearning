@@ -40,6 +40,10 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		}
 	}
 	
+	def String getSystemName(){
+		return systemName
+	}
+	
 	def String getCompositeSystem() {
 		return '''
 		package «systemName»Package
@@ -49,7 +53,7 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		import "«componentNames.get(comp)».gcd"
 		«ENDFOR»
 		
-		sync «systemName» [ «««FIXME ','s
+		sync «systemName» 
 			«FOR binding : portBindings SEPARATOR ','»
 			«IF binding.providingComponent === null»
 			port «binding.requiredPort» : requires «binding.requiredPort»
@@ -136,10 +140,10 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		return "_" + componentNames.get(mm).toLowerCase
 	}
 	
-	def Collection<String> getComponents() {
-		var transformedComponents = new ArrayList<String>
+	def Map<String, String> getComponents() {
+		var transformedComponents = new HashMap<String, String>
 		for(mm : systemComponents) {
-			transformedComponents.add(getComponent(mm))
+			transformedComponents.put(componentNames.get(mm), getComponent(mm))
 		}
 		return transformedComponents
 	}
