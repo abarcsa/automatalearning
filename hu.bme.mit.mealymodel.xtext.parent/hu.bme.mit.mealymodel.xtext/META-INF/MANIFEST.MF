@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: hu.bme.mit.mealymodel.xtext
+Bundle-ManifestVersion: 2
+Bundle-Name: hu.bme.mit.mealymodel.xtext
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: hu.bme.mit.mealymodel.xtext; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: hu.bme.mit.mealymodel,
+ org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.eclipse.xtext.util,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: hu.bme.mit.mealymodel.parser.antlr,
+ hu.bme.mit.mealymodel.validation,
+ hu.bme.mit.mealymodel.scoping,
+ hu.bme.mit.mealymodel.services,
+ hu.bme.mit.mealymodel,
+ hu.bme.mit.mealymodel.generator,
+ hu.bme.mit.mealymodel.serializer,
+ hu.bme.mit.mealymodel.parser.antlr.internal
+Import-Package: org.apache.log4j

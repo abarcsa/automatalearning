@@ -43,6 +43,17 @@
     	<version>0.0.1-SNAPSHOT</version>
     	<artifactId>lpt-xtend</artifactId>
     </dependency>
+    <dependency>
+    	<groupId>hu.bme.mit.mealymodel.xtext</groupId>
+    	<version>1.0.0-SNAPSHOT</version>
+    	<artifactId>hu.bme.mit.mealymodel.xtext</artifactId>
+    </dependency>
+    <dependency>
+    <!-- To parse Xtext -->
+    <groupId>com.google.inject</groupId>
+	    <artifactId>guice</artifactId>
+	    <version>4.0</version>
+	</dependency>
     <!-- EMF -->
     <dependency>
         <groupId>org.eclipse.emf</groupId>
@@ -100,6 +111,26 @@
         <version>LATEST</version>
         <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
+    <dependency>
+       <groupId>org.slf4j</groupId>
+       <artifactId>slf4j-api</artifactId>
+       <version>LATEST</version>
+   </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-simple</artifactId>
+    	<version>LATEST</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.xtext</groupId>
+	    <artifactId>org.eclipse.xtext</artifactId>
+	    <version>2.7.3</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+    	<version>20180130</version>
+	</dependency>
   </dependencies>
 
   <build>

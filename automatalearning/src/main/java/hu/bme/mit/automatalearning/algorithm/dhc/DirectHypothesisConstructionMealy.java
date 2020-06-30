@@ -23,6 +23,10 @@ import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.teacher.Teacher;
+import hu.bme.mit.automatalearning.util.Utils;
+import hu.bme.mit.mealymodel.MealyMachine;
+import hu.bme.mit.mealymodel.State;
+import hu.bme.mit.mealymodel.Transition;
 public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLearningAlgorithm<I, O, DHCHypothesis<I, O, M, S, T>>{
 	Collection<? extends I> alphabet;
 	HashSet<List<? extends I>> splitters;
@@ -43,7 +47,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 				refineHypothesis(counterExample);
 			}
 			h = constructHypothesis();
-
+			Utils.logHypothesisToJSON((Hypothesis<String, String, MealyMachine, State, Transition>) h, "DHC");
 			counterExample = teacher.equivalenceQuery(h, alphabet);
 		}while(counterExample != null);
 		

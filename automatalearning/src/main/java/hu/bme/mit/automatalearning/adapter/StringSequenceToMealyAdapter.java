@@ -1,5 +1,9 @@
 package hu.bme.mit.automatalearning.adapter;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +55,12 @@ public class StringSequenceToMealyAdapter<H extends Hypothesis<String, String, M
 		if(!(this.learnable instanceof MealyLearnable)) return super.equivalenceQuery(hypothesis, alphabet);
 		DefaultQuery<String, Word<String>> retval = new SimulatorEQOracle<>(getMealy(((MealyLearnable)(this.learnable)).automaton)).findCounterExample(getMealy(((DHCHypothesisMealy)hypothesis).getAutomaton()), (Collection<? extends String>) alphabet);
 		if(retval == null) return null;
+	 try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./logs/coffeeDHCNoEQ.txt"), true)))
+		{
+			bW.write("COUNTER;" + retval.getInput().toString() + ";" + retval.getOutput().toString() + "\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return retval.getInput().asList();
 	}
 	private CompactMealy<String, String> getMealy(MealyMachine automaton){

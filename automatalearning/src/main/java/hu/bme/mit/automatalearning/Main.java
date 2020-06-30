@@ -20,6 +20,8 @@ import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
 import hu.bme.mit.automatalearning.teacher.Teacher;
+import hu.bme.mit.automatalearning.util.Utils;
+import hu.bme.mit.automatalearning.util.Utils;
 import hu.bme.mit.lpt_xtend.LPT;
 import hu.bme.mit.mealymodel.Alphabet;
 import hu.bme.mit.mealymodel.MealyMachine;
@@ -30,7 +32,7 @@ import hu.bme.mit.mealymodel.Transition;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		//EXAMPLES. AFTER EVERY DESCRIPTION THERE IS A METHOD TO UNCOMMENT TO RUN SAID EXAMPLE.
 		
 			//Alternating bit protocol in the form of a String input formalism, learned by DHC, outputs to /learnedmachine.mealy
@@ -40,7 +42,7 @@ public class Main {
 		//alternatingbitTTT();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
-		//coffeeMealyDHC();
+		coffeeMealyDHC();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by TTT, outputs to /learnedmachine.mealy
 		//coffeeMealyTTT();
@@ -55,7 +57,7 @@ public class Main {
 		//alternatingBitLPTTT();
 		
 			/* USES LPT to model different components of parity bit error detection */
-		paritybitLPTTTT();
+		//paritybitLPTTTT();
 		
 		//EXPERIMENTAL EVALUATION METHODS USED IN THE THESIS. ALL OUTPUT TO /src/expeval_results.csv. SHOULD BE STOPPED MANUALLY WHEN A SATISFIABLE AMOUNT OF RESULTS ARE DONE.
 		
@@ -81,7 +83,7 @@ public class Main {
 		LPTLearnable learnable = null;
 		try {
 			 learnable = new LPTLearnable(
-					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit.lpt")));
+					 new LPT(Utils.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit.lpt")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,7 +94,7 @@ public class Main {
 				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
 		
 		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
-		MealyModelReader.output(h.getHypothesis(), "paritybit-input.mealy");
+		Utils.output(h.getHypothesis(), "paritybit-input.mealy");
 		return h.getHypothesis();
 	}
 	
@@ -100,7 +102,7 @@ public class Main {
 		LPTLearnable learnable = null;
 		try {
 			 learnable = new LPTLearnable(
-					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit-createerr.lpt")));
+					 new LPT(Utils.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit-createerr.lpt")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,7 +113,7 @@ public class Main {
 				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
 		
 		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
-		MealyModelReader.output(h.getHypothesis(), "paritybit-createerr.mealy");
+		Utils.output(h.getHypothesis(), "paritybit-createerr.mealy");
 		return h.getHypothesis();
 	}
 	
@@ -119,7 +121,7 @@ public class Main {
 		LPTLearnable learnable = null;
 		try {
 			 learnable = new LPTLearnable(
-					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit-detector.lpt")));
+					 new LPT(Utils.getLPT(new File(".").getCanonicalPath() + "/src/main/java/paritymodels/gen-paritybit-detector.lpt")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,7 +132,7 @@ public class Main {
 				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
 		
 		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
-		MealyModelReader.output(h.getHypothesis(), "paritybit-detector.mealy");
+		Utils.output(h.getHypothesis(), "paritybit-detector.mealy");
 		return h.getHypothesis();
 	}
 	
@@ -138,7 +140,7 @@ public class Main {
 		LPTLearnable learnable = null;
 		try {
 			 learnable = new LPTLearnable(
-					 new LPT(LPTReader.getLPT(new File(".").getCanonicalPath() + "/src/main/java/gen-alternatingbit.lpt")));
+					 new LPT(Utils.getLPT(new File(".").getCanonicalPath() + "/src/main/java/gen-alternatingbit.lpt")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,7 +151,7 @@ public class Main {
 				new TTT<>(teacher, learnable.getInputAlphabet(), new TTTHypothesisMealyEMF(learnable.getInputAlphabet()));
 		
 		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
-		MealyModelReader.output(h.getHypothesis());
+		Utils.output(h.getHypothesis());
 		return h.getHypothesis();
 	}
 	
@@ -178,7 +180,7 @@ public class Main {
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
-		MealyModelReader.output(h.getHypothesis());
+		Utils.output(h.getHypothesis());
 		return h.getHypothesis();
 	}
 	
@@ -208,12 +210,12 @@ public class Main {
 		
 		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
 		
-		MealyModelReader.output(h.getHypothesis());
+		Utils.output(h.getHypothesis());
 		return h.getHypothesis();
 	}
 	
-	public static void coffeeMealyDHC() {
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/coffeemachine.mealy");
+	public static void coffeeMealyDHC() throws IOException {
+		MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
 		
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
@@ -226,11 +228,11 @@ public class Main {
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
-		MealyModelReader.output(h.getHypothesis());
+		Utils.output(h.getHypothesis());
 	}
 	
-	public static void coffeeMealyTTT() {
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/coffeemachine.mealy");
+	public static void coffeeMealyTTT() throws IOException {
+		MealyMachine m = Utils.getMealyModelFromXtext("C:\\Users\\Aron\\eclipse-workspace\\automatalearning-proj\\automatalearning\\src\\main\\java\\coffeemachine.mealy");
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 
@@ -242,11 +244,11 @@ public class Main {
 		
 		TTTHypothesis<String, String, MealyMachine, State, Transition> h = algo.execute();
 		
-		MealyModelReader.output(h.getHypothesis());
+		Utils.output(h.getHypothesis());
 	}
 	
-	public static void fouriaMealyDHC() {
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+	public static void fouriaMealyDHC() throws IOException {
+		MealyMachine m = Utils.getMealyModelFromXtext("./src/4ia.mealy");
 		
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
@@ -260,11 +262,11 @@ public class Main {
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
-		MealyModelReader.output(h.getHypothesis());
+		Utils.output(h.getHypothesis());
 	}
 	
-	public static void fouriaMealyTTT() {
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+	public static void fouriaMealyTTT() throws IOException {
+		MealyMachine m = Utils.getMealyModelFromXtext("./src/4ia.mealy");
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 
@@ -276,12 +278,12 @@ public class Main {
 		
 		TTTHypothesis<String, String, MealyMachine, State, Transition> h = algo.execute();
 		
-		MealyModelReader.output(h.getHypothesis());
+		Utils.output(h.getHypothesis());
 	}
 	
-	public static void experimentalEvaluationDHCState() {
+	public static void experimentalEvaluationDHCState() throws IOException {
 		//Read 4ia example
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		MealyMachine m = Utils.getMealyModelFromXtext("./src/4ia.mealy");
 		String currAccepting = "q3";
 		
 		
@@ -310,9 +312,9 @@ public class Main {
 			}
 	}
 	
-	public static void experimentalEvaluationDHCAlphabet() {
+	public static void experimentalEvaluationDHCAlphabet() throws IOException {
 		//Read 4ia example
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		MealyMachine m = Utils.getMealyModelFromXtext("./src/4ia.mealy");
 		String currAccepting = "q3";
 		
 		
@@ -341,9 +343,9 @@ public class Main {
 			}
 	}
 	
-	public static void experimentalEvaluationTTTState() {
+	public static void experimentalEvaluationTTTState() throws IOException {
 		//Read 4ia example
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		MealyMachine m = Utils.getMealyModelFromXtext("./src/4ia.mealy");
 		String currAccepting = "q3";
 		
 		
@@ -375,9 +377,9 @@ public class Main {
 
 	}
 	
-	public static void experimentalEvaluationTTTAlphabet() {
+	public static void experimentalEvaluationTTTAlphabet() throws IOException {
 		//Read 4ia example
-		MealyMachine m = MealyModelReader.getMealyModelFromXtext("./src/4ia.mealy");
+		MealyMachine m = Utils.getMealyModelFromXtext("./src/4ia.mealy");
 		String currAccepting = "q3";
 		
 		

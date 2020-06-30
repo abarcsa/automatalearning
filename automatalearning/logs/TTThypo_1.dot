@@ -1,0 +1,14 @@
+digraph {
+	fake [style=invisible]
+	s0 [root=true]
+	s1
+	fake -> s0 [style=bold]
+	s0 -> s0 [label="water/done"]
+	s0 -> s0 [label="pod/done"]
+	s0 -> s1 [label="button/none"]
+	s0 -> s0 [label="clean/done"]
+	s1 -> s1 [label="water/none"]
+	s1 -> s1 [label="pod/none"]
+	s1 -> s1 [label="button/none"]
+	s1 -> s1 [label="clean/none"]
+}
