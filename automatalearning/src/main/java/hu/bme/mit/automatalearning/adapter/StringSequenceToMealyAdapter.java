@@ -12,8 +12,8 @@ import java.util.Map;
 import de.learnlib.api.query.DefaultQuery;
 import de.learnlib.oracle.equivalence.SimulatorEQOracle;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
+import hu.bme.mit.automatalearning.Learnable.MemoizingLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
-import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 import hu.bme.mit.mealymodel.MealyMachine;
@@ -52,10 +52,14 @@ public class StringSequenceToMealyAdapter<H extends Hypothesis<String, String, M
 //Override creating optimization for Mealy-based learning. StringSequences are delegated to the unoptimized version in the superclass, since they are usually small and deterministic in description.
 	@Override
 	public List<? extends String> equivalenceQuery(H hypothesis, Collection<? extends String> alphabet) {
-		if(!(this.learnable instanceof MealyLearnable)) return super.equivalenceQuery(hypothesis, alphabet);
-		DefaultQuery<String, Word<String>> retval = new SimulatorEQOracle<>(getMealy(((MealyLearnable)(this.learnable)).automaton)).findCounterExample(getMealy(((DHCHypothesisMealy)hypothesis).getAutomaton()), (Collection<? extends String>) alphabet);
+		if(!(this.learnable instanceof MealyLearnable) && !(this.learnable instanceof MemoizingLearnable)) return super.equivalenceQuery(hypothesis, alphabet);
+		
+		DefaultQuery<String, Word<String>> retval = this.learnable instanceof MemoizingLearnable ? 
+					new SimulatorEQOracle<>(getMealy(((MealyLearnable)((MemoizingLearnable)(this.learnable)).getDelegate()).automaton)).findCounterExample(getMealy(((DHCHypothesisMealy)hypothesis).getAutomaton()), (Collection<? extends String>) alphabet)
+				: 
+					new SimulatorEQOracle<>(getMealy(((MealyLearnable)(this.learnable)).automaton)).findCounterExample(getMealy(((DHCHypothesisMealy)hypothesis).getAutomaton()), (Collection<? extends String>) alphabet);
 		if(retval == null) return null;
-	 try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./logs/coffeeDHCNoEQ.txt"), true)))
+	 try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./logs/MQTest.txt"), true)))
 		{
 			bW.write("COUNTER;" + retval.getInput().toString() + ";" + retval.getOutput().toString() + "\n");
 		} catch (IOException e) {

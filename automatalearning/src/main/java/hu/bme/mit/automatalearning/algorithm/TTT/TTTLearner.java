@@ -1,10 +1,5 @@
 package hu.bme.mit.automatalearning.algorithm.TTT;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import de.learnlib.acex.AcexAnalyzer;
 import de.learnlib.acex.analyzers.AcexAnalyzers;
 import de.learnlib.algorithms.ttt.base.AbstractBaseDTNode;
 import de.learnlib.algorithms.ttt.base.AbstractTTTLearner;
@@ -13,24 +8,16 @@ import de.learnlib.algorithms.ttt.base.OutputInconsistency;
 import de.learnlib.algorithms.ttt.base.TTTState;
 import de.learnlib.algorithms.ttt.base.TTTTransition;
 import de.learnlib.api.algorithm.LearningAlgorithm;
-import de.learnlib.api.oracle.EquivalenceOracle;
 import de.learnlib.api.oracle.MembershipOracle;
 import de.learnlib.api.query.DefaultQuery;
-import de.learnlib.api.query.Query;
 import de.learnlib.counterexamples.acex.MealyOutInconsPrefixTransformAcex;
 import de.learnlib.counterexamples.acex.OutInconsPrefixTransformAcex;
-import de.learnlib.oracle.equivalence.SimulatorEQOracle;
 import de.learnlib.util.mealy.MealyUtil;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
-import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
 import net.automatalib.automata.transducers.MealyMachine;
-import net.automatalib.automata.transducers.impl.compact.CompactMealy;
-import net.automatalib.util.automata.builders.AutomatonBuilders;
-import net.automatalib.util.automata.builders.MealyBuilder;
 import net.automatalib.words.Alphabet;
 import net.automatalib.words.Word;
 import net.automatalib.words.WordBuilder;
-import net.automatalib.words.impl.Alphabets;
 
 public class TTTLearner<I, O> extends AbstractTTTLearner<MealyMachine<?, I, ?, O>, I, Word<O>> implements LearningAlgorithm.MealyLearner<I, O> {
 	

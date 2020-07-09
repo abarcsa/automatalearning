@@ -2,8 +2,6 @@ package hu.bme.mit.automatalearning.hypothesis;
 
 import de.learnlib.algorithms.ttt.base.AbstractTTTHypothesis;
 import de.learnlib.algorithms.ttt.base.TTTState;
-import de.learnlib.algorithms.ttt.base.TTTTransition;
-import de.learnlib.algorithms.ttt.mealy.TTTTransitionMealy;
 import hu.bme.mit.automatalearning.algorithm.TTT.TTTTransitionImpl;
 import net.automatalib.automata.UniversalDeterministicAutomaton;
 import net.automatalib.automata.transducers.MealyMachine;

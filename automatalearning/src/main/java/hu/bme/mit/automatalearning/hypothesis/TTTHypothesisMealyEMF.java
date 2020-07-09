@@ -5,13 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import de.learnlib.algorithms.ttt.base.AbstractBaseDTNode;
-import de.learnlib.algorithms.ttt.base.AbstractTTTHypothesis;
 import de.learnlib.algorithms.ttt.base.TTTState;
 import de.learnlib.algorithms.ttt.base.TTTTransition;
-import de.learnlib.algorithms.ttt.mealy.TTTTransitionMealy;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
-import hu.bme.mit.automatalearning.algorithm.TTT.TTTStateMealyEMF;
 import hu.bme.mit.automatalearning.algorithm.TTT.TTTTransitionImpl;
 import hu.bme.mit.mealymodel.MealyMachine;
 import hu.bme.mit.mealymodel.MealymodelFactory;
@@ -87,7 +83,7 @@ public class TTTHypothesisMealyEMF extends TTTHypothesis<String, String, MealyMa
 	}*/
 
 	@Override
-	public String query(List<String> inputs) {
+	public String query(List<? extends String> inputs) {
 		if(this.getInitialState() != null) {
 			Word<String> out = this.computeOutput(inputs);
 			return out.lastSymbol();

@@ -1,9 +1,5 @@
 package hu.bme.mit.automatalearning.teacher;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,12 +24,6 @@ public class Teacher <HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LA extends 
 	
 	public HO membershipQuery(List<? extends HI> sequence) {
 		HO out = adapter.membershipQuery(sequence);
-		try(BufferedWriter bW = new BufferedWriter(new FileWriter(new File("./logs/coffeeDHCNoEQ.txt"), true)))
-		{
-			bW.write("( " + String.join(",", (List<String>)sequence) + " ) -> " + out.toString() + "\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return out;
 	}
 

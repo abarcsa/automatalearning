@@ -1,13 +1,9 @@
 package hu.bme.mit.automatalearning.algorithm.TTT;
 
 import de.learnlib.algorithms.ttt.base.TTTState;
-
-
 import de.learnlib.algorithms.ttt.base.TTTTransition;
 import hu.bme.mit.mealymodel.MealyMachine;
-import hu.bme.mit.mealymodel.MealymodelFactory;
 import hu.bme.mit.mealymodel.State;
-import hu.bme.mit.mealymodel.Transition;
 import net.automatalib.words.Word;
 
 //Can be used to construct hypo during TTT learning, not currently used.

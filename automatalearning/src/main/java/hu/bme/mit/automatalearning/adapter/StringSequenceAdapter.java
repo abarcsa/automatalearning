@@ -1,25 +1,12 @@
 package hu.bme.mit.automatalearning.adapter;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import de.learnlib.api.query.DefaultQuery;
-import de.learnlib.oracle.equivalence.SimulatorEQOracle;
-import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
-import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
-import hu.bme.mit.mealymodel.MealyMachine;
-import hu.bme.mit.mealymodel.State;
-import hu.bme.mit.mealymodel.Transition;
-import net.automatalib.automata.transducers.impl.compact.CompactMealy;
-import net.automatalib.words.Word;
-import net.automatalib.words.impl.Alphabets;
 
 /**
  * Adapter for the StringSequenceLearnable

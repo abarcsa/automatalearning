@@ -10,15 +10,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
-import hu.bme.mit.mealymodel.Transition;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.mealymodel.Alphabet;
 import hu.bme.mit.mealymodel.MealyMachine;
 import hu.bme.mit.mealymodel.MealymodelFactory;
 import hu.bme.mit.mealymodel.State;
+import hu.bme.mit.mealymodel.Transition;
 
 public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachine, State, Transition>{
 	
@@ -296,7 +295,7 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 	}
 
 	@Override
-	public String query(List<String> inputs) {
+	public String query(List<? extends String> inputs) {
 		//Since query answering is already implemented in MealyLearnable, it is delegated there.
 		return new MealyLearnable(this.automaton).getOutput(inputs);
 	}

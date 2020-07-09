@@ -5,12 +5,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 import com.google.common.base.Stopwatch;
 
 import hu.bme.mit.automatalearning.Learnable.LPTLearnable;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
+import hu.bme.mit.automatalearning.Learnable.MemoizingLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
 import hu.bme.mit.automatalearning.adapter.StringSequenceToMealyAdapter;
 import hu.bme.mit.automatalearning.algorithm.TTT.TTT;
@@ -20,7 +20,6 @@ import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
 import hu.bme.mit.automatalearning.teacher.Teacher;
-import hu.bme.mit.automatalearning.util.Utils;
 import hu.bme.mit.automatalearning.util.Utils;
 import hu.bme.mit.lpt_xtend.LPT;
 import hu.bme.mit.mealymodel.Alphabet;
@@ -220,8 +219,10 @@ public class Main {
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
 		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 		
+		
+		
 		Teacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?> teacher = 
-				new Teacher<>(new StringSequenceToMealyAdapter<>(new MealyLearnable(m)));
+				new Teacher<>(new StringSequenceToMealyAdapter<>(new MemoizingLearnable(new MealyLearnable(m))));
 		
 		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
 				new DirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));

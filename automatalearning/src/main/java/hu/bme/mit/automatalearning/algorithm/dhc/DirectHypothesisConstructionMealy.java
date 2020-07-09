@@ -8,12 +8,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +15,6 @@ import java.util.Optional;
 import hu.bme.mit.automatalearning.algorithm.ActiveLearningAlgorithm;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
-import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.teacher.Teacher;
 import hu.bme.mit.automatalearning.util.Utils;
 import hu.bme.mit.mealymodel.MealyMachine;
@@ -29,13 +22,13 @@ import hu.bme.mit.mealymodel.State;
 import hu.bme.mit.mealymodel.Transition;
 public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLearningAlgorithm<I, O, DHCHypothesis<I, O, M, S, T>>{
 	Collection<? extends I> alphabet;
-	HashSet<List<? extends I>> splitters;
+	List<List<? extends I>> splitters;
 	DHCHypothesis<I, O, M, S, T> hypothesis;
 	
 	public DirectHypothesisConstructionMealy(Teacher<I, O, DHCHypothesis<I, O, M, S, T>, ?> teacher, Collection<? extends I> alphabet, DHCHypothesis<I, O, M, S, T> hypothesis) {
 		this.teacher = teacher;
 		this.alphabet = alphabet;
-		this.splitters = new HashSet<>();
+		this.splitters = new ArrayList<>();
 		this.hypothesis = hypothesis;
 	}
 	
@@ -138,7 +131,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 	}
 	public void refineHypothesis(List<? extends I> counterExample) {
 		for(int i = 0; i < counterExample.size(); i++) {
-			List<? extends I> currSuffix = counterExample.subList(0+i, counterExample.size());
+			List<? extends I> currSuffix = counterExample.subList(1+i, counterExample.size());
 			if(currSuffix.size() != 0 && currSuffix.size() != 1 && !splitters.stream().anyMatch(l -> l.equals(currSuffix))) {
 				this.splitters.add(new ArrayList<>(currSuffix));
 			}

@@ -27,7 +27,7 @@ public abstract interface Hypothesis<I, O, M, S, T> {
 	
 	public abstract M getHypothesisAutomaton();
 	
-	public abstract O query(List<I> inputs);
+	public abstract O query(List<? extends I> inputs);
 	
 	public M getHypothesis();
 }

@@ -1,15 +1,10 @@
 package hu.bme.mit.automatalearning.hypothesis;
 
-import java.util.Collection;
-import java.util.List;
-
 public abstract class DHCHypothesis<I, O, M, S, T> implements Hypothesis<I, O, M, S, T>{
 	
 	M automaton;
 	
 public abstract S getInitialState();
-	
-	public abstract O query(List<I> inputs);
 	
 	public abstract S addInitialState();
 	

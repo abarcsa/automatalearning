@@ -1,5 +1,9 @@
 package hu.bme.mit.automatalearning.Learnable;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import hu.bme.mit.mealymodel.MealyMachine;
@@ -16,6 +20,7 @@ public class MealyLearnable extends StringSequenceLearnable{
 	
 	@Override
 	public String getOutput(List<? extends String> inputs) {
+		
 		State currState = automaton.getInitialState();
 		String output = null;
 		outer: for(String input : inputs) {
