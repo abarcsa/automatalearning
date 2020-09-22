@@ -4,10 +4,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Stopwatch;
 
+import hu.bme.mit.automatalearning.Learnable.InteractiveLearnable;
 import hu.bme.mit.automatalearning.Learnable.LPTLearnable;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.MemoizingLearnable;
@@ -239,12 +242,22 @@ public class Main {
 	}
 	
 	public static void coffeeMealyAdaptiveDHC() throws IOException {
-		MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
+		//MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
+		//
+		//Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		//inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
 		
-		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
-		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		List<String> inputAlphabet = new ArrayList<>();
+		inputAlphabet.add("w");	//water
+		inputAlphabet.add("p");	//pod
+		inputAlphabet.add("b");	//button
+		inputAlphabet.add("c");	//clean
+		List<String> outputAlphabet = new ArrayList<>();
+		outputAlphabet.add("don");	//done
+		outputAlphabet.add("cof");	//coffee
+		outputAlphabet.add("err");	//error
 		
-		MemoizingLearnable l = new MemoizingLearnable(new MealyLearnable(m));
+		MemoizingLearnable l = new MemoizingLearnable(new InteractiveLearnable(inputAlphabet, outputAlphabet));
 		OracleGuidedAdaptiveLearnable ogal = new OracleGuidedAdaptiveLearnable(l);
 		AdaptiveLearnableAdapter a = new AdaptiveLearnableAdapter(new StringSequenceToMealyAdapter<>(l), ogal);
 		
@@ -252,7 +265,7 @@ public class Main {
 				new AdaptiveTeacher<>(a);
 		
 		AdaptiveDirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
-				new AdaptiveDirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));
+				new AdaptiveDirectHypothesisConstructionMealy<>(teacher, inputAlphabet, new DHCHypothesisMealy(inputAlphabet));
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
