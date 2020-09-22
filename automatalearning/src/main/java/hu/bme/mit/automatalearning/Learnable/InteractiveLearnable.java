@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
+
 public class InteractiveLearnable extends StringSequenceLearnable {
 	
 	List<String> inputAlphabet;
@@ -76,6 +78,19 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 			}
 			partialModels.add(new LTLModel(inputAlphabet, outputAlphabet, input));
 		}
+	}
+	
+	public List<? extends String> interactiveEQ(DHCHypothesisMealy hypothesis){
+		for(Set<String> s : com.google.common.collect.Sets.powerSet(new HashSet<String>(inputAlphabet))) {
+			if(!s.isEmpty()) {
+				for(List<String> permutation : com.google.common.collect.Collections2.permutations(s)) {
+					String a = hypothesis.query(permutation);
+					String b = getOutput(permutation);
+					if(!a.equals(b)) return permutation;
+				}
+			}
+		}
+		return null;
 	}
 
 
