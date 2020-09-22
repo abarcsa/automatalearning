@@ -15,6 +15,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -23,5 +24,25 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/owl/lib/antlr4-runtime-4.8-1.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/auto-value-annotations-1.7.1.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/checker-qual-2.11.1.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/error_prone_annotations-2.3.4.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/failureaccess-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/fastutil-8.3.1.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/graal-sdk-20.1.0.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/guava-29.0-jre.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/j2objc-annotations-1.3.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/jbdd-0.5.2.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/jhoafparser-1.1.1-patched.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/jsr305-3.0.2.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/naturals-util-0.15.0.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/owl-20.06.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/RoaringBitmap-0.8.15.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/shims-0.8.15.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/SparseBitSet-1.2.jar"/>
+	<classpathentry kind="lib" path="/owl/lib/value-2.7.1-annotations.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
