@@ -25,7 +25,7 @@ public class EQWrapper<I,O> extends RandomWalkEQOracle<I, O>{
 	public EQWrapper(SUL<I, O> sul, double restartProbability, long maxSteps, boolean resetStepCount,
 			Random random, TTTHypothesis<I, O, ?, ?, ?> hypothesis) {
 		super(sul, restartProbability, maxSteps, resetStepCount, random);
-		this. hypothesis = hypothesis;
+		this.hypothesis = hypothesis;
 	}
 	
 	@Override

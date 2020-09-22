@@ -22,6 +22,8 @@ public class Teacher <HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LA extends 
 		this.adapter = adapter;
 	}
 	
+	public Teacher() {}
+	
 	public HO membershipQuery(List<? extends HI> sequence) {
 		HO out = adapter.membershipQuery(sequence);
 		return out;

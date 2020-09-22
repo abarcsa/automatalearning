@@ -299,6 +299,22 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 		//Since query answering is already implemented in MealyLearnable, it is delegated there.
 		return new MealyLearnable(this.automaton).getOutput(inputs);
 	}
+	
+	public State queryState(List<? extends String> inputs) {
+		State currState = automaton.getInitialState();
+		String output = null;
+		outer: for(String input : inputs) {
+			for(Transition t : automaton.getTransitions()) {
+				if(t.getSourceState().getName().equals(currState.getName())
+											&& t.getInput().equals(input)) {
+					currState = t.getTargetState();
+					output = t.getOutput();
+					continue outer;
+				}
+			}
+		}
+		return currState;
+	}
 
 	@Override
 	public void resetHypothesis() {

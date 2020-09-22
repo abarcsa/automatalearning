@@ -4,7 +4,7 @@ public abstract class DHCHypothesis<I, O, M, S, T> implements Hypothesis<I, O, M
 	
 	M automaton;
 	
-public abstract S getInitialState();
+	public abstract S getInitialState();
 	
 	public abstract S addInitialState();
 	

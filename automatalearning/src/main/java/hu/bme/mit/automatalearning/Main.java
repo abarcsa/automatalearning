@@ -11,14 +11,18 @@ import com.google.common.base.Stopwatch;
 import hu.bme.mit.automatalearning.Learnable.LPTLearnable;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.MemoizingLearnable;
+import hu.bme.mit.automatalearning.Learnable.OracleGuidedAdaptiveLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
+import hu.bme.mit.automatalearning.adapter.AdaptiveLearnableAdapter;
 import hu.bme.mit.automatalearning.adapter.StringSequenceToMealyAdapter;
 import hu.bme.mit.automatalearning.algorithm.TTT.TTT;
+import hu.bme.mit.automatalearning.algorithm.dhc.AdaptiveDirectHypothesisConstructionMealy;
 import hu.bme.mit.automatalearning.algorithm.dhc.DirectHypothesisConstructionMealy;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
+import hu.bme.mit.automatalearning.teacher.AdaptiveTeacher;
 import hu.bme.mit.automatalearning.teacher.Teacher;
 import hu.bme.mit.automatalearning.util.Utils;
 import hu.bme.mit.lpt_xtend.LPT;
@@ -41,7 +45,9 @@ public class Main {
 		//alternatingbitTTT();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
-		coffeeMealyDHC();
+		//coffeeMealyDHC();
+		
+		coffeeMealyAdaptiveDHC();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by TTT, outputs to /learnedmachine.mealy
 		//coffeeMealyTTT();
@@ -226,6 +232,27 @@ public class Main {
 		
 		DirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
 				new DirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));
+		
+		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
+		
+		Utils.output(h.getHypothesis());
+	}
+	
+	public static void coffeeMealyAdaptiveDHC() throws IOException {
+		MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
+		
+		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		
+		MemoizingLearnable l = new MemoizingLearnable(new MealyLearnable(m));
+		OracleGuidedAdaptiveLearnable ogal = new OracleGuidedAdaptiveLearnable(l);
+		AdaptiveLearnableAdapter a = new AdaptiveLearnableAdapter(new StringSequenceToMealyAdapter<>(l), ogal);
+		
+		AdaptiveTeacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?, ?> teacher = 
+				new AdaptiveTeacher<>(a);
+		
+		AdaptiveDirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
+				new AdaptiveDirectHypothesisConstructionMealy<>(teacher, m.getInputAlphabet().getCharacters(), new DHCHypothesisMealy(inputAlphabet));
 		
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		

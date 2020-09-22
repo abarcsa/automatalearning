@@ -68,6 +68,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 				hypothesis.addTransition(currentElement.parentState, sibling, currentElement.input, currentElement.output);
 			}else {	//If there are no siblings, the targetState of all transitions going from currentState is set to a new state
 				S newState = currentElement.parentElement == null ? hypothesis.addInitialState() : hypothesis.createNewState();
+				this.accessSequences.put(newState, currSequence);
                 if (currentElement.parentElement != null) {
                     hypothesis.addTransition(currentElement.parentState, newState, currentElement.input, currentElement.output);
                 }
@@ -81,7 +82,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 		return hypothesis;
 	}
 	
-	private LinkedHashMap<I, O> findAlphabetOutputSignature(List<I> accessSequence){
+	protected LinkedHashMap<I, O> findAlphabetOutputSignature(List<I> accessSequence){
 		LinkedHashMap<I, O> currSignature = new LinkedHashMap<>();
 		for(I symbol : this.alphabet) {
 			List<I> currSequenceWithSymbol = new ArrayList<>(accessSequence);
@@ -94,7 +95,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 		return currSignature;
 	}
 	
-	private List<O> findSplitterOutputSignature(List<I> accessSequence){
+	protected List<O> findSplitterOutputSignature(List<I> accessSequence){
 		List<O> retVal = new ArrayList<>();
 		for(List<? extends I> splitter : this.splitters) {
 			List<I> currSequenceWithSymbol = new ArrayList<>(accessSequence);
@@ -107,7 +108,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 		return retVal;
 	}
 	
-	private S findStateWithSameSignature(Map<List<O>, S> prevSignature, List<O> currSignature) {
+	protected S findStateWithSameSignature(Map<List<O>, S> prevSignature, List<O> currSignature) {
 		Optional<List<O>> exists = prevSignature.keySet().stream().filter(list -> list.equals(currSignature)).findFirst();
 		if(exists.isPresent()) {
 			return prevSignature.get(exists.get());
@@ -115,7 +116,7 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 		return null;
 	}
 	
-	private List<I> getAccessSequence(QueueElement<I, O, S> currElement) {
+	protected List<I> getAccessSequence(QueueElement<I, O, S> currElement) {
 		List<I> word = new ArrayList<>();
 
         QueueElement<I, O, S> parent = currElement.parentElement;
@@ -129,6 +130,9 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
         Collections.reverse(word);
         return word;
 	}
+	
+	protected HashMap<S, List<I>> accessSequences = new HashMap<>();
+	
 	public void refineHypothesis(List<? extends I> counterExample) {
 		for(int i = 0; i < counterExample.size(); i++) {
 			List<? extends I> currSuffix = counterExample.subList(1+i, counterExample.size());
@@ -201,11 +205,11 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 	//Great idea of Queue handling from the LearnLib framework
 	 static final class QueueElement<I, O, S> implements Serializable {
 
-	        private final S parentState;
-	        private final QueueElement<I, O, S> parentElement;
-	        private final I input;
-	        private final O output;
-	        private final int depth;
+	        final S parentState;
+	        final QueueElement<I, O, S> parentElement;
+	        final I input;
+	        final O output;
+	        final int depth;
 
 	        QueueElement(S parentState, QueueElement<I, O, S> parentElement, I input, O output) {
 	            this.parentState = parentState;

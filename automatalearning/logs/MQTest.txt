@@ -18,6 +18,8 @@
 ( clean,pod ) -> done
 ( clean,button ) -> none
 ( clean,clean ) -> done
+COUNTER;button water;none none
+COUNTER;water;done
 ( button,water,water ) -> none
 ( button,water,pod ) -> none
 ( button,water,button ) -> none
@@ -61,6 +63,11 @@ COUNTER;water pod button;done done coffee
 ( button,pod,pod,button ) -> none
 ( button,button,pod,button ) -> none
 ( button,clean,pod,button ) -> none
+COUNTER;water pod water;done done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
 ( water,pod,water,water ) -> done
 ( water,pod,water,pod ) -> done
 ( water,pod,water,button ) -> coffee
@@ -99,12 +106,20 @@ COUNTER;water pod button;done done coffee
 ( water,pod,button,clean,button ) -> none
 ( water,pod,button,clean,clean ) -> done
 ( water,pod,button,clean,pod,button ) -> none
+COUNTER;button water;none none
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;button water;none none
+COUNTER;water;done
 COUNTER;pod water button;done done coffee
 ( pod,water,button ) -> coffee
 ( clean,water,button ) -> none
-( water,water,water,button ) -> none
-( water,button,water,button ) -> none
-( water,clean,water,button ) -> none
+COUNTER;water water;done done
+( button,water,water,button ) -> none
+( button,pod,water,button ) -> none
+( button,button,water,button ) -> none
+( button,clean,water,button ) -> none
+COUNTER;water water;done done
 ( pod,water,water ) -> done
 ( pod,water,pod ) -> done
 ( pod,water,clean ) -> done
@@ -127,150 +142,66 @@ COUNTER;pod water button;done done coffee
 ( pod,clean,clean ) -> done
 ( pod,clean,pod,button ) -> none
 ( pod,clean,water,button ) -> none
-( button,water,water,button ) -> none
-( button,pod,water,button ) -> none
-( button,button,water,button ) -> none
-( button,clean,water,button ) -> none
-( water,pod,water,water,button ) -> coffee
-( water,pod,pod,water,button ) -> coffee
-( water,pod,clean,water,button ) -> none
-( water,pod,button,water,water,button ) -> none
-( water,pod,button,pod,water,button ) -> none
-( water,pod,button,button,water,button ) -> none
-( water,pod,button,clean,water,button ) -> none
-( water ) -> done
-( pod ) -> done
-( button ) -> none
-( clean ) -> done
-( water,water ) -> done
-( water,pod ) -> done
-( water,button ) -> none
-( water,clean ) -> done
-( pod,water ) -> done
-( pod,pod ) -> done
-( pod,button ) -> none
-( pod,clean ) -> done
-( button,water ) -> none
-( button,pod ) -> none
-( button,button ) -> none
-( button,clean ) -> none
-( clean,water ) -> done
-( clean,pod ) -> done
-( clean,button ) -> none
-( clean,clean ) -> done
-( button,water,water ) -> none
-( button,water,pod ) -> none
-( button,water,button ) -> none
-( button,water,clean ) -> none
-( button,pod,water ) -> none
-( button,pod,pod ) -> none
-( button,pod,button ) -> none
-( button,pod,clean ) -> none
-( button,button,water ) -> none
-( button,button,pod ) -> none
-( button,button,button ) -> none
-( button,button,clean ) -> none
-( button,clean,water ) -> none
-( button,clean,pod ) -> none
-( button,clean,button ) -> none
-( button,clean,clean ) -> none
-COUNTER;water pod button;done done coffee
-( water,pod,button ) -> coffee
-( pod,pod,button ) -> none
-( clean,pod,button ) -> none
-( water,water,water ) -> done
-( water,water,pod ) -> done
-( water,water,button ) -> none
-( water,water,clean ) -> done
-( water,water,pod,button ) -> coffee
-( water,pod,water ) -> done
-( water,pod,pod ) -> done
-( water,pod,clean ) -> done
-( water,pod,pod,button ) -> coffee
-( water,button,water ) -> none
-( water,button,pod ) -> none
-( water,button,button ) -> none
-( water,button,clean ) -> none
-( water,button,pod,button ) -> none
-( water,clean,water ) -> done
-( water,clean,pod ) -> done
-( water,clean,button ) -> none
-( water,clean,clean ) -> done
-( water,clean,pod,button ) -> none
-( button,water,pod,button ) -> none
-( button,pod,pod,button ) -> none
-( button,button,pod,button ) -> none
-( button,clean,pod,button ) -> none
-( water,pod,water,water ) -> done
-( water,pod,water,pod ) -> done
-( water,pod,water,button ) -> coffee
-( water,pod,water,clean ) -> done
-( water,pod,water,pod,button ) -> coffee
-( water,pod,pod,water ) -> done
-( water,pod,pod,pod ) -> done
-( water,pod,pod,clean ) -> done
-( water,pod,pod,pod,button ) -> coffee
-( water,pod,button,water ) -> none
-( water,pod,button,pod ) -> none
-( water,pod,button,button ) -> none
-( water,pod,button,clean ) -> done
-( water,pod,button,pod,button ) -> none
-( water,pod,clean,water ) -> done
-( water,pod,clean,pod ) -> done
-( water,pod,clean,button ) -> none
-( water,pod,clean,clean ) -> done
-( water,pod,clean,pod,button ) -> none
-( water,pod,button,water,water ) -> none
-( water,pod,button,water,pod ) -> none
-( water,pod,button,water,button ) -> none
-( water,pod,button,water,clean ) -> none
-( water,pod,button,water,pod,button ) -> none
-( water,pod,button,pod,water ) -> none
-( water,pod,button,pod,pod ) -> none
-( water,pod,button,pod,clean ) -> none
-( water,pod,button,pod,pod,button ) -> none
-( water,pod,button,button,water ) -> none
-( water,pod,button,button,pod ) -> none
-( water,pod,button,button,button ) -> none
-( water,pod,button,button,clean ) -> none
-( water,pod,button,button,pod,button ) -> none
-( water,pod,button,clean,water ) -> done
-( water,pod,button,clean,pod ) -> done
-( water,pod,button,clean,button ) -> none
-( water,pod,button,clean,clean ) -> done
-( water,pod,button,clean,pod,button ) -> none
-COUNTER;pod water button;done done coffee
-( pod,water,button ) -> coffee
-( clean,water,button ) -> none
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+( pod,water,water,water ) -> done
+( pod,water,water,pod ) -> done
+( pod,water,water,clean ) -> done
+( pod,water,water,pod,button ) -> coffee
+( pod,water,water,water,button ) -> coffee
+( pod,water,pod,water ) -> done
+( pod,water,pod,pod ) -> done
+( pod,water,pod,clean ) -> done
+( pod,water,pod,pod,button ) -> coffee
+( pod,water,pod,water,button ) -> coffee
+( pod,water,button,water ) -> none
+( pod,water,button,pod ) -> none
+( pod,water,button,button ) -> none
+( pod,water,button,clean ) -> done
+( pod,water,button,pod,button ) -> none
+( pod,water,button,water,button ) -> none
+( pod,water,clean,water ) -> done
+( pod,water,clean,pod ) -> done
+( pod,water,clean,button ) -> none
+( pod,water,clean,clean ) -> done
+( pod,water,clean,pod,button ) -> none
+( pod,water,clean,water,button ) -> none
+( pod,water,button,water,water ) -> none
+( pod,water,button,water,pod ) -> none
+( pod,water,button,water,clean ) -> none
+( pod,water,button,water,pod,button ) -> none
+( pod,water,button,water,water,button ) -> none
+( pod,water,button,pod,water ) -> none
+( pod,water,button,pod,pod ) -> none
+( pod,water,button,pod,clean ) -> none
+( pod,water,button,pod,pod,button ) -> none
+( pod,water,button,pod,water,button ) -> none
+( pod,water,button,button,water ) -> none
+( pod,water,button,button,pod ) -> none
+( pod,water,button,button,button ) -> none
+( pod,water,button,button,clean ) -> none
+( pod,water,button,button,pod,button ) -> none
+( pod,water,button,button,water,button ) -> none
+( pod,water,button,clean,water ) -> done
+( pod,water,button,clean,pod ) -> done
+( pod,water,button,clean,button ) -> none
+( pod,water,button,clean,clean ) -> done
+( pod,water,button,clean,pod,button ) -> none
+( pod,water,button,clean,water,button ) -> none
+COUNTER;water water;done done
+COUNTER;water water;done done
 ( water,water,water,button ) -> none
 ( water,button,water,button ) -> none
 ( water,clean,water,button ) -> none
-( pod,water,water ) -> done
-( pod,water,pod ) -> done
-( pod,water,clean ) -> done
-( pod,water,pod,button ) -> coffee
-( pod,water,water,button ) -> coffee
-( pod,pod,water ) -> done
-( pod,pod,pod ) -> done
-( pod,pod,clean ) -> done
-( pod,pod,pod,button ) -> none
-( pod,pod,water,button ) -> coffee
-( pod,button,water ) -> none
-( pod,button,pod ) -> none
-( pod,button,button ) -> none
-( pod,button,clean ) -> none
-( pod,button,pod,button ) -> none
-( pod,button,water,button ) -> none
-( pod,clean,water ) -> done
-( pod,clean,pod ) -> done
-( pod,clean,button ) -> none
-( pod,clean,clean ) -> done
-( pod,clean,pod,button ) -> none
-( pod,clean,water,button ) -> none
-( button,water,water,button ) -> none
-( button,pod,water,button ) -> none
-( button,button,water,button ) -> none
-( button,clean,water,button ) -> none
+COUNTER;pod water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water pod water;done done done
 ( water,pod,water,water,button ) -> coffee
 ( water,pod,pod,water,button ) -> coffee
 ( water,pod,clean,water,button ) -> none
@@ -278,3 +209,120 @@ COUNTER;pod water button;done done coffee
 ( water,pod,button,pod,water,button ) -> none
 ( water,pod,button,button,water,button ) -> none
 ( water,pod,button,clean,water,button ) -> none
+COUNTER;pod water;done done
+COUNTER;water;done
+COUNTER;button water;none none
+COUNTER;water;done
+COUNTER;pod water;done done
+COUNTER;water pod water;done done done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;button water;none none
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water pod water;done done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;pod water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water pod water;done done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;pod water;done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;button water;none none
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;button water;none none
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;pod water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;button water;none none
+COUNTER;pod water;done done
+COUNTER;water pod button water;done done coffee none
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;pod water;done done
+COUNTER;water;done
+COUNTER;water pod water;done done done
+COUNTER;water;done
+COUNTER;button water;none none
+COUNTER;pod water;done done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;pod water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water water;done done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;water;done
+COUNTER;pod water;done done
