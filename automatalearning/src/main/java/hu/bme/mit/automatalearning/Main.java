@@ -47,10 +47,12 @@ public class Main {
 			//Alternating bit protocol in the form of a String input formalism, learned by TTT, outputs to /learnedmachine.mealy
 		//alternatingbitTTT();
 		
+		alternatingBitAdaptiveDHC();
+		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
 		//coffeeMealyDHC();
 		
-		coffeeMealyAdaptiveDHC();
+		//coffeeMealyAdaptiveDHC();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by TTT, outputs to /learnedmachine.mealy
 		//coffeeMealyTTT();
@@ -256,6 +258,35 @@ public class Main {
 		outputAlphabet.add("don");	//done
 		outputAlphabet.add("cof");	//coffee
 		outputAlphabet.add("err");	//error
+		
+		MemoizingLearnable l = new MemoizingLearnable(new InteractiveLearnable(inputAlphabet, outputAlphabet));
+		OracleGuidedAdaptiveLearnable ogal = new OracleGuidedAdaptiveLearnable(l);
+		AdaptiveLearnableAdapter a = new AdaptiveLearnableAdapter(new StringSequenceToMealyAdapter<>(l), ogal);
+		
+		AdaptiveTeacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?, ?> teacher = 
+				new AdaptiveTeacher<>(a);
+		
+		AdaptiveDirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
+				new AdaptiveDirectHypothesisConstructionMealy<>(teacher, inputAlphabet, new DHCHypothesisMealy(inputAlphabet));
+		
+		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
+		
+		Utils.output(h.getHypothesis());
+	}
+	
+	public static void alternatingBitAdaptiveDHC() throws IOException {
+		//MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
+		//
+		//Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		//inputAlphabet.getCharacters().addAll(m.getInputAlphabet().getCharacters());
+		
+		List<String> inputAlphabet = new ArrayList<>();
+		inputAlphabet.add("null");	
+		inputAlphabet.add("ack0");	
+		inputAlphabet.add("ack1");	
+		List<String> outputAlphabet = new ArrayList<>();
+		outputAlphabet.add("send0");	
+		outputAlphabet.add("send1");
 		
 		MemoizingLearnable l = new MemoizingLearnable(new InteractiveLearnable(inputAlphabet, outputAlphabet));
 		OracleGuidedAdaptiveLearnable ogal = new OracleGuidedAdaptiveLearnable(l);
