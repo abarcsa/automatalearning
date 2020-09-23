@@ -77,6 +77,19 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 			partialModels.add(new LTLModel(inputAlphabet, outputAlphabet, input));
 		}
 	}
+	
+	// TODO refactor with better heuristics
+	public boolean isInputProximityKnown(List<String> inputs) {
+		boolean result = false;
+		for(PartialModel model : partialModels) {
+			if(model.isInputProximityKnown(inputs)) {
+				result = true;
+				break;
+			}
+		}
+		
+		return result;
+	}
 
 
 }

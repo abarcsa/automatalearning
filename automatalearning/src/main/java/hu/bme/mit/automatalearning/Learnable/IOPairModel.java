@@ -1,6 +1,5 @@
 package hu.bme.mit.automatalearning.Learnable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +54,11 @@ public class IOPairModel implements PartialModel {
 	@Override
 	public List<String> getOutputAlphabet() {
 		return this.outputAlphabet;
+	}
+
+	@Override
+	public boolean isInputProximityKnown(List<String> inputs) {
+		return false;
 	}
 
 }

@@ -11,4 +11,6 @@ interface PartialModel{
 	
 	public void setOutputAlphabet(List<String> outputAlphabet);
 	public List<String> getOutputAlphabet();
+	
+	public boolean isInputProximityKnown(List<String> inputs);
 }

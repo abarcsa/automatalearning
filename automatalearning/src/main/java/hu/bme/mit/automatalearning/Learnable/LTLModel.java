@@ -148,4 +148,27 @@ public class LTLModel implements PartialModel{
 	public List<String> getOutputAlphabet() {
 		return this.outputAlphabet;
 	}
+
+	@Override
+	public boolean isInputProximityKnown(List<String> inputs) {
+		int count = 0;
+		
+		/*List<String> longerInput = new ArrayList<>();
+		for(String input : inputAlphabet) {
+			longerInput.clear();
+			longerInput.addAll(inputs);
+			longerInput.add(input);
+			Set<String> output = getAutomatonOutput(automaton, longerInput);
+			if (output.size() == 1) {
+				count++;
+			}
+		}*/
+		
+		if (count > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
