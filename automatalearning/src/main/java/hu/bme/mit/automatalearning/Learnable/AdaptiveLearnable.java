@@ -11,6 +11,7 @@ public abstract class AdaptiveLearnable<I, O, L extends Learnable<I, O>> impleme
 	public enum AdaptionCommand{
 		OPTIMISTIC,
 		PESSIMISTIC,
+		RESET
 	}
 	
 	public static class AdaptiveLearnableOutput<O>{

@@ -60,5 +60,10 @@ public class IOPairModel implements PartialModel {
 	public boolean isInputProximityKnown(List<String> inputs) {
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "IO Pair Model: " + this.inputSequence + "/" + this.output;
+	}
 
 }

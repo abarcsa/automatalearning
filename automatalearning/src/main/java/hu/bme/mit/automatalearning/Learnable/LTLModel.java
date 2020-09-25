@@ -25,14 +25,17 @@ import owl.translations.mastertheorem.SymmetricEvaluatedFixpoints;
 
 public class LTLModel implements PartialModel{
 	
-	List<String> inputAlphabet;
-	List<String> outputAlphabet;
-	Automaton<?, ?> automaton;
-
+	private List<String> inputAlphabet;
+	private List<String> outputAlphabet;
+	private Automaton<?, ?> automaton;
+	
+	private String inputFormula;
+	
 	public LTLModel(List<String> inputAlphabet, List<String> outputAlphabet, String formula) {
 		// Save parameters
 		this.inputAlphabet = inputAlphabet;
 		this.outputAlphabet = outputAlphabet;
+		this.inputFormula = formula;
 		// Create Buchi automaton from LTL formula
 		List<String> atomicPropositions = new ArrayList<>();
 		atomicPropositions.addAll(inputAlphabet);
@@ -169,6 +172,11 @@ public class LTLModel implements PartialModel{
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "LTL Expression Model: " + this.inputFormula;
 	}
 	
 }
