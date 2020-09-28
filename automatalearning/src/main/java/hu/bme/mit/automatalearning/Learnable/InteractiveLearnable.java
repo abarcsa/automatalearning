@@ -104,7 +104,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 	
 	private void requireModel(List<String> inputs) {
 		System.out.println("Unknown output for input sequence: " + inputs);
-		System.out.println("Would you like to specify the output through an (I)O pair, an (L)TL expression or a (V)alid Trace?");
+		System.out.println("Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?");
 		BufferedReader reader =
                 new BufferedReader(new InputStreamReader(System.in));
 		String input = null;
@@ -137,9 +137,41 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			String transformedLTL = transformValidTraceToLTLExpression(input);
-			partialModels.add(new LTLModel(inputAlphabet, outputAlphabet, transformedLTL));
+			partialModels.add(createValidTraceModelFromString(input));
+		} else if (input.equals("N")) {
+			System.out.println("Please provide an invalid trace:");
+			//inputs/output input/output ...
+			try {
+				input = reader.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			partialModels.add(createInValidTraceModelFromString(input));
 		}
+	}
+	
+	private PartialModel createInValidTraceModelFromString(String trace) {
+		List<String> inputSequence = new ArrayList<>();
+		List<String> outputSequence = new ArrayList<>();
+		List<String> tokenizedTrace = Arrays.asList(trace.split("\\s"));
+		for (String element : tokenizedTrace) {
+			List<String> ioPair = Arrays.asList(element.split("/"));
+			inputSequence.add(ioPair.get(0));
+			outputSequence.add(ioPair.get(1));
+		}
+		return new InvalidTraceModel(inputAlphabet, outputAlphabet, inputSequence, outputSequence);
+	}
+
+	private PartialModel createValidTraceModelFromString(String trace) {
+		List<String> inputSequence = new ArrayList<>();
+		List<String> outputSequence = new ArrayList<>();
+		List<String> tokenizedTrace = Arrays.asList(trace.split("\\s"));
+		for (String element : tokenizedTrace) {
+			List<String> ioPair = Arrays.asList(element.split("/"));
+			inputSequence.add(ioPair.get(0));
+			outputSequence.add(ioPair.get(1));
+		}
+		return new ValidTraceModel(inputAlphabet, outputAlphabet, inputSequence, outputSequence);
 	}
 	
 	// TODO remove
@@ -158,7 +190,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 	public AdaptionCommand getCommand() {
 		return currentCommand;
 	}
-	
+	/*
 	private String transformValidTraceToLTLExpression(String trace) {
 		//TODO simplify
 		List<String> tokenizedTrace = Arrays.asList(trace.split("\\s"));
@@ -216,7 +248,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 		
 		return inputPart.toString() + "->" + outputPart.toString();
 	}
-	
+	*/
 	public List<? extends String> interactiveEQ(DHCHypothesisMealy hypothesis){
 		for(Set<String> s : com.google.common.collect.Sets.powerSet(new HashSet<String>(inputAlphabet))) {
 			if(!s.isEmpty()) {
