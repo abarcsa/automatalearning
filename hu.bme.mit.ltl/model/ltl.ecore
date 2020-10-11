@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="ltl" nsURI="hu.bme.mit.ltl" nsPrefix="ltl">
+  <eClassifiers xsi:type="ecore:EClass" name="BinaryExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftOperand" eType="#//LTLExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightOperand" eType="#//LTLExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnaryExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" eType="#//LTLExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NullaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LTLExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TemporalExpression" eSuperTypes="#//LTLExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UntilExpression" eSuperTypes="#//TemporalExpression #//BinaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NextExpression" eSuperTypes="#//TemporalExpression #//UnaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FutureExpression" eSuperTypes="#//TemporalExpression #//UnaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GloballyExpression" eSuperTypes="#//TemporalExpression #//UnaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanExpression" eSuperTypes="#//LTLExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EquivalenceExpression" eSuperTypes="#//BooleanExpression #//BinaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ImplyExpression" eSuperTypes="#//BooleanExpression #//BinaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OrExpression" eSuperTypes="#//BooleanExpression #//BinaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AndExpression" eSuperTypes="#//BooleanExpression #//BinaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NotExpression" eSuperTypes="#//BooleanExpression #//UnaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TrueExpression" eSuperTypes="#//BooleanExpression #//NullaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FalseExpression" eSuperTypes="#//BooleanExpression #//NullaryExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AtomicProposition" eSuperTypes="#//BooleanExpression #//NullaryExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="proposition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

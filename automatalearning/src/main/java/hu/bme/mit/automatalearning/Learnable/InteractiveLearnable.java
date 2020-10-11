@@ -1,8 +1,10 @@
 package hu.bme.mit.automatalearning.Learnable;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,6 +13,11 @@ import java.util.Set;
 
 import hu.bme.mit.automatalearning.Learnable.AdaptiveLearnable.AdaptionCommand;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
+import hu.bme.mit.automatalearning.util.Utils;
+import hu.bme.mit.ltl.LTLExpression;
+import hu.bme.mit.ltl.serializer.BasicSerializer;
+import hu.bme.mit.ltl.serializer.EventSemanticSerializer;
+import jhoafparser.parser.generated.ParseException;
 
 public class InteractiveLearnable extends StringSequenceLearnable {
 	
@@ -128,7 +135,20 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			partialModels.add(new LTLModel(inputAlphabet, outputAlphabet, input));
+			//partialModels.add(new LTLModel(inputAlphabet, outputAlphabet, input));
+			
+			//TODO REFACTOR THIS
+			LTLExpressionParser dt = new LTLExpressionParser();
+			try {
+				LTLExpression parsed = dt.parse(new ByteArrayInputStream(input.getBytes()));
+				EventSemanticSerializer bs = new EventSemanticSerializer(inputAlphabet, outputAlphabet);
+				System.out.println("Re-serialized:");
+				String serialized = bs.serialize(parsed);
+				System.out.println(serialized);
+				partialModels.add(new LTLModel(inputAlphabet, outputAlphabet, serialized));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else if (input.equals("V")) {
 			System.out.println("Please provide a valid trace:");
 			//inputs/output input/output ...
@@ -174,7 +194,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 		return new ValidTraceModel(inputAlphabet, outputAlphabet, inputSequence, outputSequence);
 	}
 	
-	// TODO remove
+	// TODO remove after refactor
 	public boolean isInputProximityKnown(List<String> inputs) {
 		boolean result = false;
 		for(PartialModel model : partialModels) {
@@ -190,67 +210,9 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 	public AdaptionCommand getCommand() {
 		return currentCommand;
 	}
-	/*
-	private String transformValidTraceToLTLExpression(String trace) {
-		//TODO simplify
-		List<String> tokenizedTrace = Arrays.asList(trace.split("\\s"));
-		
-		StringBuilder inputPart = new StringBuilder();
-		StringBuilder outputPart = new StringBuilder();
-		inputPart.append("(");
-		outputPart.append("(");
-		for (int k = 0; k < tokenizedTrace.size(); ++k) {
-			// Get the given trace elements
-			List<String> ioPair = Arrays.asList(tokenizedTrace.get(k).split("/"));
-			// Append the current step to the input part
-			for (int j = 0; j < k; ++j)  {
-				inputPart.append("X");
-			}
-			inputPart.append("(");
-			for (int i = 0; i < inputAlphabet.size(); ++i) {
-				if (inputAlphabet.get(i).equals(ioPair.get(0))) {
-					inputPart.append(inputAlphabet.get(i));
-				} else {
-					inputPart.append("!");
-					inputPart.append(inputAlphabet.get(i));
-				}
-				if (i < inputAlphabet.size() - 1) {
-					inputPart.append("&");
-				}
-			}
-			inputPart.append(")");
-			if (k < tokenizedTrace.size() - 1) {
-				inputPart.append("&");
-			}
-			// Append the current step to the output part
-			for (int j = 0; j < k; ++j)  {
-				outputPart.append("X");
-			}
-			outputPart.append("(");
-			for (int i = 0; i < outputAlphabet.size(); ++i) {
-				if (outputAlphabet.get(i).equals(ioPair.get(1))) {
-					outputPart.append(outputAlphabet.get(i));
-				} else {
-					outputPart.append("!");
-					outputPart.append(outputAlphabet.get(i));
-				}
-				if(i < outputAlphabet.size() - 1) {
-					outputPart.append("&");
-				}
-			}
-			outputPart.append(")");
-			if (k < tokenizedTrace.size() - 1) {
-				outputPart.append("&");
-			}
-		}
-		inputPart.append(")");
-		outputPart.append(")");
-		
-		return inputPart.toString() + "->" + outputPart.toString();
-	}
-	*/
+	
 	public List<? extends String> interactiveEQ(DHCHypothesisMealy hypothesis){
-		for(Set<String> s : com.google.common.collect.Sets.powerSet(new HashSet<String>(inputAlphabet))) {
+		/*for(Set<String> s : com.google.common.collect.Sets.powerSet(new HashSet<String>(inputAlphabet))) {
 			if(!s.isEmpty()) {
 				for(List<String> permutation : com.google.common.collect.Collections2.permutations(s)) {
 					String a = hypothesis.query(permutation);
@@ -258,8 +220,18 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 					if(!a.equals(b)) return permutation;
 				}
 			}
+		}*/
+		String input = null;
+		Utils.output(hypothesis.getHypothesis());
+		BufferedReader reader =
+                new BufferedReader(new InputStreamReader(System.in));
+		try {
+			input = reader.readLine();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return null;
+		List<String> tokenizedInput = Arrays.asList(input.split(" "));
+		return tokenizedInput;
 	}
 
 

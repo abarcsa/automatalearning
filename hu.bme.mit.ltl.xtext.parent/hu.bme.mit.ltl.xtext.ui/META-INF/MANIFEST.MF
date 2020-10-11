@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: hu.bme.mit.ltl.xtext.ui
+Bundle-ManifestVersion: 2
+Bundle-Name: hu.bme.mit.ltl.xtext.ui
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: hu.bme.mit.ltl.xtext.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: hu.bme.mit.ltl.xtext,
+ hu.bme.mit.ltl.xtext.ide,
+ hu.bme.mit.ltl,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.ui,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Export-Package: hu.bme.mit.ltl.ui.contentassist,
+ hu.bme.mit.ltl.xtext.ui.internal,
+ hu.bme.mit.ltl.ui.quickfix
+Bundle-Activator: hu.bme.mit.ltl.xtext.ui.internal.XtextActivator
