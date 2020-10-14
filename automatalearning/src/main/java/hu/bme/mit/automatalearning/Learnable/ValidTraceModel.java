@@ -42,19 +42,8 @@ public class ValidTraceModel implements PartialModel {
 	}
 
 	@Override
-	public void setInputAlphabet(List<String> inputAlphabet) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public List<String> getInputAlphabet() {
 		return this.inputAlphabet;
-	}
-
-	@Override
-	public void setOutputAlphabet(List<String> outputAlphabet) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -63,8 +52,21 @@ public class ValidTraceModel implements PartialModel {
 	}
 
 	@Override
-	public boolean isInputProximityKnown(List<String> inputs) {
-		// TODO Auto-generated method stub
+	public boolean isInputProximityKnown(List<String> inputSequence) {
+		for (int i = 0; i < inputSequence.size(); ++i) {
+			// If the current input is longer than the contained trace, no information
+			if (i >= inputs.size()) {
+				return false;
+			}
+			// If a mismatch is ever detected, no information
+			if (!inputs.get(i).equals(inputSequence.get(i))) {
+				return false;
+			}
+			// If the end of the current input sequence is reached, return the corresponding output
+			if (i == (inputSequence.size() - 1) && inputs.size() > inputSequence.size()) {
+				return true;
+			}
+		}
 		return false;
 	}
 	

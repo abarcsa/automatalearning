@@ -35,21 +35,10 @@ public class IOPairModel implements PartialModel {
 	}
 
 	@Override
-	public void setInputAlphabet(List<String> inputAlphabet) {
-		this.inputAlphabet = inputAlphabet;
-		
-	}
-
-	@Override
 	public List<String> getInputAlphabet() {
 		return this.inputAlphabet;
 	}
 
-	@Override
-	public void setOutputAlphabet(List<String> outputAlphabet) {
-		this.outputAlphabet = outputAlphabet;
-		
-	}
 
 	@Override
 	public List<String> getOutputAlphabet() {
