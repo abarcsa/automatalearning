@@ -96,7 +96,8 @@ public class AdaptiveDirectHypothesisConstructionMealy<I, O, M, S, T> extends Di
                     hypothesis.addTransition(currentElement.parentState, newState, currentElement.input, currentElement.output);
                 }
                 signatures.put(currSignature, newState);
-                if(currCommand.equals(AdaptionCommand.PESSIMISTIC)) {
+                System.out.println("comm: " + currCommand);
+                if(!currCommand.equals(AdaptionCommand.PESSIMISTIC)) {
                 	for(I symbol : hypothesis.getHypothesisInputAlphabet()) {
                     	statesToComplete.add(new QueueElement<I, O, S>(newState, currentElement, symbol, currAlphabetSignature.get(symbol)));
                     }

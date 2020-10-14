@@ -85,6 +85,8 @@ public class Utils {
 		try(PrintWriter writer = new PrintWriter(".\\eqVisualization\\tmp_hypo.json", "UTF-8");){
 			JSONObject hypoJSON = hypoToJSON(hypo);
 			writer.write(hypoJSON.toString());
+			writer.flush();
+			writer.close();
 			ProcessBuilder processBuilder = new ProcessBuilder("python", new File("").getAbsolutePath() + "\\eqVisualization\\eqVisualizer.py");
 		    processBuilder.redirectErrorStream(true);
 		    for(String str : processBuilder.command()) {
