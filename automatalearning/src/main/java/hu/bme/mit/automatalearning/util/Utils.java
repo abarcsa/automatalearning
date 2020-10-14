@@ -1,12 +1,15 @@
 package hu.bme.mit.automatalearning.util;
 
 
+import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -78,6 +81,23 @@ public class Utils {
 		}
 	}
 	
+	public static void visualizeEQ(Hypothesis<String, String, MealyMachine, State, Transition> hypo) {
+		try(PrintWriter writer = new PrintWriter(".\\eqVisualization\\tmp_hypo.json", "UTF-8");){
+			JSONObject hypoJSON = hypoToJSON(hypo);
+			writer.write(hypoJSON.toString());
+			ProcessBuilder processBuilder = new ProcessBuilder("python", new File("").getAbsolutePath() + "\\eqVisualization\\eqVisualizer.py");
+		    processBuilder.redirectErrorStream(true);
+		    for(String str : processBuilder.command()) {
+		    	System.out.println(str);
+		    }
+		    Process process = processBuilder.start();
+		    Desktop desktop = Desktop.getDesktop();  
+		    desktop.open(new File(".\\eqVisualization\\tmp_hypo.dot.svg"));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void output(MealyMachine m, String fileName) {
 		try(PrintWriter writer = new PrintWriter(fileName, "UTF-8");){
 			writer.println("MealyMachine{");
@@ -120,5 +140,22 @@ public class Utils {
 			e.printStackTrace();
 		}
 		
+	}
+	private static JSONObject hypoToJSON(Hypothesis<String, String, MealyMachine, State, Transition> hypo) {
+		JSONObject obj = 
+				new JSONObject()
+					.put("alphabet", new JSONArray(hypo.getHypothesisTransitions().stream()
+														.map(t -> t.getInput() + "/" + t.getOutput())
+														.collect(Collectors.toList())))
+				    .put("states", new JSONArray(hypo.getHypothesisStates().stream()
+				    									.map(s -> s.getName())
+				    									.collect(Collectors.toList())))
+				    .put("initial_state", hypo.getHypothesisAutomaton().getInitialState().getName())
+				    .put("accepting_states", new JSONArray())
+				    .put("transitions", new JSONArray(hypo.getHypothesisTransitions().stream().map(t -> 
+				    	new JSONArray().put(t.getSourceState().getName())
+				    				   .put(t.getInput() + "/" + t.getOutput())
+				    				   .put(t.getTargetState().getName())).collect(Collectors.toList())));
+		return obj;
 	}
 }

@@ -20,9 +20,14 @@ import hu.bme.mit.automatalearning.Learnable.AdaptiveLearnable.AdaptionCommand;
 import hu.bme.mit.automatalearning.algorithm.dhc.DirectHypothesisConstructionMealy.QueueElement;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
+import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 import hu.bme.mit.automatalearning.teacher.AdaptiveTeacher;
 import hu.bme.mit.automatalearning.teacher.Teacher;
 import hu.bme.mit.automatalearning.util.SULWrapper;
+import hu.bme.mit.automatalearning.util.Utils;
+import hu.bme.mit.mealymodel.MealyMachine;
+import hu.bme.mit.mealymodel.State;
+import hu.bme.mit.mealymodel.Transition;
 import net.automatalib.automata.concepts.SuffixOutput;
 import net.automatalib.words.Word;
 
@@ -38,6 +43,25 @@ public class AdaptiveDirectHypothesisConstructionMealy<I, O, M, S, T> extends Di
 	AdaptionCommand currCommand = AdaptionCommand.OPTIMISTIC;
 	
 	@Override
+	public DHCHypothesis<I, O, M, S, T> execute() {
+		List<? extends I> counterExample = null;
+		DHCHypothesis<I, O, M, S, T> h = null;
+		do {
+			if(counterExample != null) {
+				refineHypothesis(counterExample);
+			}
+			h = constructHypothesis();
+			Utils.logHypothesisToJSON((Hypothesis<String, String, MealyMachine, State, Transition>) h, "DHC");
+			if(!reset) counterExample = teacher.equivalenceQuery(h, alphabet);
+			else reset = false;
+		}while(counterExample != null);
+		
+		return h;
+	}
+	
+	boolean reset = false;
+	
+	@Override
 	public DHCHypothesis<I, O, M, S, T> constructHypothesis() {
 		hypothesis.resetHypothesis();
 		ArrayDeque<QueueElement<I, O, S>> statesToComplete = new ArrayDeque<>();
@@ -50,8 +74,16 @@ public class AdaptiveDirectHypothesisConstructionMealy<I, O, M, S, T> extends Di
 			List<I> currSequence = getAccessSequence(currentElement);
 			
 			LinkedHashMap<I, O> currAlphabetSignature = findAlphabetOutputSignature(currSequence);
+			if(currCommand == AdaptionCommand.RESET) {
+				reset = true;
+				break;
+			}
 			List<O> currSignature = new ArrayList<>(currAlphabetSignature.values());
 			currSignature.addAll(findSplitterOutputSignature(currSequence));
+			if(currCommand == AdaptionCommand.RESET) {
+				reset = true;
+				break;
+			}
 			
 			S sibling = findStateWithSameSignature(signatures, currSignature);
 			
@@ -64,7 +96,7 @@ public class AdaptiveDirectHypothesisConstructionMealy<I, O, M, S, T> extends Di
                     hypothesis.addTransition(currentElement.parentState, newState, currentElement.input, currentElement.output);
                 }
                 signatures.put(currSignature, newState);
-                if(currCommand == AdaptionCommand.OPTIMISTIC) {
+                if(currCommand.equals(AdaptionCommand.PESSIMISTIC)) {
                 	for(I symbol : hypothesis.getHypothesisInputAlphabet()) {
                     	statesToComplete.add(new QueueElement<I, O, S>(newState, currentElement, symbol, currAlphabetSignature.get(symbol)));
                     }
@@ -84,6 +116,7 @@ public class AdaptiveDirectHypothesisConstructionMealy<I, O, M, S, T> extends Di
 			O outputSymbol = teacher.membershipQuery(currSequenceWithSymbol);
 			
 			currCommand = ((AdaptiveTeacher)this.teacher).getCommand();
+			if(currCommand.equals(AdaptionCommand.RESET)) break;
 			
 			currSignature.put(symbol, outputSymbol);
 		}
@@ -100,6 +133,7 @@ public class AdaptiveDirectHypothesisConstructionMealy<I, O, M, S, T> extends Di
 			O outputSymbol = teacher.membershipQuery(currSequenceWithSymbol);
 			
 			currCommand = ((AdaptiveTeacher)this.teacher).getCommand();
+			if(currCommand.equals(AdaptionCommand.RESET)) break;
 			
 			retVal.add(outputSymbol);
 		}

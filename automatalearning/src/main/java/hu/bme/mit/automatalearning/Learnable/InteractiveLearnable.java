@@ -222,7 +222,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 			}
 		}*/
 		String input = null;
-		Utils.output(hypothesis.getHypothesis());
+		Utils.visualizeEQ(hypothesis);
 		BufferedReader reader =
                 new BufferedReader(new InputStreamReader(System.in));
 		try {
