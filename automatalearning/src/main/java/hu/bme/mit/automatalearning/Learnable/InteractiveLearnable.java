@@ -45,7 +45,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 			List<String> possibleOutputs = queryModels((List<String>)inputs);
 			if (possibleOutputs == null || possibleOutputs.size() > 1) {
 				requireModel((List<String>)inputs);
-				currentCommand = AdaptionCommand.RESET;
+				//currentCommand = AdaptionCommand.RESET;	//TODO this
 			} else if (possibleOutputs.size() < 1) {
 				//TODO clean up the code
 				//throw new RuntimeException("Conflicting models. Terminating.");
@@ -208,6 +208,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 	}
 	
 	public AdaptionCommand getCommand() {
+		System.out.println("comm: " + currentCommand);
 		return currentCommand;
 	}
 	

@@ -43,19 +43,8 @@ public class InvalidTraceModel implements PartialModel {
 	}
 
 	@Override
-	public void setInputAlphabet(List<String> inputAlphabet) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public List<String> getInputAlphabet() {
 		return this.inputAlphabet;
-	}
-
-	@Override
-	public void setOutputAlphabet(List<String> outputAlphabet) {
-		
 	}
 
 	@Override
@@ -65,7 +54,7 @@ public class InvalidTraceModel implements PartialModel {
 
 	@Override
 	public boolean isInputProximityKnown(List<String> inputs) {
-		// TODO Auto-generated method stub
+		// TODO elaborate
 		return false;
 	}
 	
