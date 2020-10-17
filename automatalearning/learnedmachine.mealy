@@ -1,14 +1,11 @@
 MealyMachine{
 initialState State state0
-states {State state0,State state1,State state2,}
+states {State state0,State state1,}
 transitions {
 Transition { input null output send0 sourceState state0 targetState state0},
 Transition { input ack0 output send1 sourceState state0 targetState state1},
-Transition { input ack1 output send0 sourceState state0 targetState state2},
-Transition { input null output send1 sourceState state1 targetState state0},
+Transition { input ack1 output send0 sourceState state0 targetState state0},
+Transition { input null output send1 sourceState state1 targetState state1},
 Transition { input ack0 output send1 sourceState state1 targetState state1},
 Transition { input ack1 output send0 sourceState state1 targetState state0},
-Transition { input null output send0 sourceState state2 targetState state0},
-Transition { input ack0 output send1 sourceState state2 targetState state1},
-Transition { input ack1 output send1 sourceState state2 targetState state0},
 }

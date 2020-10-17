@@ -39,6 +39,21 @@ public class LPT {
     }
   }
   
+  public LPTRootNode getNode(final List<? extends String> input) {
+    try {
+      LPTRootNode node = this.root;
+      for (final String in : input) {
+        node = this.traverse(node, in);
+      }
+      if ((!(node instanceof LPTUnloopedNode))) {
+        throw new Exception("Tree is not valid!");
+      }
+      return node;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
   public Set<String> getInputAlphabet() {
     return this.inputAlphabet;
   }

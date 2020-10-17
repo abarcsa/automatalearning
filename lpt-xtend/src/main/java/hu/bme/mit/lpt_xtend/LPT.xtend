@@ -29,6 +29,15 @@ class LPT {
 		return (node as LPTUnloopedNode).getOutput();
 	}
 	
+	def public LPTRootNode getNode(List<? extends String> input){
+		var LPTRootNode node = root;
+		for(String in : input){
+			node = traverse(node, in);
+		}
+		if(!(node instanceof LPTUnloopedNode)) throw new Exception("Tree is not valid!");
+		return node;
+	}
+	
 	def public Set<String> getInputAlphabet(){ return this.inputAlphabet }
 	
 	def public LPTRootNode getRoot(){

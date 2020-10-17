@@ -33,6 +33,9 @@ public class MemoizingLearnable extends StringSequenceLearnable{
 		try{
 			//Runs correctly if 'inputs' are already memoized
 			output = prefixTree.getOutput(inputs);
+			if(prefixTree.getNode(inputs).getChildren().size() > 0) {
+				((InteractiveLearnable)delegate).setCommand(AdaptionCommand.OPTIMISTIC);
+			}
 		}catch(Exception e) {
 			//If not memoized query the system under learning using the delegate and memoize the output
 			output = delegate.getOutput(inputs);
@@ -76,6 +79,7 @@ public class MemoizingLearnable extends StringSequenceLearnable{
 		}
 		this.prefixTree = newPrefixTree;
 	}
+	
 	
 	private static class BFSHelper{
 		List<String> currSequence;

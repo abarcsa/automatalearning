@@ -211,6 +211,9 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 		System.out.println("comm: " + currentCommand);
 		return currentCommand;
 	}
+	public void setCommand(AdaptionCommand command) {
+		this.currentCommand = command;
+	}
 	
 	public List<? extends String> interactiveEQ(DHCHypothesisMealy hypothesis){
 		/*for(Set<String> s : com.google.common.collect.Sets.powerSet(new HashSet<String>(inputAlphabet))) {
@@ -228,6 +231,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
                 new BufferedReader(new InputStreamReader(System.in));
 		try {
 			input = reader.readLine();
+			if(input.contentEquals("")) return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
