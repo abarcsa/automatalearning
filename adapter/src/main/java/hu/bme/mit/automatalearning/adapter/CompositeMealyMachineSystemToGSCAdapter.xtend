@@ -240,20 +240,21 @@ class CompositeMealyMachineSystemToGSCAdapter {
 	
 	private def String transformMealyCharacterToGamma(String character, Set<String> interfaces, Map<String, Collection<String>> events) {
 		//Split and check
-		var String[] qualifiedChar = character.split("\\.");
+		var String[] qualifiedChar = character.split("\\.|_");
 		if(qualifiedChar.length != 2) {
 			throw new RuntimeException("Message names are not Gamma-compatible!")
 		}
 		
 		//Add to the corresponding collections
-		interfaces.add(qualifiedChar.get(0));
-		if(!events.containsKey(qualifiedChar.get(0))) {
-			events.put(qualifiedChar.get(0), new ArrayList<String>)
+		var qc0 = qualifiedChar.get(0).substring(0,1).toUpperCase + qualifiedChar.get(0).substring(1)
+		interfaces.add(qc0);
+		if(!events.containsKey(qc0)) {
+			events.put(qc0, new ArrayList<String>)
 		}
-		events.get(qualifiedChar.get(0)).add(qualifiedChar.get(1))
+		events.get(qc0).add(qualifiedChar.get(1))
 		
 		//Return the port(/interface)
-		return qualifiedChar.get(0);
+		return qc0;
 	}
 
 

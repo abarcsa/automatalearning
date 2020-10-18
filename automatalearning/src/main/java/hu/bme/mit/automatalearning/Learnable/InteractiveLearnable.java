@@ -44,6 +44,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 		while(true) {
 			List<String> possibleOutputs = queryModels((List<String>)inputs);
 			if (possibleOutputs == null || possibleOutputs.size() > 1) {
+				System.out.println("Ambiguous output: " + possibleOutputs + " (input: " + inputs + ")");
 				requireModel((List<String>)inputs);
 				//currentCommand = AdaptionCommand.RESET;	//TODO this
 			} else if (possibleOutputs.size() < 1) {
@@ -123,11 +124,11 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 		if (input.equals("I")) {
 			System.out.println("Please provide the expected output:");
 			try {
-				input = reader.readLine();
+				input = reader.readLine().replace('.', '_');
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			partialModels.add(new IOPairModel(inputAlphabet, outputAlphabet, inputs, input));
+			partialModels.add(new IOPairModel(inputAlphabet, outputAlphabet, inputs, input.substring(0,1).toLowerCase() + input.substring(1)));
 		} else if (input.equals("L")) {
 			System.out.println("Please provide an LTL expression:");
 			try {
@@ -173,11 +174,11 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 	private PartialModel createInValidTraceModelFromString(String trace) {
 		List<String> inputSequence = new ArrayList<>();
 		List<String> outputSequence = new ArrayList<>();
-		List<String> tokenizedTrace = Arrays.asList(trace.split("\\s"));
+		List<String> tokenizedTrace = Arrays.asList(trace.replace('.', '_').split("\\s"));
 		for (String element : tokenizedTrace) {
 			List<String> ioPair = Arrays.asList(element.split("/"));
-			inputSequence.add(ioPair.get(0));
-			outputSequence.add(ioPair.get(1));
+			inputSequence.add(ioPair.get(0).substring(0,1).toLowerCase() + ioPair.get(0).substring(1));
+			outputSequence.add(ioPair.get(1).substring(0,1).toLowerCase() + ioPair.get(1).substring(1));
 		}
 		return new InvalidTraceModel(inputAlphabet, outputAlphabet, inputSequence, outputSequence);
 	}
@@ -185,11 +186,11 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 	private PartialModel createValidTraceModelFromString(String trace) {
 		List<String> inputSequence = new ArrayList<>();
 		List<String> outputSequence = new ArrayList<>();
-		List<String> tokenizedTrace = Arrays.asList(trace.split("\\s"));
+		List<String> tokenizedTrace = Arrays.asList(trace.replace('.', '_').split("\\s"));
 		for (String element : tokenizedTrace) {
 			List<String> ioPair = Arrays.asList(element.split("/"));
-			inputSequence.add(ioPair.get(0));
-			outputSequence.add(ioPair.get(1));
+			inputSequence.add(ioPair.get(0).substring(0,1).toLowerCase() + ioPair.get(0).substring(1));
+			outputSequence.add(ioPair.get(1).substring(0,1).toLowerCase() + ioPair.get(1).substring(1));
 		}
 		return new ValidTraceModel(inputAlphabet, outputAlphabet, inputSequence, outputSequence);
 	}
@@ -208,7 +209,7 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 	}
 	
 	public AdaptionCommand getCommand() {
-		System.out.println("comm: " + currentCommand);
+		//System.out.println("comm: " + currentCommand);
 		return currentCommand;
 	}
 	public void setCommand(AdaptionCommand command) {
@@ -235,7 +236,9 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		List<String> tokenizedInput = Arrays.asList(input.split(" "));
+		String[] inputTok = input.replace('.', '_').split(" ");
+		List<String> tokenizedInput = new ArrayList<>();
+		for (String tok : inputTok) tokenizedInput.add(tok.substring(0, 1).toLowerCase() + tok.substring(1));
 		return tokenizedInput;
 	}
 

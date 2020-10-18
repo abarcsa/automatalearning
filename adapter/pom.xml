@@ -68,10 +68,5 @@
 	    	<artifactId>mealymodel</artifactId>
 	    	<version>0.0.1-SNAPSHOT</version>
     	</dependency>
-    	<dependency>
-	    	<groupId>hu.bme.mit</groupId>
-	    	<artifactId>automatalearning</artifactId>
-	    	<version>0.0.1-SNAPSHOT</version>
-    	</dependency>
 	</dependencies>
 </project>

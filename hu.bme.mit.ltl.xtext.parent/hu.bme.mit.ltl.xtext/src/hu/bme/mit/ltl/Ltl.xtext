@@ -132,3 +132,5 @@ AtomicProposition returns LTLExpression:
 EString returns ecore::EString:
 	STRING | ID
 ;
+@Override
+terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'.'|'0'..'9')*;

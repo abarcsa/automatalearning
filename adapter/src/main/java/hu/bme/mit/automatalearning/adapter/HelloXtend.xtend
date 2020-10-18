@@ -11,14 +11,14 @@ class HelloXtend {
 	protected final static extension MealyMachineToGSCAdapter = new MealyMachineToGSCAdapter;
 		
 	def static void main(String[] args) {
-		var mmSystem = new ArrayList<MealyMachine>()
-		mmSystem.add(hu.bme.mit.automatalearning.Main.alternatingBitLPTTT())
-		var CompositeMealyMachineSystemToGSCAdapter ad = new CompositeMealyMachineSystemToGSCAdapter(mmSystem)
-		ad.transformInterfaces
-		ad.transformPortBindings
+		//var mmSystem = new ArrayList<MealyMachine>()
+		//mmSystem.add(hu.bme.mit.automatalearning.Main.alternatingBitLPTTT())
+		//var CompositeMealyMachineSystemToGSCAdapter ad = new CompositeMealyMachineSystemToGSCAdapter(mmSystem)
+		//ad.transformInterfaces
+		//ad.transformPortBindings
 		
-		var GammaProjectSerializer ser = new GammaProjectSerializer(ad, "")
-		ser.serialize
+		//var GammaProjectSerializer ser = new GammaProjectSerializer(ad, "")
+		//ser.serialize
 		
 	}
 		

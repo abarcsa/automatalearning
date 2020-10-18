@@ -132,6 +132,11 @@ public class LTLModel implements PartialModel{
 				}
 			}
 		}
+		//TODO fix this
+		if (result.size() == 0) {
+			result.addAll(outputAlphabet);
+		}
+		
 		return result;
 		//System.out.println(new BitSet(7).nextSetBit(0));
 	}

@@ -47,7 +47,7 @@ public class Main {
 			//Alternating bit protocol in the form of a String input formalism, learned by TTT, outputs to /learnedmachine.mealy
 		//alternatingbitTTT();
 		
-		alternatingBitAdaptiveDHC();
+		fullyInteractiveComponentLearning();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
 		//coffeeMealyDHC();
@@ -79,6 +79,11 @@ public class Main {
 		
 		//experimentalEvaluationTTTAlphabet();
 		
+	}
+	
+	public static void fullyInteractiveComponentLearning() {
+		InteractiveLearning il = new InteractiveLearning();
+		il.learn();
 	}
 	
 	public static void paritybitLPTTTT() {

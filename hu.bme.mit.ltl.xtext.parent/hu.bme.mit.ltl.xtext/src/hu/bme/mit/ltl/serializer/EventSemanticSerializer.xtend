@@ -23,6 +23,8 @@ import hu.bme.mit.ltl.LTLExpression
 class EventSemanticSerializer {
 	List<String> inputAlphabet
 	List<String> outputAlphabet
+	var boolean grouping = true	//TODO fix this
+	
 	
 	new(List<String> inputAlphabet, List<String> outputAlphabet) {
 		this.inputAlphabet = inputAlphabet
@@ -58,7 +60,7 @@ class EventSemanticSerializer {
 		var String newSerialized = ""
 		
 		var BuilderReturn operand = expression.operand.build
-		newSerialized += "X" + "(" operand.getSerialized
+		newSerialized += "X" + "(" + operand.getSerialized
 		if (operand.needsCheck)
 			newSerialized += operand.createExtension
 		newSerialized += ")"
@@ -96,17 +98,22 @@ class EventSemanticSerializer {
 		
 		var BuilderReturn left = expression.leftOperand.build
 		var BuilderReturn right = expression.rightOperand.build
-		newSerialized += "(" + left.getSerialized
+		newSerialized += "("
+		//if (grouping) newSerialized += "("
+		newSerialized += left.getSerialized
 		if (left.needsCheck) {
 			newSerialized += left.createExtension
 		}
+		//if (grouping) newSerialized += ")"
 		
 		newSerialized += '->'
 		
+		//if (grouping) newSerialized += "("
 		newSerialized += right.getSerialized
 		if (right.needsCheck) {
 			newSerialized += right.createExtension
 		}
+		//if (grouping) newSerialized += ")"
 		newSerialized += ")"
 		
 		return new BuilderReturn(newSerialized)
@@ -117,17 +124,22 @@ class EventSemanticSerializer {
 		
 		var BuilderReturn left = expression.leftOperand.build
 		var BuilderReturn right = expression.rightOperand.build
-		newSerialized += "(" + left.getSerialized
+		newSerialized += "("
+		//if (grouping) newSerialized += "("
+		newSerialized += left.serialized
 		if (left.needsCheck) {
 			newSerialized += left.createExtension
 		}
+		//if (grouping) newSerialized += ")"
 		
 		newSerialized += '<->'
 		
+		//if (grouping) newSerialized += "("
 		newSerialized += right.getSerialized
 		if (right.needsCheck) {
 			newSerialized += right.createExtension
 		}
+		//if (grouping) newSerialized += ")"
 		newSerialized += ")"
 		
 		return new BuilderReturn(newSerialized)
@@ -139,29 +151,39 @@ class EventSemanticSerializer {
 		
 		var BuilderReturn left = expression.leftOperand.build
 		var BuilderReturn right = expression.rightOperand.build
-		newSerialized += "(" + left.getSerialized
+		newSerialized += "(" 
+		if (grouping) newSerialized += "("
+		newSerialized += left.getSerialized
 		if (left.needsCheck) {
 			newSerialized += left.createExtension
 		}
+		if (grouping) newSerialized += ")"
 		
 		newSerialized += '|'
 		
+		if (grouping) newSerialized += "("
 		newSerialized += right.getSerialized
 		if (right.needsCheck) {
 			newSerialized += right.createExtension
 		}
+		if (grouping) newSerialized += ")"
 		newSerialized += ")"
 		
 		return new BuilderReturn(newSerialized)
 	}
 	
 	private def dispatch BuilderReturn build(AndExpression expression) {
+		
 		var String newSerialized = "" 
 		var BuilderReturn left = expression.leftOperand.build
 		var BuilderReturn right = expression.rightOperand.build
 		
 		if (left.needsCheck && right.needsCheck) { //if both need check, pass on
-			newSerialized += left.getSerialized + "&" + right.getSerialized
+			//if (grouping) newSerialized += "("
+			newSerialized += left.getSerialized
+			newSerialized += "&"
+			newSerialized += right.getSerialized
+			//if (grouping) newSerialized += ")"
 			var Set<AlphabetType> newAlphabetType = new HashSet<AlphabetType>()
 			var Map<AlphabetType, Set<Integer>> newTokens = new HashMap
 			
@@ -175,6 +197,7 @@ class EventSemanticSerializer {
 			
 			return new BuilderReturn(newSerialized, newAlphabetType, newTokens)
 		} else {	//else do check
+			//if (grouping) newSerialized += "("
 			newSerialized += left.getSerialized
 			if (left.needsCheck) {
 				newSerialized += left.createExtension
@@ -184,6 +207,7 @@ class EventSemanticSerializer {
 			if (right.needsCheck) {
 				newSerialized += right.createExtension
 			}
+			//if (grouping) newSerialized += ")"
 			return new BuilderReturn(newSerialized)
 		}
 	}
@@ -210,12 +234,14 @@ class EventSemanticSerializer {
 	
 	private def dispatch BuilderReturn build(AtomicProposition expression) {
 		var BuilderReturn result
-		if (inputAlphabet.contains(expression.proposition)) {
-			result = new BuilderReturn(expression.proposition, AlphabetType.INPUT, inputAlphabet.indexOf(expression.proposition))
-		} else if (outputAlphabet.contains(expression.proposition)) {
-			result = new BuilderReturn(expression.proposition, AlphabetType.OUTPUT, outputAlphabet.indexOf(expression.proposition))
+		var prop = expression.proposition.replace('.', '_')
+		prop = prop.substring(0, 1).toLowerCase + prop.substring(1)
+		if (inputAlphabet.contains(prop)) {
+			result = new BuilderReturn(prop, AlphabetType.INPUT, inputAlphabet.indexOf(prop))
+		} else if (outputAlphabet.contains(prop)) {
+			result = new BuilderReturn(prop, AlphabetType.OUTPUT, outputAlphabet.indexOf(prop))
 		} else {
-			throw new IllegalArgumentException("Neither alphabet contains the given proposition!")
+			throw new IllegalArgumentException("Neither alphabet contains the given proposition: " + prop)
 		}
 		return result
 	}
@@ -242,6 +268,7 @@ class EventSemanticSerializer {
 					if (!b.getTokensFound.get(AlphabetType.INPUT).contains(i) && 
 						!b.getTokensFound.get(AlphabetType.INPUT).contains(-i)
 					) {
+						
 						inRet += "&!" + inputAlphabet.get(i)
 					}
 				}
