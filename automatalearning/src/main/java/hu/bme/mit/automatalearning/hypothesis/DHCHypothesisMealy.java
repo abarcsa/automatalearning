@@ -334,6 +334,25 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 
 	@Override
 	public MealyMachine getHypothesisAutomaton() {
+		return this.getHypothesis();
+	}
+
+	@Override
+	public MealyMachine getHypothesis() {
+		Set<String> inputA = new HashSet<>();
+		Set<String> outputA = new HashSet<>();
+		for(Transition t : this.automaton.getTransitions()) {
+			inputA.add(t.getInput());
+			outputA.add(t.getOutput());
+		}
+		Alphabet in = MealymodelFactory.eINSTANCE.createAlphabet();
+		Alphabet out = MealymodelFactory.eINSTANCE.createAlphabet();
+		in.getCharacters().addAll(inputA);
+		out.getCharacters().addAll(outputA);
+		this.automaton.setInputAlphabet(in);
+		this.automaton.setOutputAlphabet(out);
 		return this.automaton;
 	}
+	
+	
 }
