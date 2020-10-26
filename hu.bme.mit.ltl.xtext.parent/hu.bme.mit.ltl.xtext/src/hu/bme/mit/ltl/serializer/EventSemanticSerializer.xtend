@@ -191,8 +191,10 @@ class EventSemanticSerializer {
 			newAlphabetType.addAll(right.getAlphabetType)
 			for(t : newAlphabetType) {
 				newTokens.put(t, new HashSet)
-				newTokens.get(t).addAll(left.getTokensFound.get(t))
-				newTokens.get(t).addAll(right.getTokensFound.get(t))
+				if (left.getTokensFound.get(t) !== null)
+					newTokens.get(t).addAll(left.getTokensFound.get(t))
+				if (right.getTokensFound.get(t) !== null)
+					newTokens.get(t).addAll(right.getTokensFound.get(t))
 			}
 			
 			return new BuilderReturn(newSerialized, newAlphabetType, newTokens)

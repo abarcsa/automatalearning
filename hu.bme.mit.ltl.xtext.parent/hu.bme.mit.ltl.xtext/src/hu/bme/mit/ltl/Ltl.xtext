@@ -59,6 +59,7 @@ LTLExpression returns LTLExpression:
 	ArrowExpression
 ;
 
+// Binary, right-associative
 ArrowExpression returns LTLExpression:
 	OrExpression(
 		{ImplyExpression.leftOperand=current} '->' rightOperand=ArrowExpression |
@@ -67,12 +68,14 @@ ArrowExpression returns LTLExpression:
 ;
 
 //TODO xor above this
+// Binary, left-associative
 OrExpression returns LTLExpression:
 	AndExpression(
 		{OrExpression.leftOperand=current} '|' rightOperand=AndExpression
 	)*
 ;
 
+// Binary, left-associative
 AndExpression returns LTLExpression:
 	UntilExpression(
 		{AndExpression.leftOperand=current} '&' rightOperand=UntilExpression
@@ -80,6 +83,7 @@ AndExpression returns LTLExpression:
 ;
 
 //TODO extend with W, M, R
+// Binary, right-associative
 UntilExpression returns LTLExpression:
 	FutureGloballyExpression(
 		{UntilExpression.leftOperand=current} 'U' rightOperand=UntilExpression

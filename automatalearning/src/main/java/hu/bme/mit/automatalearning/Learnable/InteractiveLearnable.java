@@ -143,9 +143,9 @@ public class InteractiveLearnable extends StringSequenceLearnable {
 			try {
 				LTLExpression parsed = dt.parse(new ByteArrayInputStream(input.getBytes()));
 				EventSemanticSerializer bs = new EventSemanticSerializer(inputAlphabet, outputAlphabet);
-				System.out.println("Re-serialized:");
+				//System.out.println("Re-serialized:");
 				String serialized = bs.serialize(parsed);
-				System.out.println(serialized);
+				//System.out.println(serialized);
 				partialModels.add(new LTLModel(inputAlphabet, outputAlphabet, serialized));
 			} catch (Exception e) {
 				e.printStackTrace();

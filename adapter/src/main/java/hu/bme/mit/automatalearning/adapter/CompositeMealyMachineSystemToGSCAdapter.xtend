@@ -173,7 +173,7 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		] {
 			transition from _initialState to «mm.initialState.name»
 			«FOR transition : mm.transitions»
-			transition from «transition.sourceState.name» to «transition.targetState.name» when «transition.input» / raise «transition.output»;
+			transition from «transition.sourceState.name» to «transition.targetState.name» when «transition.input.substring(0,1).toUpperCase + transition.input.substring(1).replace('_', '.')» / raise «transition.output.substring(0,1).toUpperCase + transition.output.substring(1).replace('_', '.')»;
 			«ENDFOR»
 			
 			region mainRegion {
@@ -226,7 +226,9 @@ class CompositeMealyMachineSystemToGSCAdapter {
 			if(!inputPorts.containsKey(mm)) {
 				inputPorts.put(mm, new HashSet<String>)
 			}
-			inputPorts.get(mm).add(inInterf)
+			if (inInterf !== null) {
+				inputPorts.get(mm).add(inInterf)
+			}
 		}
 
 		for(character : mm.outputAlphabet.characters) {
@@ -234,7 +236,9 @@ class CompositeMealyMachineSystemToGSCAdapter {
 			if(!outputPorts.containsKey(mm)) {
 				outputPorts.put(mm, new HashSet<String>)
 			}
-			outputPorts.get(mm).add(outPort)
+			if (outputPorts !== null) {
+				outputPorts.get(mm).add(outPort)
+			}
 		}
 	}
 	
@@ -242,7 +246,8 @@ class CompositeMealyMachineSystemToGSCAdapter {
 		//Split and check
 		var String[] qualifiedChar = character.split("\\.|_");
 		if(qualifiedChar.length != 2) {
-			throw new RuntimeException("Message names are not Gamma-compatible!")
+			//throw new RuntimeException("Message names are not Gamma-compatible!")
+			return null;	//FIXME this is a temporary fix for introducing pseudo-events that must be examined by the user
 		}
 		
 		//Add to the corresponding collections
