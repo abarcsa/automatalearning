@@ -45,7 +45,7 @@ class EventSemanticSerializer {
 			newSerialized += left.createExtension
 		}
 		
-		newSerialized += 'U'
+		newSerialized += ' U '
 		
 		newSerialized += right.getSerialized
 		if (right.needsCheck) {
