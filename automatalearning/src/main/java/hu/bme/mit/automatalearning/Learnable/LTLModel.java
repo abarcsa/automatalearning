@@ -27,15 +27,15 @@ import owl.translations.ltl2ldba.SymmetricLDBAConstruction;
 import owl.translations.ltl2ldba.SymmetricProductState;
 import owl.translations.mastertheorem.SymmetricEvaluatedFixpoints;
 
-public class LTLModel implements PartialModel{
+public class LTLModel implements PartialModel<String, String>{
 	
-	private List<String> inputAlphabet;
+	private List<? extends String> inputAlphabet;
 	private List<String> outputAlphabet;
 	private Automaton<?, ?> automaton;
 	
 	private String inputFormula;
 	
-	public LTLModel(List<String> inputAlphabet, List<String> outputAlphabet, String formula) {
+	public LTLModel(List<? extends String> inputAlphabet, List<String> outputAlphabet, String formula) {
 		// Save parameters
 		this.inputAlphabet = inputAlphabet;
 		this.outputAlphabet = outputAlphabet;
@@ -52,7 +52,7 @@ public class LTLModel implements PartialModel{
 	}
 	
 	@Override
-	public Set<String> getPossibleOutputs(List<String> inputSequence) {
+	public Set<String> getPossibleOutputs(List<? extends String> inputSequence) {
 		return getAutomatonOutput(automaton, inputSequence);
 	}
 	
@@ -142,7 +142,7 @@ public class LTLModel implements PartialModel{
 	}
 
 	@Override
-	public List<String> getInputAlphabet() {
+	public List<? extends String> getInputAlphabet() {
 		return this.inputAlphabet;
 	}
 
@@ -152,7 +152,7 @@ public class LTLModel implements PartialModel{
 	}
 
 	@Override
-	public boolean isInputProximityKnown(List<String> inputs) {
+	public boolean isProximityContained(List<? extends String> inputs) {
 		// TODO elaborate;
 		return false;
 	}

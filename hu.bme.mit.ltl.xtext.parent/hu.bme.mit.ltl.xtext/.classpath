@@ -9,6 +9,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="C:/Users/Aron/eclipse-workspace/automatalearning-proj/owl/lib/icu4j-67_1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

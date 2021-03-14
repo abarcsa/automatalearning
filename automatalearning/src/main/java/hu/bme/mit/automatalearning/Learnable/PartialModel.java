@@ -3,12 +3,12 @@ package hu.bme.mit.automatalearning.Learnable;
 import java.util.List;
 import java.util.Set;
 
-interface PartialModel{
-	public Set<String> getPossibleOutputs(List<String> inputSequence);
+public interface PartialModel<I,O>{
+	public Set<O> getPossibleOutputs(List<? extends I> inputSequence);
 	
-	public List<String> getInputAlphabet();
+	public List<? extends I> getInputAlphabet();
 	
-	public List<String> getOutputAlphabet();
+	public List<O> getOutputAlphabet();
 	
-	public boolean isInputProximityKnown(List<String> inputs);
+	public boolean isProximityContained(List<? extends I> inputs);
 }

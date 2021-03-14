@@ -1,0 +1,18 @@
+package CompositeSystemPackage
+
+import "Interfaces.gcd"
+import "Component0.gcd"
+
+sync CompositeSystem [
+	port  : provides 
+] {
+	// Components:
+	component _component0 : Component0Statechart
+	
+	// Binding system ports:
+	bind  -> .
+	bind  -> _component0.
+	
+	// Connecting component ports:
+}
+

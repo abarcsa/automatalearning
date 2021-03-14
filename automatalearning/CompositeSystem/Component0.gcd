@@ -1,0 +1,26 @@
+package Component0
+
+import "Interfaces"
+		
+statechart Component0Statechart [
+	port  : provides 
+] {
+	transition from _initialState to state0
+	transition from state0 to state1 when Interrupt / raise BlinkingYellow;
+	transition from state0 to state2 when Toggle / raise Red;
+	transition from state1 to state2 when Interrupt / raise Red;
+	transition from state1 to state1 when Toggle / raise BlinkingYellow;
+	transition from state2 to state1 when Interrupt / raise BlinkingYellow;
+	transition from state2 to state3 when Toggle / raise Green;
+	transition from state3 to state1 when Interrupt / raise BlinkingYellow;
+	transition from state3 to state0 when Toggle / raise Yellow;
+	
+	region mainRegion {
+		initial _initialState
+		state state0
+		state state1
+		state state2
+		state state3
+	}
+
+}

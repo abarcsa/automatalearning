@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ValidTraceModel implements PartialModel {
+public class ValidTraceModel implements PartialModel<String, String> {
 	
-	private List<String> inputAlphabet;
+	private List<? extends String> inputAlphabet;
 	private List<String> outputAlphabet;
 	
-	private List<String> inputs;
+	private List<? extends String> inputs;
 	private List<String> outputs;
 
-	public ValidTraceModel(List<String> inputAlphabet, List<String> outputAlphabet, List<String> inputSequence, List<String> outputSequence) {
+	public ValidTraceModel(List<? extends String> inputAlphabet, List<String> outputAlphabet, List<? extends String> inputSequence, List<String> outputSequence) {
 		this.inputAlphabet = inputAlphabet;
 		this.outputAlphabet = outputAlphabet;
 		this.inputs = inputSequence;
@@ -20,7 +20,7 @@ public class ValidTraceModel implements PartialModel {
 	}
 	
 	@Override
-	public Set<String> getPossibleOutputs(List<String> inputSequence) {
+	public Set<String> getPossibleOutputs(List<? extends String> inputSequence) {
 		Set<String> possibleOutputs = new HashSet<>();
 		for (int i = 0; i < inputSequence.size(); ++i) {
 			// If the current input is longer than the contained trace, no information
@@ -42,7 +42,7 @@ public class ValidTraceModel implements PartialModel {
 	}
 
 	@Override
-	public List<String> getInputAlphabet() {
+	public List<? extends String> getInputAlphabet() {
 		return this.inputAlphabet;
 	}
 
@@ -52,7 +52,7 @@ public class ValidTraceModel implements PartialModel {
 	}
 
 	@Override
-	public boolean isInputProximityKnown(List<String> inputSequence) {
+	public boolean isProximityContained(List<? extends String> inputSequence) {
 		for (int i = 0; i < inputSequence.size(); ++i) {
 			// If the current input is longer than the contained trace, no information
 			if (i >= inputs.size()) {

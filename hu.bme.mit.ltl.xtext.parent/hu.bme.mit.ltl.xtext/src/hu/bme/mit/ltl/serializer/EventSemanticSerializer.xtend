@@ -21,12 +21,12 @@ import java.util.ArrayList
 import hu.bme.mit.ltl.LTLExpression
 
 class EventSemanticSerializer {
-	List<String> inputAlphabet
+	List<? extends String> inputAlphabet
 	List<String> outputAlphabet
 	var boolean grouping = true	//TODO fix this
 	
 	
-	new(List<String> inputAlphabet, List<String> outputAlphabet) {
+	new(List<? extends String> inputAlphabet, List<String> outputAlphabet) {
 		this.inputAlphabet = inputAlphabet
 		this.outputAlphabet = outputAlphabet
 	}

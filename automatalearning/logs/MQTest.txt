@@ -517,3 +517,5 @@ COUNTER;pod water;done done
 ( ack0,ack1,null ) -> send0
 ( ack0,ack1,ack0 ) -> send1
 ( ack0,ack1,ack1 ) -> send0
+( a ) -> a
+( b ) -> b

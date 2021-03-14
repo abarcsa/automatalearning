@@ -1,12 +1,5 @@
 digraph {
 	fake [style=invisible]
-	state1
 	state0 [root=true]
 	fake -> state0 [style=bold]
-	state0 -> state0 [label="null/send0"]
-	state0 -> state1 [label="ack0/send1"]
-	state0 -> state0 [label="ack1/send0"]
-	state1 -> state1 [label="null/send1"]
-	state1 -> state1 [label="ack0/send1"]
-	state1 -> state0 [label="ack1/send0"]
 }
