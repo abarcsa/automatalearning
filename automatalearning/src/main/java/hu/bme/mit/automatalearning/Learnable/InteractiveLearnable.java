@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import hu.bme.mit.automatalearning.Learnable.AdaptiveLearnable.AdaptionCommand;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 import hu.bme.mit.automatalearning.ui.InteractiveUI;
 
@@ -19,7 +20,7 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 	private List<O> outputAlphabet;
 	private List<PartialModel<I, O>> partialModels = new ArrayList<>();
 	
-	private InteractiveCommand currentCommand = InteractiveCommand.OPTIMISTIC;
+	private AdaptionCommand currentCommand = AdaptionCommand.OPTIMISTIC;
 
 	//Query-related variables
 	private List<? extends I> lastQueryInput = null;
@@ -33,7 +34,7 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 	
 	@Override
 	public InteractiveLearnableOutput<O> getOutput(List<? extends I> inputs) {
-		currentCommand = InteractiveCommand.OPTIMISTIC;
+		currentCommand = AdaptionCommand.OPTIMISTIC;
 		while(true) {
 			List<O> possibleOutputs = queryModels(inputs);
 			if (possibleOutputs == null || possibleOutputs.size() > 1) {
@@ -59,15 +60,15 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 						int toRemove = ui.resolveConflict(automatonIndices, conflictingModels, inputs);
 						
 						partialModels.remove(toRemove);
-						currentCommand = InteractiveCommand.RESET;
+						currentCommand = AdaptionCommand.RESET;
 						return null;
 					}
 				}
 				
 			} else {
 				System.out.println("out: " + possibleOutputs.get(0));
-				if(!(currentCommand == InteractiveCommand.RESET)) {	//TODO better error-handling
-					currentCommand = isInputProximityKnown(inputs) ? InteractiveCommand.OPTIMISTIC : InteractiveCommand.PESSIMISTIC;
+				if(!(currentCommand == AdaptionCommand.RESET)) {	//TODO better error-handling
+					currentCommand = isInputProximityKnown(inputs) ? AdaptionCommand.OPTIMISTIC : AdaptionCommand.PESSIMISTIC;
 				}
 				return new InteractiveLearnableOutput<O>(possibleOutputs.get(0), currentCommand);
 			}
@@ -108,11 +109,11 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 		return result;
 	}
 	
-	public InteractiveCommand getCommand() {
+	public AdaptionCommand getCommand() {
 		//System.out.println("comm: " + currentCommand);
 		return currentCommand;
 	}
-	public void setCommand(InteractiveCommand command) {
+	public void setCommand(AdaptionCommand command) {
 		this.currentCommand = command;
 	}
 	
@@ -120,17 +121,11 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 		return ui.executeEQ(hypothesis);
 	}
 
-	public enum InteractiveCommand{
-		OPTIMISTIC,
-		PESSIMISTIC,
-		RESET
-	}
-	
 	public static class InteractiveLearnableOutput<O>{
 		O output;
-		InteractiveCommand command;
+		AdaptionCommand command;
 		
-		public InteractiveLearnableOutput(O output, InteractiveCommand command) {
+		public InteractiveLearnableOutput(O output, AdaptionCommand command) {
 			this.output = output;
 			this.command = command;
 		}
@@ -143,11 +138,11 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 			this.output = output;
 		}
 
-		public InteractiveCommand getCommand() {
+		public AdaptionCommand getCommand() {
 			return command;
 		}
 
-		public void setCommand(InteractiveCommand command) {
+		public void setCommand(AdaptionCommand command) {
 			this.command = command;
 		}		
 	}

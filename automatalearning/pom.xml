@@ -34,16 +34,6 @@
     	<artifactId>mealymodel</artifactId>
     </dependency>
     <dependency>
-    	<groupId>hu.bme.mit</groupId>
-    	<version>0.0.1-SNAPSHOT</version>
-    	<artifactId>lpt</artifactId>
-    </dependency>
-   	<dependency>
-    	<groupId>hu.bme.mit</groupId>
-    	<version>0.0.1-SNAPSHOT</version>
-    	<artifactId>lpt-xtend</artifactId>
-    </dependency>
-    <dependency>
     	<groupId>hu.bme.mit.mealymodel.xtext</groupId>
     	<version>1.0.0-SNAPSHOT</version>
     	<artifactId>hu.bme.mit.mealymodel.xtext</artifactId>

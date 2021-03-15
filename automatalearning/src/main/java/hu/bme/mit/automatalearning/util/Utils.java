@@ -37,7 +37,7 @@ import hu.bme.mit.mealymodel.Transition;
 
 public class Utils {
 	
-	public static LPTRootNode getLPT(String path) {
+	/*public static LPTRootNode getLPT(String path) {
 		LptPackage.eINSTANCE.eClass();
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         Map<String, Object> m = reg.getExtensionToFactoryMap();
@@ -48,7 +48,7 @@ public class Utils {
 	        // example everything is hierarchical included in this first node
 		 LPTRootNode rootNode = (LPTRootNode) resource.getContents().get(0);
 	        return rootNode;
-	}
+	}*/
 	
 	public static MealyMachine getMealyModelFromXtext(String input) throws IOException {
 		Injector injector = new MealyDslStandaloneSetup().createInjectorAndDoEMFRegistration();

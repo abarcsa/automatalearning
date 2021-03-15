@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 
 import hu.bme.mit.automatalearning.Learnable.InteractiveLearnable;
+import hu.bme.mit.automatalearning.Learnable.InteractiveMemoizingLearnable;
 import hu.bme.mit.automatalearning.Learnable.LPTLearnable;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.MemoizingLearnable;
@@ -28,7 +29,6 @@ import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
 import hu.bme.mit.automatalearning.teacher.AdaptiveTeacher;
 import hu.bme.mit.automatalearning.teacher.Teacher;
 import hu.bme.mit.automatalearning.util.Utils;
-import hu.bme.mit.lpt_xtend.LPT;
 import hu.bme.mit.mealymodel.Alphabet;
 import hu.bme.mit.mealymodel.MealyMachine;
 import hu.bme.mit.mealymodel.MealymodelFactory;
@@ -47,12 +47,12 @@ public class Main {
 			//Alternating bit protocol in the form of a String input formalism, learned by TTT, outputs to /learnedmachine.mealy
 		//alternatingbitTTT();
 		
-		fullyInteractiveComponentLearning();
+		//fullyInteractiveComponentLearning();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by DHC, outputs to /learnedmachine.mealy
 		//coffeeMealyDHC();
 		
-		//coffeeMealyAdaptiveDHC();
+		coffeeMealyAdaptiveDHC();
 		
 			//Coffee machine Mealy machine using Xtext input formalism, learned by TTT, outputs to /learnedmachine.mealy
 		//coffeeMealyTTT();
@@ -78,7 +78,6 @@ public class Main {
 		//experimentalEvaluationDHCAlphabet();
 		
 		//experimentalEvaluationTTTAlphabet();
-		
 	}
 	
 	public static void fullyInteractiveComponentLearning() {
@@ -86,7 +85,7 @@ public class Main {
 		il.learn();
 	}
 	
-	public static void paritybitLPTTTT() {
+	/*public static void paritybitLPTTTT() {
 		paritybitInputLPTTTT();
 		
 		paritybitCreateErrLPTTTT();
@@ -168,7 +167,7 @@ public class Main {
 		TTTHypothesis<?,?,MealyMachine,?,?> h = ttt.execute();
 		Utils.output(h.getHypothesis());
 		return h.getHypothesis();
-	}
+	}*/
 	
 	public static MealyMachine alternatingbitDHC() {
 		String sequence = 
@@ -229,7 +228,7 @@ public class Main {
 		return h.getHypothesis();
 	}
 	
-	public static void coffeeMealyDHC() throws IOException {
+	/*public static void coffeeMealyDHC() throws IOException {
 		MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
 		
 		Alphabet inputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
@@ -246,7 +245,7 @@ public class Main {
 		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
 		
 		Utils.output(h.getHypothesis());
-	}
+	}*/
 	
 	public static void coffeeMealyAdaptiveDHC() throws IOException {
 		//MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
@@ -264,9 +263,9 @@ public class Main {
 		outputAlphabet.add("cof");	//coffee
 		outputAlphabet.add("err");	//error
 		
-		MemoizingLearnable l = new MemoizingLearnable(new InteractiveLearnable(inputAlphabet, outputAlphabet));
-		OracleGuidedAdaptiveLearnable ogal = new OracleGuidedAdaptiveLearnable(l);
-		AdaptiveLearnableAdapter a = new AdaptiveLearnableAdapter(new StringSequenceToMealyAdapter<>(l), ogal);
+		InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(inputAlphabet, outputAlphabet));
+		OracleGuidedAdaptiveLearnable<String, String> ogal = new OracleGuidedAdaptiveLearnable<String, String>(l);
+		AdaptiveLearnableAdapter<String, String,DHCHypothesis<String, String, MealyMachine, State, Transition>,String, String, ?, ?> a = new AdaptiveLearnableAdapter<>(new StringSequenceToMealyAdapter<>(l), ogal);
 		
 		AdaptiveTeacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?, ?> teacher = 
 				new AdaptiveTeacher<>(a);
@@ -293,9 +292,9 @@ public class Main {
 		outputAlphabet.add("send0");	
 		outputAlphabet.add("send1");
 		
-		MemoizingLearnable l = new MemoizingLearnable(new InteractiveLearnable(inputAlphabet, outputAlphabet));
-		OracleGuidedAdaptiveLearnable ogal = new OracleGuidedAdaptiveLearnable(l);
-		AdaptiveLearnableAdapter a = new AdaptiveLearnableAdapter(new StringSequenceToMealyAdapter<>(l), ogal);
+		InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(inputAlphabet, outputAlphabet));
+		OracleGuidedAdaptiveLearnable<String, String> ogal = new OracleGuidedAdaptiveLearnable<String, String>(l);
+		AdaptiveLearnableAdapter<String, String,DHCHypothesis<String, String, MealyMachine, State, Transition>,String, String, ?, ?> a = new AdaptiveLearnableAdapter<>(new StringSequenceToMealyAdapter<>(l), ogal);
 		
 		AdaptiveTeacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?, ?> teacher = 
 				new AdaptiveTeacher<>(a);

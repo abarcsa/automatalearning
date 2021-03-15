@@ -3,9 +3,9 @@ package hu.bme.mit.automatalearning.Learnable;
 import java.util.List;
 import java.util.Random;
 
-public class OracleGuidedAdaptiveLearnable extends AdaptiveLearnable<String, String, MemoizingLearnable>{
+public class OracleGuidedAdaptiveLearnable<I, O> extends AdaptiveLearnable<I, O, InteractiveMemoizingLearnable<I, O, ?>>{
 
-	public OracleGuidedAdaptiveLearnable(MemoizingLearnable wrappedLearnable) {
+	public OracleGuidedAdaptiveLearnable(InteractiveMemoizingLearnable<I, O, ?> wrappedLearnable) {
 		super(wrappedLearnable);
 	}
 	
@@ -18,22 +18,11 @@ public class OracleGuidedAdaptiveLearnable extends AdaptiveLearnable<String, Str
 	}
 
 	@Override
-	public AdaptiveLearnableOutput<String> getOutput(List<? extends String> inputs) {		
-		if (this.wrappedLearnable.getDelegate() instanceof InteractiveLearnable) {
-			InteractiveLearnable interactiveLearnable = (InteractiveLearnable)this.wrappedLearnable.getDelegate();
-			return new AdaptiveLearnableOutput<>(this.wrappedLearnable.getOutput(inputs), interactiveLearnable.getCommand());
-		} else {
-			Random random = new Random();
-			if (random.nextBoolean()) {
-				currentCommand = AdaptionCommand.OPTIMISTIC;
-				System.out.println("OPTIMISTIC");
-			} else {
-				currentCommand = AdaptionCommand.PESSIMISTIC;
-				System.out.println("PESSIMISTIC");
-			}
-			return new AdaptiveLearnableOutput<>(this.wrappedLearnable.getOutput(inputs), currentCommand);
-		}
+	public AdaptiveLearnableOutput<O> getOutput(List<? extends I> inputs) {		
+		InteractiveLearnable<I, O, ?, ?, ?> interactiveLearnable = this.wrappedLearnable.delegate;
+		return new AdaptiveLearnableOutput<O>(this.wrappedLearnable.getOutput(inputs), interactiveLearnable.getCommand());
 	}
+
 }
 
 

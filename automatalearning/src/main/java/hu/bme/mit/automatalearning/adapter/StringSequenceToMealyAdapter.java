@@ -11,6 +11,7 @@ import java.util.Map;
 
 import de.learnlib.api.query.DefaultQuery;
 import de.learnlib.oracle.equivalence.SimulatorEQOracle;
+import hu.bme.mit.automatalearning.Learnable.Learnable;
 import hu.bme.mit.automatalearning.Learnable.MealyLearnable;
 import hu.bme.mit.automatalearning.Learnable.MemoizingLearnable;
 import hu.bme.mit.automatalearning.Learnable.StringSequenceLearnable;
@@ -23,9 +24,9 @@ import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.words.Word;
 import net.automatalib.words.impl.Alphabets;
 
-public class StringSequenceToMealyAdapter<H extends Hypothesis<String, String, MealyMachine, State, Transition>> extends StringSequenceAdapter<String, String, H>{
+public class StringSequenceToMealyAdapter<H extends Hypothesis<String, String, MealyMachine, State, Transition>> extends LearnableAdapter<String, String, H, String, String, Learnable<String, String>>{
 
-	public StringSequenceToMealyAdapter(StringSequenceLearnable learnable) {
+	public StringSequenceToMealyAdapter(Learnable<String, String> learnable) {
 		this.learnable = learnable;
 	}
 	
@@ -52,7 +53,7 @@ public class StringSequenceToMealyAdapter<H extends Hypothesis<String, String, M
 //Override creating optimization for Mealy-based learning. StringSequences are delegated to the unoptimized version in the superclass, since they are usually small and deterministic in description.
 	@Override
 	public List<? extends String> equivalenceQuery(H hypothesis, Collection<? extends String> alphabet) {
-		if(!(this.learnable instanceof MealyLearnable) && !(this.learnable instanceof MemoizingLearnable)) return super.equivalenceQuery(hypothesis, alphabet);
+		//if(!(this.learnable instanceof MealyLearnable) && !(this.learnable instanceof MemoizingLearnable)) return super.equivalenceQuery(hypothesis, alphabet);
 		
 		DefaultQuery<String, Word<String>> retval = this.learnable instanceof MemoizingLearnable ? 
 					new SimulatorEQOracle<>(getMealy(((MealyLearnable)((MemoizingLearnable)(this.learnable)).getDelegate()).automaton)).findCounterExample(getMealy(((DHCHypothesisMealy)hypothesis).getAutomaton()), (Collection<? extends String>) alphabet)

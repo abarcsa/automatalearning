@@ -13,7 +13,7 @@ import hu.bme.mit.automatalearning.Learnable.InteractiveLearnable;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 
-public class AdaptiveLearnableAdapter<HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LI, LO, L extends Learnable<LI, LO>, LA extends AdaptiveLearnable<LI, LO, L>>
+public class AdaptiveLearnableAdapter<HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LI, LO, L extends Learnable<LI, LO>, LA extends AdaptiveLearnable<LI, LO, ?>>
 {
 	
 	protected LearnableAdapter<HI, HO, H, LI, LO, L> wrappedAdapter;
