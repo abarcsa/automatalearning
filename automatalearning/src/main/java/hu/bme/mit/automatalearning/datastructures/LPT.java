@@ -2,6 +2,7 @@ package hu.bme.mit.automatalearning.datastructures;
 
 import java.math.BigInteger;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,12 +43,15 @@ public class LPT<I, O> {
 	
 	public void addSequence(List<? extends I> input, O output){
 		LPTRootNode<I, O> node = root;
-		for(int i = 0; i < input.size()-1; i++){
-			node = traverse(node, input.get(i));
+		for(int i = 0; i < input.size(); i++){
+			if(node.getChildren().containsKey(input.get(i))) {
+				node = traverse(node, input.get(i));
+			} else if (i == input.size() - 1){
+				node = new LPTUnloopedNode<I, O>(output);
+			} else {
+				node = new LPTUnloopedNode<I, O>(null);
+			}
 		}
-		if(node.children.containsKey(input.get(input.size()-1))) throw new IllegalStateException("Sequence already exists!");
-		LPTUnloopedNode<I, O> newNode = new LPTUnloopedNode<I, O>(output);
-		node.children.put(input.get(input.size()-1), newNode);
 	}
 	
 	private LPTRootNode<I,O> traverse(LPTRootNode<I, O> node, I character){
@@ -57,7 +61,7 @@ public class LPT<I, O> {
 		}else {
 			actNode = node;
 		}
-		if(!actNode.getChildren().containsKey(character)) throw new IllegalStateException("Invalid input character!");
+		if(!actNode.getChildren().containsKey(character)) return null;
 		return actNode.getChildren().get(character);
 	}
 
@@ -81,7 +85,7 @@ public class LPT<I, O> {
 	}
 	private static BigInteger cnt = BigInteger.ZERO;
 	public static class LPTRootNode<I, O>{
-		Map<I, LPTRootNode<I, O>> children;
+		Map<I, LPTRootNode<I, O>> children = new HashMap<>();
 		private BigInteger label;
 		
 		public LPTRootNode() {
