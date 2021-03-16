@@ -28,6 +28,8 @@ import hu.bme.mit.automatalearning.hypothesis.TTTHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.TTTHypothesisMealyEMF;
 import hu.bme.mit.automatalearning.teacher.AdaptiveTeacher;
 import hu.bme.mit.automatalearning.teacher.Teacher;
+import hu.bme.mit.automatalearning.ui.InteractiveCLI;
+import hu.bme.mit.automatalearning.ui.InteractiveUI;
 import hu.bme.mit.automatalearning.util.Utils;
 import hu.bme.mit.mealymodel.Alphabet;
 import hu.bme.mit.mealymodel.MealyMachine;
@@ -263,7 +265,8 @@ public class Main {
 		outputAlphabet.add("cof");	//coffee
 		outputAlphabet.add("err");	//error
 		
-		InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(inputAlphabet, outputAlphabet));
+		InteractiveUI<String, String, MealyMachine, State, Transition> ui = new InteractiveCLI(inputAlphabet, outputAlphabet);
+		InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(ui, inputAlphabet, outputAlphabet));
 		OracleGuidedAdaptiveLearnable<String, String> ogal = new OracleGuidedAdaptiveLearnable<String, String>(l);
 		AdaptiveLearnableAdapter<String, String,DHCHypothesis<String, String, MealyMachine, State, Transition>,String, String, ?, ?> a = new AdaptiveLearnableAdapter<>(new StringSequenceToMealyAdapter<>(l), ogal);
 		
@@ -292,7 +295,8 @@ public class Main {
 		outputAlphabet.add("send0");	
 		outputAlphabet.add("send1");
 		
-		InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(inputAlphabet, outputAlphabet));
+		InteractiveUI<String, String, MealyMachine, State, Transition> ui = new InteractiveCLI(inputAlphabet, outputAlphabet);
+		InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(ui, inputAlphabet, outputAlphabet));
 		OracleGuidedAdaptiveLearnable<String, String> ogal = new OracleGuidedAdaptiveLearnable<String, String>(l);
 		AdaptiveLearnableAdapter<String, String,DHCHypothesis<String, String, MealyMachine, State, Transition>,String, String, ?, ?> a = new AdaptiveLearnableAdapter<>(new StringSequenceToMealyAdapter<>(l), ogal);
 		

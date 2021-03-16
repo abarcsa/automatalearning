@@ -27,7 +27,8 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 	private List<Set<O>> lastQueryPossibleOutputs = new ArrayList<>();
 	
 	
-	public InteractiveLearnable(List<I> inputAlphabet, List<O> outputAlphabet) {
+	public InteractiveLearnable(InteractiveUI<I,O, M, S, T> ui, List<I> inputAlphabet, List<O> outputAlphabet) {
+		this.ui = ui;
 		this.inputAlphabet = inputAlphabet;
 		this.outputAlphabet = outputAlphabet;
 	}

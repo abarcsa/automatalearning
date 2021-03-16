@@ -48,5 +48,6 @@
 	<classpathentry kind="lib" path="/owl/lib/SparseBitSet-1.2.jar"/>
 	<classpathentry kind="lib" path="/owl/lib/value-2.7.1-annotations.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/adapter"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lpt"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

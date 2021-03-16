@@ -19,6 +19,8 @@ import hu.bme.mit.automatalearning.algorithm.dhc.AdaptiveDirectHypothesisConstru
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesis;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.teacher.AdaptiveTeacher;
+import hu.bme.mit.automatalearning.ui.InteractiveCLI;
+import hu.bme.mit.automatalearning.ui.InteractiveUI;
 import hu.bme.mit.automatalearning.util.Utils;
 import hu.bme.mit.mealymodel.MealyMachine;
 import hu.bme.mit.mealymodel.State;
@@ -65,7 +67,8 @@ public class InteractiveLearning {
 			List<String> outputAlphabet = new ArrayList<>();
 			for (String ch : outputs) outputAlphabet.add(ch.substring(0, 1).toLowerCase() + ch.substring(1));
 			System.out.println(outputAlphabet);
-			InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(inputAlphabet, outputAlphabet));
+			InteractiveUI<String, String, MealyMachine, State, Transition> ui = new InteractiveCLI(inputAlphabet, outputAlphabet);
+			InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(ui, inputAlphabet, outputAlphabet));
 			OracleGuidedAdaptiveLearnable<String, String> ogal = new OracleGuidedAdaptiveLearnable<>(l);
 			AdaptiveLearnableAdapter<String, String,DHCHypothesis<String, String, MealyMachine, State, Transition>,String, String, ?, ?> a = new AdaptiveLearnableAdapter<>(new StringSequenceToMealyAdapter<>(l), ogal);
 			

@@ -29,13 +29,14 @@ public class InteractiveCLI implements InteractiveUI<String, String, MealyMachin
 	private List<? extends String> inputAlphabet;
 	private List<String> outputAlphabet;
 	
-	public InteractiveCLI() {
-		// TODO?
+	public InteractiveCLI(List<? extends String> inputAlphabet, List<String> outputAlphabet) {
+		this.inputAlphabet = inputAlphabet;
+		this.outputAlphabet = outputAlphabet;
 	}
 	
-	public InteractiveCLI(InteractiveLearnable<String, String, MealyMachine, State, Transition> interactiveLearnable) {
+	/*public InteractiveCLI(InteractiveLearnable<String, String, MealyMachine, State, Transition> interactiveLearnable) {
 		this.interactiveLearnable = interactiveLearnable;
-	}
+	}*/
 	
 	@Override
 	public InteractiveLearnable<String, String, MealyMachine, State, Transition> getInteractiveLearnable() {
