@@ -1,1 +1,0 @@
-{"initial_state":"state0","alphabet":["null/send0","ack0/send1","ack1/send0","null/send1","ack0/send1","ack1/send0"],"accepting_states":[],"transitions":[["state0","null/send0","state0"],["state0","ack0/send1","state1"],["state0","ack1/send0","state0"],["state1","null/send1","state1"],["state1","ack0/send1","state1"],["state1","ack1/send0","state0"]],"states":["state0","state1"]}

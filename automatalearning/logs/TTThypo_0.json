@@ -1,1 +1,0 @@
-{"initial_state":"s0","alphabet":["water/done","pod/done","button/none","clean/done"],"accepting_states":[],"transitions":[["s0","water/done","s0"],["s0","pod/done","s0"],["s0","button/none","s0"],["s0","clean/done","s0"]],"states":["s0"]}

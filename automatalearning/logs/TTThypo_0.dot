@@ -1,9 +1,0 @@
-digraph {
-	fake [style=invisible]
-	s0 [root=true]
-	fake -> s0 [style=bold]
-	s0 -> s0 [label="water/done"]
-	s0 -> s0 [label="pod/done"]
-	s0 -> s0 [label="button/none"]
-	s0 -> s0 [label="clean/done"]
-}
