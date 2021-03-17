@@ -1,5 +1,14 @@
 digraph {
 	fake [style=invisible]
+	state1
 	state0 [root=true]
 	fake -> state0 [style=bold]
+	state0 -> state0 [label="w/don"]
+	state0 -> state0 [label="p/don"]
+	state0 -> state1 [label="b/err"]
+	state0 -> state0 [label="c/don"]
+	state1 -> state1 [label="w/err"]
+	state1 -> state1 [label="p/err"]
+	state1 -> state1 [label="b/err"]
+	state1 -> state1 [label="c/err"]
 }

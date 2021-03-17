@@ -1,1 +1,1 @@
-{"initial_state":"state0","alphabet":[],"accepting_states":[],"transitions":[],"states":["state0"]}
+{"initial_state":"state0","alphabet":["w/don","p/don","b/err","c/don","w/err","p/err","b/err","c/err"],"accepting_states":[],"transitions":[["state0","w/don","state0"],["state0","p/don","state0"],["state0","b/err","state1"],["state0","c/don","state0"],["state1","w/err","state1"],["state1","p/err","state1"],["state1","b/err","state1"],["state1","c/err","state1"]],"states":["state0","state1"]}

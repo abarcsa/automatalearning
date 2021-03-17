@@ -94,7 +94,7 @@ public class Utils {
 		    }
 		    Process process = processBuilder.start();
 		    Desktop desktop = Desktop.getDesktop();  
-		    desktop.open(new File(".\\eqVisualization\\tmp_hypo.dot.svg"));
+		    desktop.open(new File(new File("").getAbsolutePath() + "\\eqVisualization\\tmp_hypo.dot.svg"));
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

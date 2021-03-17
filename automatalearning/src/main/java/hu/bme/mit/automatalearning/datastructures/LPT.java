@@ -23,6 +23,7 @@ public class LPT<I, O> {
 			node = traverse(node, in);
 		}
 		if(!(node instanceof LPTUnloopedNode)) throw new IllegalStateException("Tree is not valid!");
+		if(((LPTUnloopedNode<I, O>)node).getData() == null) throw new RuntimeException("Output not yet provided!");
 		return ((LPTUnloopedNode<I, O>)node).getData();
 	}
 	
@@ -43,14 +44,21 @@ public class LPT<I, O> {
 	
 	public void addSequence(List<? extends I> input, O output){
 		LPTRootNode<I, O> node = root;
-		for(int i = 0; i < input.size(); i++){
-			if(node.getChildren().containsKey(input.get(i))) {
-				node = traverse(node, input.get(i));
-			} else if (i == input.size() - 1){
-				node = new LPTUnloopedNode<I, O>(output);
-			} else {
-				node = new LPTUnloopedNode<I, O>(null);
+		LinkedList<? extends I> list = new LinkedList<>(input);
+		//Traverse the already added nodes
+		while(list.size() != 1) {
+			if(!node.getChildren().containsKey(list.peekFirst())) {
+				break;
 			}
+			node = traverse(node, list.pollFirst());
+		}//Add new nodes
+		while(!list.isEmpty()) {
+			LPTUnloopedNode<I, O> newNode = new LPTUnloopedNode<I, O>(null);
+			if(list.size() == 1) { //Add output
+				newNode.setData(output);
+			}
+			node.children.put(list.pollFirst(), newNode);
+			node = newNode;
 		}
 	}
 	
@@ -61,7 +69,7 @@ public class LPT<I, O> {
 		}else {
 			actNode = node;
 		}
-		if(!actNode.getChildren().containsKey(character)) return null;
+		if(!actNode.getChildren().containsKey(character)) throw new IllegalStateException("Invalid input character!");
 		return actNode.getChildren().get(character);
 	}
 
@@ -85,12 +93,13 @@ public class LPT<I, O> {
 	}
 	private static BigInteger cnt = BigInteger.ZERO;
 	public static class LPTRootNode<I, O>{
-		Map<I, LPTRootNode<I, O>> children = new HashMap<>();
+		Map<I, LPTRootNode<I, O>> children;
 		private BigInteger label;
 		
 		public LPTRootNode() {
 			label = cnt;
 			cnt.add(BigInteger.ONE);
+			children = new HashMap<>();
 		}
 		
 		public Map<I, LPTRootNode<I, O>> getChildren() {
