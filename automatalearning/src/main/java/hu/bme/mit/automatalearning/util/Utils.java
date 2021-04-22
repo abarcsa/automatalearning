@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 
 import com.google.inject.Injector;
 
+import hu.bme.mit.automatalearning.datastructures.LPT.LPTUnloopedNode;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
 import hu.bme.mit.lpt.LPTRootNode;
 import hu.bme.mit.lpt.LptPackage;
@@ -159,5 +161,15 @@ public class Utils {
 				    				   .put(t.getInput() + "/" + t.getOutput())
 				    				   .put(t.getTargetState().getName())).collect(Collectors.toList())));
 		return obj;
+	}
+	
+	public static class BFSHelper<I, O>{
+		public List<I> currSequence;
+		public LPTUnloopedNode<I, O> node;
+		public BFSHelper(List<I> currSequence, LPTUnloopedNode<I, O> node) {
+			super();
+			this.currSequence = currSequence;
+			this.node = node;
+		}
 	}
 }

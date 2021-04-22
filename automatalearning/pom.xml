@@ -91,6 +91,12 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
     </dependency>
+    <!-- Apache commons dependency -->
+    <dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.12.0</version>
+</dependency>
     <dependency>
         <groupId>org.eclipse.emf</groupId>
         <version>LATEST</version>

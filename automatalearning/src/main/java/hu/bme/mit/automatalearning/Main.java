@@ -249,6 +249,32 @@ public class Main {
 		Utils.output(h.getHypothesis());
 	}*/
 	
+	public static void coffeMealyNStar() {
+		List<String> inputAlphabet = new ArrayList<>();
+		inputAlphabet.add("w");	//water
+		inputAlphabet.add("p");	//pod
+		inputAlphabet.add("b");	//button
+		inputAlphabet.add("c");	//clean
+		List<String> outputAlphabet = new ArrayList<>();
+		outputAlphabet.add("don");	//done
+		outputAlphabet.add("cof");	//coffee
+		outputAlphabet.add("err");	//error
+		InteractiveUI<String, String, MealyMachine, State, Transition> ui = new InteractiveCLI(inputAlphabet, outputAlphabet);
+		InteractiveMemoizingLearnable<String, String, ?> l = new InteractiveMemoizingLearnable<>(new InteractiveLearnable<>(ui, inputAlphabet, outputAlphabet));
+		OracleGuidedAdaptiveLearnable<String, String> ogal = new OracleGuidedAdaptiveLearnable<String, String>(l);
+		AdaptiveLearnableAdapter<String, String,DHCHypothesis<String, String, MealyMachine, State, Transition>,String, String, ?, ?> a = new AdaptiveLearnableAdapter<>(new StringSequenceToMealyAdapter<>(l), ogal);
+		
+		AdaptiveTeacher<String, String, DHCHypothesis<String, String, MealyMachine, State, Transition>, ?, ?> teacher = 
+				new AdaptiveTeacher<>(a);
+		
+		AdaptiveDirectHypothesisConstructionMealy<String, String, MealyMachine, State, Transition> dhc = 
+				new AdaptiveDirectHypothesisConstructionMealy<>(teacher, inputAlphabet, new DHCHypothesisMealy(inputAlphabet));
+		
+		DHCHypothesis<String, String, MealyMachine, State, Transition> h = dhc.execute();
+		
+		Utils.output(h.getHypothesis());
+	}
+	
 	public static void coffeeMealyAdaptiveDHC() throws IOException {
 		//MealyMachine m = Utils.getMealyModelFromXtext(new File(".").getCanonicalPath() + "/src/main/java/coffeemachine.mealy");
 		//

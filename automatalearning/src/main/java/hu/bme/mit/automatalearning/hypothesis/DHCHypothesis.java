@@ -10,9 +10,15 @@ public abstract class DHCHypothesis<I, O, M, S, T> implements Hypothesis<I, O, M
 	
 	public abstract S createNewState();
 	
-	public abstract void addTransition(S from, S to, I inputSymbol, O outputSymbol);
+	public abstract S addInitialState(String idx);
+	
+	public abstract S createNewState(String idx);
+	
+	public abstract T addTransition(S from, S to, I inputSymbol, O outputSymbol);
 	
 	public abstract void resetHypothesis();
+	
+	public abstract S getState(String idx);
 	
 	@Override
 	public M getHypothesis() {

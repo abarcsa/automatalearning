@@ -11,6 +11,7 @@ import hu.bme.mit.automatalearning.Learnable.InteractiveLearnable.InteractiveLea
 import hu.bme.mit.automatalearning.datastructures.LPT;
 import hu.bme.mit.automatalearning.datastructures.LPT.LPTRootNode;
 import hu.bme.mit.automatalearning.datastructures.LPT.LPTUnloopedNode;
+import hu.bme.mit.automatalearning.util.Utils.BFSHelper;
 
 public class InteractiveMemoizingLearnable<I, O, L extends InteractiveLearnable<I, O, ?, ?, ?>> extends MemoizingLearnable<I, O, I, InteractiveLearnable.InteractiveLearnableOutput<O>, L>{
 
@@ -64,16 +65,4 @@ public class InteractiveMemoizingLearnable<I, O, L extends InteractiveLearnable<
 		}
 		this.prefixTree = newPrefixTree;
 	}
-	
-	
-	private static class BFSHelper<I, O>{
-		List<I> currSequence;
-		LPTUnloopedNode<I, O> node;
-		public BFSHelper(List<I> currSequence, LPTUnloopedNode<I, O> node) {
-			super();
-			this.currSequence = currSequence;
-			this.node = node;
-		}
-	}
-
 }

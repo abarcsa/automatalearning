@@ -74,6 +74,26 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 		this.automaton.getStates().add(newState);
 		return newState;
 	}
+	
+	@Override
+	public State addInitialState(String idx) {
+		State initialState = MealymodelFactory.eINSTANCE.createState();
+		//Needed because of the unique feature of EMF
+		State initialState2 = MealymodelFactory.eINSTANCE.createState();
+		initialState.setName(idx);
+		initialState2.setName(idx);
+		automaton.setInitialState(initialState);
+		automaton.getStates().add(initialState2);
+		return initialState;
+	}
+	
+	@Override
+	public State createNewState(String idx) {
+		State newState = MealymodelFactory.eINSTANCE.createState();
+		newState.setName(idx);
+		this.automaton.getStates().add(newState);
+		return newState;
+	}
 
 	@Override
 	public State getInitialState() {
@@ -98,13 +118,14 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 		automaton.getTransitions().add(t);
 	}
 	
-	public void addTransition(State from, State to, String inputSymbol, String outputSymbol) {
+	public Transition addTransition(State from, State to, String inputSymbol, String outputSymbol) {
 		Transition t = MealymodelFactory.eINSTANCE.createTransition();
 		t.setSourceState(from);
 		t.setTargetState(to);
 		t.setOutput(outputSymbol);
 		t.setInput(inputSymbol);
 		automaton.getTransitions().add(t);
+		return t;
 	}
 	/**
 	 * Uses BFS (could be optimized with Dijkstra) to determine the input sequence to access a state from the initial state
@@ -352,6 +373,14 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 		this.automaton.setInputAlphabet(in);
 		this.automaton.setOutputAlphabet(out);
 		return this.automaton;
+	}
+
+	@Override
+	public State getState(String idx) {
+		for(State s : this.getHypothesis().getStates()) {
+			if(s.getName().equals(idx)) return s;
+		}
+		throw new RuntimeException("State with id: " + idx + " does not exist!");
 	}
 	
 	
