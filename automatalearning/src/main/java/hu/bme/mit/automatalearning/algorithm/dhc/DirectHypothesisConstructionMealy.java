@@ -203,20 +203,28 @@ public class DirectHypothesisConstructionMealy<I, O, M, S, T> extends ActiveLear
 	}*/
 	
 	//Great idea of Queue handling from the LearnLib framework
-	 static final class QueueElement<I, O, S> implements Serializable {
+	 public static final class QueueElement<I, O, S> implements Serializable {
 
 	        final S parentState;
 	        final QueueElement<I, O, S> parentElement;
 	        final I input;
 	        final O output;
 	        final int depth;
+	        
+	        S state;
 
-	        QueueElement(S parentState, QueueElement<I, O, S> parentElement, I input, O output) {
+	        public QueueElement(S parentState, QueueElement<I, O, S> parentElement, I input, O output) {
 	            this.parentState = parentState;
 	            this.parentElement = parentElement;
 	            this.input = input;
 	            this.output = output;
 	            this.depth = (parentElement != null) ? parentElement.depth + 1 : 0;
+	        }
+	        
+	        
+	        
+	        public void setState(S state) {
+	        	this.state = state;
 	        }
 	 }
 

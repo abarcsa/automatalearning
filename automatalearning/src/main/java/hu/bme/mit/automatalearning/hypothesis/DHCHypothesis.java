@@ -12,6 +12,9 @@ public abstract class DHCHypothesis<I, O, M, S, T> implements Hypothesis<I, O, M
 	
 	public abstract void addTransition(S from, S to, I inputSymbol, O outputSymbol);
 	
+	public abstract void removeTransition(T transition);
+
+	
 	public abstract void resetHypothesis();
 	
 	@Override

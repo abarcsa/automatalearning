@@ -22,9 +22,16 @@ public class LPT<I, O> {
 		for(I in : input){
 			node = traverse(node, in);
 		}
-		if(!(node instanceof LPTUnloopedNode)) throw new IllegalStateException("Tree is not valid!");
-		if(((LPTUnloopedNode<I, O>)node).getData() == null) throw new RuntimeException("Output not yet provided!");
-		return ((LPTUnloopedNode<I, O>)node).getData();
+		if(node instanceof LPTUnloopedNode) {
+			if(((LPTUnloopedNode<I, O>)node).getData() == null) throw new RuntimeException("Output not yet provided!");
+			return ((LPTUnloopedNode<I, O>)node).getData();
+		} else if (node instanceof LPTLoopedNode) {
+			if(((LPTLoopedNode<I, O>)node).getData() == null) throw new RuntimeException("Output not yet provided!");
+			return ((LPTLoopedNode<I, O>)node).getData();
+		} else {
+			throw new IllegalStateException("Tree is not valid!");
+		}
+
 	}
 	
 	public LPTRootNode<I, O> getNode(List<? extends I> input){

@@ -20,11 +20,16 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 	private List<O> outputAlphabet;
 	private List<PartialModel<I, O>> partialModels = new ArrayList<>();
 	
+	public List<PartialModel<I, O>> getPartialModels() {
+		return partialModels;
+	}
+
 	private AdaptionCommand currentCommand = AdaptionCommand.OPTIMISTIC;
 
 	//Query-related variables
 	private List<? extends I> lastQueryInput = null;
 	private List<Set<O>> lastQueryPossibleOutputs = new ArrayList<>();
+	private boolean automatizedEQ = false;
 	
 	
 	public InteractiveLearnable(InteractiveUI<I,O, M, S, T> ui, List<I> inputAlphabet, List<O> outputAlphabet) {
@@ -33,8 +38,16 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 		this.outputAlphabet = outputAlphabet;
 	}
 	
+	public InteractiveLearnable(InteractiveUI<I,O, M, S, T> ui, List<I> inputAlphabet, List<O> outputAlphabet, boolean automatizedEQ) {
+		this.ui = ui;
+		this.inputAlphabet = inputAlphabet;
+		this.outputAlphabet = outputAlphabet;
+		this.automatizedEQ = automatizedEQ;
+	}
+	
 	@Override
 	public InteractiveLearnableOutput<O> getOutput(List<? extends I> inputs) {
+		//System.out.println("IL: " + inputs);
 		currentCommand = AdaptionCommand.OPTIMISTIC;
 		while(true) {
 			List<O> possibleOutputs = queryModels(inputs);
@@ -67,10 +80,11 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 				}
 				
 			} else {
-				System.out.println("out: " + possibleOutputs.get(0));
+				//System.out.println("out: " + possibleOutputs.get(0));
 				if(!(currentCommand == AdaptionCommand.RESET)) {	//TODO better error-handling
 					currentCommand = isInputProximityKnown(inputs) ? AdaptionCommand.OPTIMISTIC : AdaptionCommand.PESSIMISTIC;
-				}
+				} else
+					throw new IllegalStateException("fasz");
 				return new InteractiveLearnableOutput<O>(possibleOutputs.get(0), currentCommand);
 			}
 		}
@@ -119,6 +133,21 @@ public class InteractiveLearnable<I, O, M, S, T> implements Learnable<I, Interac
 	}
 	
 	public List<? extends I> interactiveEQ(Hypothesis<I, O, M, S, T> hypothesis){
+		if (automatizedEQ) {
+			for(Set<I> s : com.google.common.collect.Sets.powerSet(new HashSet<I>(inputAlphabet))) {
+	            if(!s.isEmpty()) {
+	                for(List<I> permutation : com.google.common.collect.Collections2.permutations(s)) {
+	                    O a = hypothesis.query(permutation);
+	                    O b = getOutput(permutation).output;
+	                    if(!a.equals(b)) {
+	                    	System.out.println(a);
+	                    	System.out.println(b);
+	                    	return permutation;
+	                    }
+	                }
+	            }
+	        }
+		}
 		return ui.executeEQ(hypothesis);
 	}
 

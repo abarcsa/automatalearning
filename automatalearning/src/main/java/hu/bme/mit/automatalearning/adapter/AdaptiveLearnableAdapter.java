@@ -12,6 +12,7 @@ import hu.bme.mit.automatalearning.Learnable.AdaptiveLearnable.AdaptiveLearnable
 import hu.bme.mit.automatalearning.Learnable.InteractiveLearnable;
 import hu.bme.mit.automatalearning.hypothesis.DHCHypothesisMealy;
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
+import hu.bme.mit.automatalearning.hypothesis.InitializableDHCHypothesisMealy;
 
 public class AdaptiveLearnableAdapter<HI, HO, H extends Hypothesis<HI, HO, ?, ?, ?>, LI, LO, L extends Learnable<LI, LO>, LA extends AdaptiveLearnable<LI, LO, ?>>
 {

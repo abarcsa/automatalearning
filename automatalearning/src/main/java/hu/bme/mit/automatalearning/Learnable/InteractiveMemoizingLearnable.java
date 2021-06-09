@@ -18,6 +18,11 @@ public class InteractiveMemoizingLearnable<I, O, L extends InteractiveLearnable<
 		super(delegate);
 	}
 	
+	public InteractiveMemoizingLearnable(L delegate, LPT<I,O> init) {
+		super(delegate);
+		prefixTree = init;	//TODO implement RESET to init too
+	}
+	
 	@Override
 	public O getOutput(List<? extends I> inputs) {
 		O output;

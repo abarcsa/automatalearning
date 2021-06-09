@@ -27,8 +27,6 @@ import org.json.JSONObject;
 import com.google.inject.Injector;
 
 import hu.bme.mit.automatalearning.hypothesis.Hypothesis;
-import hu.bme.mit.lpt.LPTRootNode;
-import hu.bme.mit.lpt.LptPackage;
 import hu.bme.mit.mealymodel.MealyDslStandaloneSetup;
 import hu.bme.mit.mealymodel.MealyMachine;
 import hu.bme.mit.mealymodel.MealymodelPackage;

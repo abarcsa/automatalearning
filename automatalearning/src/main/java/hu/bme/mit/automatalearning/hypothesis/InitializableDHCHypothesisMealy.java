@@ -19,15 +19,45 @@ import hu.bme.mit.mealymodel.MealymodelFactory;
 import hu.bme.mit.mealymodel.State;
 import hu.bme.mit.mealymodel.Transition;
 
-public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachine, State, Transition>{
+public class InitializableDHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachine, State, Transition>{
 	
-	private int nameNum = 0;
+	private int nameNum;
 	
-	public DHCHypothesisMealy(Alphabet inputAlphabet) {
+	private Alphabet iInputAlphabet;
+	private Alphabet iOutputAlphabet;
+	private State iInitialState;
+	private List<State> iStates;
+	private List<Transition> iTransitions;
+	
+	public InitializableDHCHypothesisMealy(Alphabet inputAlphabet) {
+		//
+		nameNum = 1;
+		iInputAlphabet = inputAlphabet;
+		iOutputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		iInitialState = MealymodelFactory.eINSTANCE.createState();
+		iInitialState.setName("state0");
+		iStates = new ArrayList<>();
+		iStates.add(iInitialState);
+		iTransitions = new ArrayList<>();
+		//
+		
 		init(inputAlphabet);
 	}
 	
-	public DHCHypothesisMealy(Collection<? extends String> inputAlphabet) {
+	public InitializableDHCHypothesisMealy(Collection<? extends String> inputAlphabet) {
+		//
+		nameNum = 1;
+		iInputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		iInputAlphabet.getCharacters().addAll(inputAlphabet);
+		iOutputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
+		iInitialState = MealymodelFactory.eINSTANCE.createState();
+		iInitialState.setName("state0");
+		iStates = new ArrayList<>();
+		iStates.add(iInitialState);
+		iTransitions = new ArrayList<>();
+		//
+		
+		
 		this.automaton = MealymodelFactory.eINSTANCE.createMealyMachine();
 		Alphabet a = MealymodelFactory.eINSTANCE.createAlphabet();
 		a.getCharacters().addAll(inputAlphabet);
@@ -37,10 +67,21 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 	}
 	
 
-	public DHCHypothesisMealy(Alphabet inputAlphabet, Alphabet outputAlphabet, State initialState, List<State> states, List<Transition> transitions) {
+	public InitializableDHCHypothesisMealy(Alphabet inputAlphabet, Alphabet outputAlphabet, State initialState, List<State> states, List<Transition> transitions) {
+		//
+		nameNum = states.size();
+		iInputAlphabet = inputAlphabet;
+		iOutputAlphabet = outputAlphabet;
+		iInitialState = initialState;
+		iStates = states;
+		iTransitions = transitions;
+		//
+		
 		this.automaton = MealymodelFactory.eINSTANCE.createMealyMachine();
 		
-		automaton.setInputAlphabet(inputAlphabet);
+		Alphabet a = MealymodelFactory.eINSTANCE.createAlphabet();
+		a.getCharacters().addAll(inputAlphabet.getCharacters());
+		automaton.setInputAlphabet(a);
 		automaton.setOutputAlphabet(outputAlphabet);
 		
 		State initialState2 = MealymodelFactory.eINSTANCE.createState();
@@ -57,11 +98,11 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 	
 	@Override
 	public State addInitialState() {
-		State initialState = MealymodelFactory.eINSTANCE.createState();
+		State initialState = iInitialState;
 		//Needed because of the unique feature of EMF
 		State initialState2 = MealymodelFactory.eINSTANCE.createState();
-		initialState.setName("state" + nameNum);
-		initialState2.setName("state" + nameNum++);
+		//initialState.setName("state" + nameNum);
+		initialState2.setName(initialState.getName());
 		automaton.setInitialState(initialState);
 		automaton.getStates().add(initialState2);
 		return initialState;
@@ -318,25 +359,39 @@ public class DHCHypothesisMealy extends DHCHypothesis<String, String, MealyMachi
 
 	@Override
 	public void resetHypothesis() {
-		this.nameNum = 0;
-		Alphabet a = this.automaton.getInputAlphabet();
+		this.nameNum = iStates.size();
 		this.automaton = null;
-		init(a);
+		init(null);
 		
 	}
-	private void init(Alphabet a) {
+	private void init(Alphabet a) {		
 		this.automaton = MealymodelFactory.eINSTANCE.createMealyMachine();
-		automaton.setInputAlphabet(a);
-		Alphabet outputAlphabet = MealymodelFactory.eINSTANCE.createAlphabet();
-		automaton.setOutputAlphabet(outputAlphabet);
+
+		Alphabet ab = MealymodelFactory.eINSTANCE.createAlphabet();
+		ab.getCharacters().addAll(iInputAlphabet.getCharacters());
+		automaton.setInputAlphabet(ab);
+		automaton.setInputAlphabet(iInputAlphabet);
+		automaton.setOutputAlphabet(iOutputAlphabet);
+		
+		State initialState2 = MealymodelFactory.eINSTANCE.createState();
+		initialState2.setName(iInitialState.getName());
+		automaton.setInitialState(initialState2);
+		
+		for (State s : iStates) {
+			automaton.getStates().add(s);
+		}
+		for (Transition t : iTransitions) {
+			automaton.getTransitions().add(t);
+		}
 	}
 
 
 	@Override
 	public MealyMachine getHypothesisAutomaton() {
-		return this.getHypothesis();
+		return this.automaton;
 	}
 
+	// should only be called on complete automata!
 	@Override
 	public MealyMachine getHypothesis() {
 		Set<String> inputA = new HashSet<>();
